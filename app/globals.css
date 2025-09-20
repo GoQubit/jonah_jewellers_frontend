@@ -1,26 +1,184 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* @import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities'; */
+
+
+
+/* Besley (Variable) */
+@font-face {
+  font-family: 'Besley';
+  src: url('/fonts/Besley/Besley-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
 }
 
+@font-face {
+  font-family: 'Besley';
+  src: url('/fonts/Barlow/Besley-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+
+/* Epilogue (Variable) */
+@font-face {
+  font-family: 'Epilogue';
+  src: url('/fonts/Epilogue/Epilogue-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Epilogue';
+  src: url('/fonts/Epilogue/static/Epilogue-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+}
+
+
+/* Nunito Sans (Variable with opsz and wdth) */
+@font-face {
+  font-family: 'Nunito Sans';
+  src: url('/fonts/Nunito_Sans/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Nunito Sans';
+  src: url('/fonts/Nunito_Sans/NunitoSans-Italic-VariableFont_YTLC,opsz,wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+}
+
+
+/* Barlow (multiple weights and styles) */
+@font-face {
+  font-family: 'Barlow';
+  src: url('/fonts/Barlow/Barlow-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('/fonts/Barlow/Barlow-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('/fonts/Barlow/Barlow-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+
+/* :root {
+  --background: #ffffff;
+  --foreground: #171717;
+} */
+
 @theme inline {
-  --color-background: var(--background);
+  /* --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-geist-mono); */
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* :root {
+    --background: #ffffff;
+    --foreground: #000;
+  } */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
+}
+
+p,span,div,a,li,input,textarea {
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Besley', sans-serif;
+  font-weight: 500;
+}
+
+.smooth {
+  transition: all 300ms ease-in-out;
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.bg-box-design {
+  background-image: url('/images/propsImgs/box_design.png');
+  /* width: 100%; */
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 8px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  background-color: rgb(14, 14, 21, 0.4000000059604645)
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* width */
+body::-webkit-scrollbar {
+  width: 6px;
+  height: 6px
+}
+
+#previousHistoryDropdown::-webkit-scrollbar {
+  width: 3px;
+  height: 3px
+}
+
+.scroller::-webkit-scrollbar {
+  width: 3px;
+  height: 3px
+}
+
+.smooth {
+  transition: all 300ms ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    margin: 0 16px;
+  }
 }
