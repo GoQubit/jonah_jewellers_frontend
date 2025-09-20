@@ -14,9 +14,9 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 
 const categoryOptions = [
   { value: "all", label: "All Categories" },
-  { value: "gold", label: "Gold" },
-  { value: "silver", label: "Silver" },
-  { value: "diamond", label: "Diamond" },
+  { value: "GOLD", label: "Gold" },
+  { value: "SILVER", label: "Silver" },
+  { value: "DIAMOND", label: "Diamond" },
 ]
 
 const subCategoryOptions = [
