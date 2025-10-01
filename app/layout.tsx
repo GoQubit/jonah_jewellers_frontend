@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import { ReduxProvider } from '@/components/providers/ReduxProvider';
 import './globals.css';
 import MainLayoutWrapper from './MainLayoutWrapper';
+import ModalProvider from '@/context/modal-provider';
 
 
 const inter = Inter({ subsets: ['latin'] });
@@ -24,9 +25,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} `}>
         <ReduxProvider>
-          <MainLayoutWrapper>
-            {children}
-          </MainLayoutWrapper>
+          <ModalProvider>
+            <MainLayoutWrapper>
+              {children}
+            </MainLayoutWrapper>
+          </ModalProvider>
         </ReduxProvider>
       </body>
     </html>

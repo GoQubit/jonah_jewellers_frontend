@@ -5,13 +5,16 @@ import { usePathname } from 'next/navigation';
 import React from 'react'
 import { ToastContainer } from 'react-toastify'
 
+const excludeHeaderPathRegex = [/^\/cart?$/, /^\/admin.*?$/]
+const excludeFooterPathRegex = [/^\/admin.*?$/]
+
 const MainLayoutWrapper = ({ children }: { children: any }) => {
   const pathname = usePathname();
   return (
     <div className="min-h-screen flex flex-col">
-      
+
       {
-        pathname !== '/cart' &&
+        !excludeHeaderPathRegex.find(pattern => pathname.match(pattern)) &&
         <Header />
       }
 
@@ -21,7 +24,11 @@ const MainLayoutWrapper = ({ children }: { children: any }) => {
         />
         {children}
       </main>
-      <Footer />
+
+      {
+        !excludeFooterPathRegex.find(pattern => pathname.match(pattern)) &&
+        <Footer />
+      }
     </div>
   )
 }
