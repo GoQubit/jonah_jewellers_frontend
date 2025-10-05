@@ -1,10 +1,21 @@
 import React from 'react'
+import ListPageLayout from '../_components/page-layout/list-page-layout'
+import TransactionStatsView from './_components/transaction-stats-view'
+import TransactionListFilterView from './_components/transaction-list-filter-view'
+import TransactionTableView from './_components/transaction-table-view'
 
-type Props = {}
-
-const TransactionsPage = (props: Props) => {
+const TransactionsPage = () => {
     return (
-        <div>TransactionsPage</div>
+        <ListPageLayout
+            title='Transactions'
+            description='Monitor and manage all financial transactions'
+        >
+            <TransactionStatsView />
+            <div className="space-y-5">
+                <TransactionListFilterView />
+                <TransactionTableView />
+            </div>
+        </ListPageLayout>
     )
 }
 

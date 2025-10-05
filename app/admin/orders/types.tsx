@@ -1,3 +1,5 @@
+import React from "react"
+
 export type OrderStatus = '' | 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
 
 export type OrderListFilters = {
@@ -12,4 +14,5 @@ export type OrderStatusOptions = {
     label: string,
     light_color: string,
     dark_color: string,
+    icon?: React.ReactNode,
 }

@@ -2,16 +2,17 @@
 
 import React from 'react'
 import DataTable, { useDataTable } from '@/components/data-table'
-import { orderListData } from '../const'
-import { orderTableColumns } from './order-list-columns'
+import { transactionListData} from '../const'
+import { transactionTableColumns } from './transaction-list-column'
+
 
 type Props = {}
 
-const OrderTableView = (props: Props) => {
+const TransactionTableView = (props: Props) => {
 
     const { table } = useDataTable({
-        data: orderListData,
-        columns: orderTableColumns,
+        data: transactionListData,
+        columns: transactionTableColumns,
         pageCount: 5,
         state: {
             pagination: { pageIndex: 0, pageSize: 10 },
@@ -21,10 +22,10 @@ const OrderTableView = (props: Props) => {
     return (
         <DataTable
             table={table}
-            message={"No orders found"}
+            message={"No transaction found"}
             className={"w-full flex flex-col border-b-4 rounded"}
         />
     )
 }
 
-export default OrderTableView
+export default TransactionTableView

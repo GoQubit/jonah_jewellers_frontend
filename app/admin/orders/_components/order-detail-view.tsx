@@ -211,7 +211,7 @@ const OrderDetailView = ({ onClose }: Props) => {
                                     {orderItem.price.toLocaleString("en-IN", {
                                         style: "currency",
                                         currency: "INR",
-                                        maximumFractionDigits: 0,
+                                        maximumFractionDigits: 2,
                                     })}
                                 </span>
                             </p>
