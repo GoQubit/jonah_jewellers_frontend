@@ -1,10 +1,19 @@
 import React from 'react'
+import ListPageLayout from '../_components/page-layout/list-page-layout'
+import ProductListFilterView from './_components/product-list-filter'
+import ProductTableView from './_components/product-table-view'
 
-type Props = {}
-
-const ProductsPage = (props: Props) => {
+const ProductsPage = () => {
     return (
-        <div>ProductsPage</div>
+        <ListPageLayout
+            title='Product List'
+            description='Maintain and update the catalog of products.'
+        >
+            <div className="space-y-5">
+                <ProductListFilterView />
+                <ProductTableView />
+            </div>
+        </ListPageLayout>
     )
 }
 
