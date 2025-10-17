@@ -1,47 +1,34 @@
+"use client"
+
+import { useState } from "react"
+import { Order } from "@/types/orderType"
 import { Card } from "../ui/Card"
 import { OrderActions } from "./OrderAction"
 import { OrderHeader } from "./OrderHeader"
 import { OrderItemComponent } from "./OrderItem"
 import { OrderProgress } from "./OrderProgess"
-
-
-export type OrderStatus = "delivered" | "shipped" | "processing"
-
-export interface OrderItem {
-  name: string
-  quantity: number
-  image: string
-}
-
-export interface Order {
-  id: string
-  status: OrderStatus
-  orderedDate: string
-  expectedDate: string
-  paymentMethod: string
-  amount: number
-  itemCount: number
-  items: OrderItem[]
-  progress?: number
-}
+import { Button } from "../ui/buttons/Button"
 
 interface OrderCardProps {
   order: Order
 }
 
 export function OrderCard({ order }: OrderCardProps) {
+  const [showAddress, setShowAddress] = useState(false)
+
   return (
-    <Card className="p-6 space-y-4">
+    <Card className="p-6 space-y-4 !gap-2">
+      {/* Header */}
       <OrderHeader order={order} />
 
+      {/* Items */}
       <div className="space-y-4">
-        {order.items.map((item, index) => (
+        {order.items.map((item: any, index: number) => (
           <OrderItemComponent key={index} item={item} />
         ))}
       </div>
 
-      {order.status === "shipped" && order.progress && <OrderProgress progress={order.progress} />}
-
+      {/* Actions */}
       <OrderActions order={order} />
     </Card>
   )

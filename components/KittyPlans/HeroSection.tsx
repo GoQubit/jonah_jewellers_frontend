@@ -5,14 +5,14 @@ export default function HeroSection() {
   return (
     <section className="relative px-6 py-16 bg-gradient-to-r from-pink-50 to-pink-100">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-6 md:gap-12">
           {/* Jewelry Images */}
           <div className=" relative ">
             <Image src={'/images/bannerImgs/kitty-banner-img.png'}
               alt='kitty-plan-img'
               width={300}
               height={300}
-              className="object-cover w-[300px] h-[300px]"
+              className="object-cover w-[150px] md:w-[300px] md:h-[300px]"
             />
           </div>
 

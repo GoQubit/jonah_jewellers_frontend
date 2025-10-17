@@ -36,7 +36,7 @@ export function PlanDurationSelector({ selectedPlan, setSelectedPlan }: PlanDura
     <div>
       <label className="block text-sm font-medium text-gray-900 mb-4">Plan Duration*</label>
 
-      <div className="space-y-3">
+      <div className="space-y-2 flex flex-col gap-1">
         {plans.map((plan) => (
           <Link href={plan.link} >
             <button

@@ -19,3 +19,13 @@ export const verifyOtpApi = async (payload: any) => {
     return
   }
 }
+
+// create/register user api
+export const registerUserApi = async (payload: any) => {
+  try {
+    const response = await axiosInstance.put(`${auth_url}/register`, payload)
+    return response
+  } catch (error) {
+    return
+  }
+}

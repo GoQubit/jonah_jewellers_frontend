@@ -4,19 +4,21 @@ import { PiCalculator } from "react-icons/pi"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/Tabs"
 import { KittyInvestmentPlanCard } from "./KittyInvestmentPlanCard"
 import { TransectionHistorySection } from "./TransectionHistorySection"
+import { useEffect, useState } from "react"
+import { getUserkittiesApi } from "@/lib/api/kittyApis/kittyApis"
 
 
-interface InvestmentPlan {
+export interface InvestmentPlan {
   id: string
-  name: string
-  description: string
-  status: "completed" | "active"
-  progress: { current: number; total: number }
-  monthlyAmount: number
-  currentBalance: number
-  totalValue?: number
+  title: string
+  userId: number
+  monthlyInstallment: number
+  amountPaid: number
+  totalAmountToBePaid: number
   bonus?: number | string
-  nextPayment: string
+  noOfInstallmentsDone: number
+  planDuration: number
+  status: "ACTIVE" | "COMPLETED"
 }
 
 interface InvestmentPlansSectionProps {
@@ -25,59 +27,23 @@ interface InvestmentPlansSectionProps {
 }
 
 export function InvestmentPlansSection({ activeTab, setActiveTab }: InvestmentPlansSectionProps) {
-  const investmentPlans: InvestmentPlan[] = [
-    {
-      id: "1",
-      name: "Wedding Collection",
-      description: "Saving for wedding jewellery collection",
-      status: "completed",
-      progress: { current: 12, total: 12 },
-      monthlyAmount: 7000,
-      currentBalance: 84000,
-      totalValue: 36000,
-      bonus: 7000,
-      nextPayment: "2025-01-15",
-    },
-    {
-      id: "2",
-      name: "Gift Fund",
-      description: "Special Gift to Special Person",
-      status: "active",
-      progress: { current: 8, total: 12 },
-      monthlyAmount: 5000,
-      currentBalance: 40000,
-      totalValue: 60000,
-      bonus: 2000,
-      nextPayment: "2025-02-10",
-    },
-    {
-      id: "3",
-      name: "Festival Special",
-      description: "Festival jewellery purchase",
-      status: "active",
-      progress: { current: 2, total: 9 },
-      monthlyAmount: 2000,
-      currentBalance: 4000,
-      totalValue: 18000,
-      bonus: '30% off on making charges',
-      nextPayment: "2025-02-18",
-    },
-    {
-      id: "4",
-      name: "Personal Collection",
-      description: "Personal jewellery collection",
-      status: "active",
-      progress: { current: 2, total: 3 },
-      monthlyAmount: 2000,
-      currentBalance: 4000,
-      totalValue: 6000,
-      bonus: '20% off on making charges',
-      nextPayment: "2025-03-10",
-    },
-  ]
+  const [kittyList, setKittyList] = useState<InvestmentPlan[]>([])
+
+  const fetchKitty = async () => {
+    const res = await getUserkittiesApi()
+    console.log("res", res);
+    if (res.status === 200) {
+      setKittyList(res.data.results)
+    }
+  }
+  // fetch User Kitty List
+  useEffect(() => {
+    fetchKitty()
+  }, [])
+
 
   return (
-    <div className="p-6">
+    <div className="">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="flex flex-wrap items-center justify-between mb-6">
           <h2 className="text-xl font-medium text-gray-900 flex items-center gap-2  font-nunito">
@@ -91,9 +57,14 @@ export function InvestmentPlansSection({ activeTab, setActiveTab }: InvestmentPl
 
         <TabsContent value="plans" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {investmentPlans.map((plan) => (
+            {kittyList.length > 0 ? kittyList.map((plan) => (
               <KittyInvestmentPlanCard key={plan.id} plan={plan} />
-            ))}
+            ))
+              :
+              <div>
+                No Kitty Found
+              </div>
+            }
           </div>
         </TabsContent>
 

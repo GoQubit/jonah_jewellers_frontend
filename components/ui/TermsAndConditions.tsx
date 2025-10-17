@@ -21,10 +21,10 @@ export function TermsAndConditions({ termsAccepted, setTermsAccepted }: TermsAnd
       </div>
 
       <div className="text-sm">
-        <label htmlFor="terms" className="font-medium text-gray-900">
+        {/* <label htmlFor="terms" className="font-medium text-gray-900">
           Terms and Conditions
-        </label>
-        <p className="text-gray-600 mt-1">
+        </label> */}
+        <p className="text-gray-600">
           I agree to the{" "}
           <a href="#" className="text-blue-600 hover:underline">
             Terms & Conditions and Privacy Policy

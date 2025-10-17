@@ -5,25 +5,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useState } from "react"
 import { AiFillGold } from "react-icons/ai"
 import { IoChevronDown } from "react-icons/io5"
+import MetalDetails from "./MetalDetails"
 
 interface ProductTabsProps {
-  details: {
-    metal: string
-    karat: string
-    grossWeight: string
-    materialColor: string
-    size: string
-  }
+  metalDetails: any
   description: string
-  priceBreakup: Array<{
-    item: string
-    weight: string
-    rate: string
-    value: string
-  }>
+  priceBreakup: any
+  productCategory: string
 }
 
-export default function ProductTabs({ details, description, priceBreakup }: ProductTabsProps) {
+export default function ProductTabs({ metalDetails, description, priceBreakup, productCategory }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState("details")
   const [activeDetailsTab, setActiveDetailsTab] = useState("metal")
 
@@ -37,14 +28,15 @@ export default function ProductTabs({ details, description, priceBreakup }: Prod
         <Button
           variant={activeTab === "details" ? "brand-solid" : "brand-outline"}
           onClick={() => setActiveTab("details")}
-          className={`${activeTab === "details" ? "bg-brand hover:bg-brandDark" : ""} text-xl rounded-r-none px-8 `}
+          className={`${activeTab === "details" ? "bg-brand hover:bg-brandDark" : ""} text-base md:text-xl rounded-r-none px-4 md:px-8 `}
         >
           Product Details
         </Button>
         <Button
           variant={activeTab === "price" ? "brand-solid" : "brand-outline"}
           onClick={() => setActiveTab("price")}
-          className={`${activeTab === "price" ? "bg-brand hover:bg-brandDark" : ""}  text-xl rounded-l-none  px-8`}
+          className={`${activeTab === "price" ? "bg-brand hover:bg-brandDark" : ""}  
+          text-base md:text-xl rounded-l-none  px-4 md:px-8`}
         >
           Price Breakup
         </Button>
@@ -53,7 +45,7 @@ export default function ProductTabs({ details, description, priceBreakup }: Prod
 
       {/* Tab Content */}
       <div className="flex gap-8">
-        <div className=" w-[60%]">
+        <div className="w-full md:w-[60%]">
           {activeTab === "details" && (
             <>
               <div className="border border-b-0 rounded-lg p-6 ">
@@ -66,29 +58,10 @@ export default function ProductTabs({ details, description, priceBreakup }: Prod
                 </div>
                 {
                   activeDetailsTab === "metal" &&
-                  <div className="grid grid-cols-1 md:grid-cols-3  ">
-
-                    <div className="flex flex-col justify-between py-2">
-                      <span className="font-medium text-xl font-besley ">{details.karat}</span>
-                      <span className="font-nunito text-[#A1A1A1] ">Karat</span>
-                    </div>
-                    <div className="flex flex-col justify-between py-2">
-                      <span className="font-medium text-xl font-besley ">{details.grossWeight}</span>
-                      <span className="font-nunito text-[#A1A1A1] ">Gross Weight</span>
-                    </div>
-                    <div className="flex flex-col justify-between py-2">
-                      <span className="font-medium text-xl font-besley ">{details.materialColor}</span>
-                      <span className="font-nunito text-[#A1A1A1] ">Material Color</span>
-                    </div>
-                    <div className="flex flex-col justify-between py-2">
-                      <span className="font-medium text-xl font-besley ">{details.metal}</span>
-                      <span className="font-nunito text-[#A1A1A1] ">Metal</span>
-                    </div>
-                    <div className="flex flex-col justify-between py-2">
-                      <span className="font-medium text-xl font-besley ">{details.size}</span>
-                      <span className="font-nunito text-[#A1A1A1] ">Size</span>
-                    </div>
-                  </div>
+                  <MetalDetails
+                    productCategory={productCategory}
+                    metalDetails={metalDetails}
+                  />
                 }
               </div>
               <div className="border rounded-lg p-6 ">
@@ -102,7 +75,7 @@ export default function ProductTabs({ details, description, priceBreakup }: Prod
                 {
                   activeDetailsTab === "description" &&
                   <div className=" text-[#A1A1A1] mt-2 ">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, consequatur maxime aliquam a tempora labore illo asperiores accusantium incidunt laborum, at doloribus hic fugit, similique voluptate ex numquam maiores blanditiis?</p>
+                    <p>{description}</p>
                   </div>
                 }
               </div>
@@ -121,7 +94,7 @@ export default function ProductTabs({ details, description, priceBreakup }: Prod
                     <TableHead className=" text-right">Value</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                {/* <TableBody>
                   {priceBreakup.map((item, index) => (
                     <TableRow
                       key={index}
@@ -140,14 +113,14 @@ export default function ProductTabs({ details, description, priceBreakup }: Prod
                       </TableCell>
                     </TableRow>
                   ))}
-                </TableBody>
+                </TableBody> */}
               </Table>
             </div>
           )}
 
         </div>
 
-        <div className="w-[40%] justify-center">
+        <div className="hidden md:block w-[40%] justify-center">
           <img src="/images/productsImgs/1.png" alt="Product detail" className="w-[300px] h-[300px] object-cover rounded-lg" />
         </div>
       </div>

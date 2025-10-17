@@ -8,6 +8,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-button': "linear-gradient(53deg, rgb(243, 111, 33) 0%, rgb(255, 143, 78) 100%)",
+    },
       colors: {
         brand:'#E8A83E',
         brandDark:'#e6981a',

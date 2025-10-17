@@ -1,15 +1,28 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { InvestmentStatsCards } from "./components/InvestmentStatsCards"
 import { InvestmentTabs } from "./components/InvestmentTabs"
 import { WithdrawalModal } from "./components/WithdrawalModal"
 import Modal from "../ui/Modal"
+import { getSellerDashboardInfoApi } from "@/lib/api/sellerApis/sellerInvestmentsApis"
 // import { InvestmentTabs } from "@/components/investment-dashboard/investment-tabs"
 // import { WithdrawalModal } from "@/components/investment-dashboard/withdrawal-modal"
 
 export default function SellerDashboard() {
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false)
+  const [sellerWallerInfo, setSellerWalletInfo] = useState<any>(null)
+
+
+  useEffect(() => {
+    (async () => {
+      const res = await getSellerDashboardInfoApi()
+      console.log("res", res);
+      if (res.status === 200) {
+        setSellerWalletInfo(res.data)
+      }
+    })()
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -26,16 +39,24 @@ export default function SellerDashboard() {
 
       <main className="max-w-7xl mx-auto px-4 py-6">
         {/* Stats Cards */}
-        <InvestmentStatsCards />
+        <InvestmentStatsCards
+          sellerWallerInfo={sellerWallerInfo}
+        />
 
         {/* Tabs Content */}
-        <InvestmentTabs onWithdrawalRequest={() => setIsWithdrawalModalOpen(true)} />
+        <InvestmentTabs 
+        sellerWallerInfo={sellerWallerInfo}
+        onWithdrawalRequest={() => setIsWithdrawalModalOpen(true)} />
       </main>
 
       {/* Withdrawal Modal */}
 
       <Modal isOpen={isWithdrawalModalOpen} onClose={() => setIsWithdrawalModalOpen(false)} >
-        <WithdrawalModal isOpen={isWithdrawalModalOpen} onClose={() => setIsWithdrawalModalOpen(false)} />
+        <WithdrawalModal
+          availableToWithdraw={sellerWallerInfo?.availableToWithdraw | 0}
+          isOpen={isWithdrawalModalOpen}
+          onClose={() => setIsWithdrawalModalOpen(false)}
+        />
       </Modal>
     </div>
   )

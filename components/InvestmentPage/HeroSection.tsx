@@ -9,9 +9,9 @@ export function HeroSection() {
   }
 
   return (
-    <section className=" bg-[#FDFBE8] py-20 px-4">
+    <section className=" bg-[#FDFBE8] py-10 md:py-20 px-4">
       <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl md:text-4xl text-gray-800 mb-4 text-balance font-medium leading-6 ">
+        <h1 className="text-2xl md:text-4xl text-gray-800 mb-4 text-balance font-medium">
           Invest in Gold & Become a
           <br />
           <span className="text-brand font-besley">JONAH SELLER</span>

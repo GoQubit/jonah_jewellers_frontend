@@ -10,7 +10,7 @@ axiosInstance.interceptors.request.use(
     (config: any) => {
         const accessToken = Cookies.get("authToken")
         if (accessToken) {
-            if (config.headers) config.headers.Authorization = `token ${accessToken}`;
+            if (config.headers) config.headers.Authorization = `Bearer ${accessToken}`;
         }
 
         if (config.customBaseURL) {

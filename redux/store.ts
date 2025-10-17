@@ -5,20 +5,24 @@ import cartReducer from './Features/cartSlice/cartSlice';
 import inventoryReducer from './Features/inventorySlice/inventorySlice';
 import ordersReducer from './Features/ordersSlice/ordersSlice';
 import transactionsReducer from './Features/transactionsSlice/transactionsSlice';
-import filterReducer from "./Features/filterSlice/filterSlice"
+import filterReducer from "./Features/filterSlice/filterSlice";
+import materialReducer from "./Features/materialSlice/materialSlice";
+import userReducer from "./Features/userSlice/userSlice";
 
 const rootReducer = combineReducers({
+  user: userReducer,
   cart: cartReducer,
   inventory: inventoryReducer,
   orders: ordersReducer,
   transactions: transactionsReducer,
   filters: filterReducer,
+  materials: materialReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['cart'], // Only persist cart data
+  whitelist: ['cart', 'user'], // ✅ persist both cart & user
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -3,6 +3,7 @@ import FooterBannerSection from '@/components/homePage/FooterBannerSection';
 import JewellersWorldSection from '@/components/homePage/JewellersWorldSection';
 import JewelleryAssuranceSection from '@/components/homePage/JewelleryAssuranceSection';
 import JewelleryCollectionSection from '@/components/homePage/JewelleryCollectionSection';
+import KittyInvestmentsCards from '@/components/homePage/KittyInvestmentsCards';
 import TestimonialCarousel from '@/components/homePage/TestimonialCarousel';
 import WeddingChapterSection from '@/components/homePage/WeddingChapterSection';
 import HomeBannerSlider from '@/components/Slider/HomeBannerSlider';
@@ -13,8 +14,10 @@ export default function Home() {
 
 
   return (
-    <div className='flex flex-col gap-[80px]'>
+    <div className='flex flex-col gap-10 md:gap-20'>
       <HomeBannerSlider />
+
+      <KittyInvestmentsCards />
 
       <JewelleryCollectionSection />
 

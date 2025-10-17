@@ -4,35 +4,43 @@ import { useState } from "react"
 import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/buttons/Button"
 
-interface ProductInfoProps {
-  product: {
-    name: string
-    price: number
-    originalPrice: number
-  }
+
+type ProductDetailsInfo = {
+  name: string
+  price: number
+  metalDetails: any
+  productCategory: string
+  addToCartHandler?: () => void
 }
 
-export default function ProductInfo({ product }: ProductInfoProps) {
+
+export default function ProductInfo({ name, price, metalDetails, productCategory, addToCartHandler }: ProductDetailsInfo) {
   const [pincode, setPincode] = useState("")
 
-  const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+  // const discount = Math.round(((originalPrice - price) / originalPrice) * 100)
+
+  const metalQualityStr = productCategory === "GOLD" ?
+    `${metalDetails.goldPurity}K Gold |` :
+    productCategory === "DIAMOND" ?
+      `${metalDetails.stoneWeightInCarat} ct. | ${metalDetails.metalPurity}K Gold |` : ""
+
 
   return (
     <div className="space-y-6">
       <div>
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2 ">{product.name}</h1>
-          <p className="font-besley text-brand ">22k Gold | 0.825 Gram</p>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2 ">{name}</h1>
+          <p className="font-besley text-brand ">{metalQualityStr} {metalDetails?.grossWeight} Gram</p>
         </div>
         <div className="flex items-center gap-3 font-besley ">
-          <span className="text-3xl font-medium text-gray-900">₹ {product.price.toLocaleString()}</span>
-          <span className="text-lg text-gray-500 line-through">₹ {product.originalPrice.toLocaleString()}</span>
-          <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">{discount}% OFF</span>
+          <span className="text-3xl font-medium text-gray-900">₹ {price}</span>
+          {/* <span className="text-lg text-gray-500 line-through">₹ {originalPrice}</span> */}
+          {/* <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">{discount}% OFF</span> */}
         </div>
       </div>
 
       <div className="space-y-8 ">
-        <div className=" mt-12 max-w-[400px] ">
+        <div className="mt-4 md:mt-12 max-w-[400px] ">
           <h3 className="font-medium text-xl font-barlow text-gray-900 mb-2">Estimated Delivery Time</h3>
           <div className="flex">
             <Input
@@ -51,7 +59,9 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         </div>
 
         <div className="mt-6">
-          <Button variant="brand-solid" className="!w-[200px] text-xl font-medium bg-[#e19924] ">
+          <Button
+            onClick={addToCartHandler}
+            variant="brand-solid" className="!w-[200px] text-base md:text-xl font-medium bg-[#e19924] ">
             Add To Cart
           </Button>
 

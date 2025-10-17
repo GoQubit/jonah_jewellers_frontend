@@ -14,9 +14,10 @@ import { MdOutlinePayments } from "react-icons/md"
 interface WithdrawalModalProps {
   isOpen: boolean
   onClose: () => void
+  availableToWithdraw: number
 }
 
-export function WithdrawalModal({ isOpen, onClose }: WithdrawalModalProps) {
+export function WithdrawalModal({ isOpen, onClose, availableToWithdraw }: WithdrawalModalProps) {
   const [amount, setAmount] = useState("")
   const [reason, setReason] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -56,7 +57,7 @@ export function WithdrawalModal({ isOpen, onClose }: WithdrawalModalProps) {
             required
             className="w-full !p-4"
           />
-          <p className="text-xs text-gray-500">*Maximum: ₹1,768,000 for Withdrawal</p>
+          <p className="text-xs text-gray-500">*Maximum: ₹{availableToWithdraw} for Withdrawal</p>
         </div>
 
         <div className="space-y-2">

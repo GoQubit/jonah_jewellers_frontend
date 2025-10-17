@@ -1,22 +1,26 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { FaCoins } from "react-icons/fa"
 import { Input } from "../ui/Input"
 import { Button } from "../ui/buttons/Button"
 import { AiFillGold } from "react-icons/ai"
 import { useRouter } from "next/navigation"
+import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
 
-const GOLD_RATE_PER_GRAM = 6500 // Example rate in INR
+
 
 export function InvestmentForm() {
+  const materials = useSelector((state: RootState) => state.materials)
   const [investmentAmount, setInvestmentAmount] = useState<string>("")
   const [goldQuantity, setGoldQuantity] = useState<number>(0)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [investmentAmountError, setInvestmentAmountError] = useState('')
   const router = useRouter()
 
-  const quickAmounts = [10000, 25000, 50000]
+  const GOLD_RATE_PER_GRAM = materials?.gold?.price || 100000 // Rate in INR
+
+  const quickAmounts = [10000, 20000, 25000, 50000]
 
   // Calculate gold quantity based on investment amount
   useEffect(() => {

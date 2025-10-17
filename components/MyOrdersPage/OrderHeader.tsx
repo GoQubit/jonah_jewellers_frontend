@@ -1,38 +1,65 @@
+import { Order } from "@/types/orderType"
 import { Badge } from "../ui/Badge"
-import { Order } from "./OrderCard"
+import { useState } from "react"
+import { BiCheck } from "react-icons/bi"
+import { IoCopyOutline } from "react-icons/io5"
+import { TbCopy, TbCopyCheckFilled } from "react-icons/tb"
+import { truncateId } from "@/utils/truncateId"
 
 interface OrderHeaderProps {
   order: Order
 }
 
-const statusConfig = {
-  delivered: {
+const statusConfig: any = {
+  DELIVERED: {
     label: "Delivered",
     className: "bg-green-100 text-green-800 hover:bg-green-100",
   },
-  shipped: {
+  SHIPPED: {
     label: "Shipped",
     className: "bg-orange-100 text-orange-800 hover:bg-orange-100",
   },
-  processing: {
-    label: "Processing",
+  PLACED: {
+    label: "Placed",
     className: "bg-blue-100 text-blue-800 hover:bg-blue-100",
   },
 }
 
 export function OrderHeader({ order }: OrderHeaderProps) {
-  const status = statusConfig[order.status]
+  const status = statusConfig[order?.orderStatus]
+  const [copied, setCopied] = useState(false)
+
+  async function copyId(orderId: string) {
+    try {
+      await navigator.clipboard.writeText(orderId)
+      setCopied(true)
+      const t = setTimeout(() => setCopied(false), 1500)
+      return () => clearTimeout(t)
+    } catch { }
+  }
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-      <div className="flex items-center gap-3">
-        <h3 className="text-lg font-semibold">{order.id}</h3>
-        <Badge className={status.className}>{status.label}</Badge>
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex items-center gap-3 self-start ">
+        <h3 className="text-lg font-medium">Order: {truncateId(order.id)}</h3>
+
+        <Badge className={status?.className}>{status?.label}</Badge>
+
+        <button
+          type="button"
+          onClick={() => copyId(order.id)}
+          aria-label="Copy order ID"
+          className=" inline-flex items-center justify-center rounded-md border border-transparent text-foreground/60"
+          title="Copy order ID"
+        >
+          {copied ? <TbCopyCheckFilled className="h-5 w-5" /> : <TbCopy className="h-5 w-5" />}
+        </button>
+
       </div>
 
       <div className="flex flex-col md:items-end gap-1">
-        <div className="text-2xl font-bold">₹{order.amount.toLocaleString()}</div>
-        <div className="text-sm text-muted-foreground">{order.itemCount} Item</div>
+        <div className="text-2xl font-medium">₹{order.totalAmount.toLocaleString()}</div>
+        <div className="text-sm text-muted-foreground">{order.items.length} Item</div>
       </div>
     </div>
   )

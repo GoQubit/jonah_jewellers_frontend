@@ -21,7 +21,8 @@ const AddToCartToast = ({ show, onClose, customButtonId }: { show: boolean, onCl
       <FaCircleCheck size={24} color='#40ce24' className={`${show ? 'scale-2' : 'scale-0'}`} />
       <p className='text-[#5F5F5F] font-medium text-base'>Item Added to Cart</p>
       <Link href={'/cart'}>
-        <button id={customButtonId || 'product-view-cart-button'} className='button-gradient flex justify-center items-center w-[120px] h-[36px] rounded-lg font-medium text-white underline-logo'>View Cart</button>
+        <button id={customButtonId || 'product-view-cart-button'}
+          className='bg-brandLight flex justify-center items-center w-[120px] h-[36px] rounded-lg font-medium text-white underline-logo'>View Cart</button>
       </Link>
 
     </div>

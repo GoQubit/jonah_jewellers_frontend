@@ -6,7 +6,7 @@ export interface FilterState {
   category?: string
   subCategory?: string
   occasion?: string
-  shopFor?: string
+  targetGender?: string
   sortBy?: string
 }
 
@@ -16,7 +16,7 @@ const initialState: FilterState = {
   category: "",
   subCategory: "",
   occasion: "",
-  shopFor: "",
+  targetGender: "",
   sortBy: "",
 }
 
@@ -34,7 +34,7 @@ const filterSlice = createSlice({
       state.occasion = action.payload
     },
     setShopFor: (state, action: PayloadAction<string>) => {
-      state.shopFor = action.payload
+      state.targetGender = action.payload
     },
     setSortBy: (state, action: PayloadAction<string>) => {
       state.sortBy = action.payload

@@ -22,7 +22,7 @@ export default function ProductImageGallery({ images, selectedImage, onImageSele
       {/* Main Image */}
       <div className="relative bg-gray-50 rounded-lg overflow-hidden">
         <img
-          src={images[selectedImage] || "/placeholder.svg"}
+          src={images?.[selectedImage] || "/placeholder.svg"}
           alt="Product main view"
           className="w-full max-h-[500px] object-cover"
         />
@@ -42,7 +42,7 @@ export default function ProductImageGallery({ images, selectedImage, onImageSele
 
       {/* Thumbnail Images */}
       <div className="flex gap-2 justify-center">
-        {images.map((image, index) => (
+        {images?.map((image, index) => (
           <button
             key={index}
             onClick={() => onImageSelect(index)}

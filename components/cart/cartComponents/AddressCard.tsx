@@ -8,13 +8,12 @@ import { AiFillEdit } from "react-icons/ai"
 
 export type Address = {
   id: string
-  name: string
-  label: string
-  addressLines: string[]
-  email: string
-  phone: string
+  user:any
+  line1: string
+  city: string,
+  state: string,
+  pinCode: number,
   selected?: boolean
-  type: "home" | "office"
 }
 
 export function AddressCard({
@@ -28,7 +27,7 @@ export function AddressCard({
   onEdit?: (id: string) => void
   onDelete?: (id: string) => void
 }) {
-  const Icon = address.type === "home" ? BiHome : BiBuilding
+  // const Icon = address.type === "home" ? BiHome : BiBuilding
 
   const [isEditAddressModalOpen, setIsEditAddressModalOpen] = useState(false);
 
@@ -47,29 +46,28 @@ export function AddressCard({
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="shrink-0 mt-1 h-9 w-9 rounded-full bg-muted flex items-center justify-center">
-            <Icon className="h-5 w-5 text-foreground/80" />
+            <BiHome className="h-5 w-5 text-foreground/80" />
           </div>
           <div className="space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-lg font-medium">{address.name}</h3>
-              <Badge variant="outline" className="rounded-md text-xs">
+              <h3 className="text-lg font-medium">{address.user.firstName} {address.user.lastName} </h3>
+              {/* <Badge variant="outline" className="rounded-md text-xs">
                 {address.label}
-              </Badge>
+              </Badge> 
+              */}
             </div>
-            <div className="text-sm text-muted-foreground leading-6">
-              {address.addressLines.map((line, i) => (
-                <div key={i}>{line}</div>
-              ))}
+            <div className="flex flex-col gap-1 text-sm text-muted-foreground leading-6">
+              <span>{address?.line1}</span>
+              <span>{address?.city}, {address?.state}, {address?.pinCode}</span>
             </div>
-
             <div className="mt-2 grid gap-2 text-sm">
               <div className="flex items-center gap-2">
                 <BsMailbox className="h-4 w-4 text-muted-foreground" />
-                <span>{address.email}</span>
+                <span>{address.user.email}</span>
               </div>
               <div className="flex items-center gap-2">
                 <BiPhone className="h-4 w-4 text-muted-foreground" />
-                <span>{address.phone}</span>
+                <span>{address?.user?.mobileNumber}</span>
               </div>
             </div>
           </div>

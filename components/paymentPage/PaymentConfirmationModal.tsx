@@ -1,14 +1,17 @@
 "use client"
 
+import { QRTransectionApi } from "@/lib/api/transection/qrTransectionApi"
+import { fileUploaderApi } from "@/lib/api/uploader/fileUploaderApi"
 import { ChangeEvent, useRef, useState } from "react"
 import { AiOutlineCloudUpload } from "react-icons/ai"
 import { BiCloset, BiHome } from "react-icons/bi"
 import { IoClose } from "react-icons/io5"
 import { MdOutlinePayments } from "react-icons/md"
+import Toast from "../Toast/Toast"
 
 interface PaymentConfirmationModalProps {
   amount: number
-  onConfirm: (transactionId: string) => void
+  onConfirm: (transactionId: string, proofImage: string) => void
   onCancel: () => void
 }
 
@@ -21,15 +24,23 @@ interface FileItem {
 
 export function PaymentConfirmationModal({ amount, onConfirm, onCancel }: PaymentConfirmationModalProps) {
   const [transactionId, setTransactionId] = useState("")
-  const [file, setFile] = useState<FileItem | null>(null);
+  const [file, setFile] = useState<any | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleConfirm = () => {
-    
-    if (transactionId.trim()) {
-      onConfirm(transactionId.trim())
+  const handleConfirm = async () => {
+    if (file && transactionId.trim()) {
+      const payload = new FormData()
+      payload.append("file", file.file)
+      console.log("payload", payload);
+      const res = await fileUploaderApi(payload)
+      console.log("res", res);
+      if (res.status === 200) {
+        onConfirm(transactionId.trim(), res.data.url)
+      }
+    } else {
+      Toast.error("Please Fill all required field")
     }
 
   }

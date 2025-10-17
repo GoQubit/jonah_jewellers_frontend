@@ -6,9 +6,7 @@ import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { MdLockClock } from "react-icons/md";
-import { PageHeader } from "../ui/PageHeader";
-
-
+import { PageHeader } from "../ui/PageHeader"
 
 
 const features = [
@@ -64,7 +62,7 @@ const features = [
 
 export function WhyInvestSection() {
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50">
+    <section className="pb-20 md:py-20 px-4 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-6xl mx-auto">
 
         <PageHeader

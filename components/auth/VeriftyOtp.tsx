@@ -5,13 +5,17 @@ import { Button } from '../ui/buttons/Button'
 import OtpInput from './OtpInput'
 import { sendOtpApi, verifyOtpApi } from '@/lib/api/auth/authApis'
 import { useRouter } from 'next/navigation'
+import Cookies from 'js-cookie'
+import { setUserProfile } from '@/redux/Features/userSlice/userSlice'
+import { useAppDispatch } from '@/redux/hooks'
 
 const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Function }) => {
   const [verifying, setVerifying] = React.useState(false)
   const [otp, setOtp] = React.useState("")
   const [countdown, setCountdown] = React.useState(0)
-  const storedPhonenumber = localStorage.getItem("phonenumber");
+  const storedPhonenumber = localStorage.getItem("phonenumber") || ''
   const router = useRouter()
+  const dispatch = useAppDispatch()
 
   const onResend = async () => {
     if (countdown > 0) return
@@ -34,14 +38,15 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
         otp: otp
       }
       const res = await verifyOtpApi(payload)
-      console.log("res", res);
       if (res.status === 200) {
         Toast.success(res.data.message)
         const token = res.data.tokens.access.token // authToken
-        localStorage.setItem("authToken", token);
+        localStorage.setItem("phonenumber", res.data.user.mobileNumber); //store phone number
+        Cookies.set('authToken', token) // store token in cookie
         if (res.data.isNewUser) {
           router.push('/profile')
         } else {
+          dispatch(setUserProfile(res.data.user)) // store user in redux
           router.push('/')
         }
         // nextStep()
@@ -70,7 +75,7 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
         <div className=" flex flex-col text-center gap-2 ">
           <h2 className="text-3xl font-medium ">Verify Your Phone Number</h2>
           <p className="text-base font-nunito text-brand text-muted-foreground">
-            We've sent a 6-digit verification code to +917526******.{" "}
+            We've sent a 6-digit verification code to {storedPhonenumber}.{" "}
             <button type="button" onClick={editNumber} className="text-blue-600 underline underline-offset-2">
               Edit number
             </button>

@@ -8,9 +8,10 @@ import { FiAlertCircle } from "react-icons/fi"
 
 interface WithdrawalRequestTabProps {
   onWithdrawalRequest: () => void
+  availableToWithdraw: any
 }
 
-export function WithdrawalRequestTab({ onWithdrawalRequest }: WithdrawalRequestTabProps) {
+export function WithdrawalRequestTab({ onWithdrawalRequest, availableToWithdraw }: WithdrawalRequestTabProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Request Withdrawal Section */}
@@ -24,7 +25,7 @@ export function WithdrawalRequestTab({ onWithdrawalRequest }: WithdrawalRequestT
         <CardContent className="space-y-6">
           {/* Total Profits Display */}
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-            <p className="text-3xl font-bold text-green-600 mb-1">₹1,768,000</p>
+            <p className="text-3xl font-bold text-green-600 mb-1">₹{availableToWithdraw}</p>
             <p className="text-green-700 font-medium">Total Jewellery Profits</p>
           </div>
 

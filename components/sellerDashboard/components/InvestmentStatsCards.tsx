@@ -4,32 +4,32 @@ import { FaArrowTrendUp } from "react-icons/fa6"
 import { GiMoneyStack, GiTakeMyMoney } from "react-icons/gi"
 import { RiShoppingBag4Line, RiWallet3Line } from "react-icons/ri"
 
-export function InvestmentStatsCards() {
+export function InvestmentStatsCards({ sellerWallerInfo }: { sellerWallerInfo: any }) {
   const stats = [
     {
       title: "Total Invested Amount",
-      value: "₹ 59,048",
+      value: `${sellerWallerInfo?.investedAmount}`,
       icon: RiWallet3Line,
       bgColor: "bg-amber-500",
       textColor: "text-white",
     },
     {
       title: "Available to Withdraw",
-      value: "₹ 26,000",
+      value: `${sellerWallerInfo?.availableToWithdraw}`,
       icon: RiShoppingBag4Line,
       bgColor: "bg-green-500",
       textColor: "text-white",
     },
     {
       title: "Profit On Jewellery",
-      value: "₹ 9,500",
+      value: `${sellerWallerInfo?.profitOnJewelry}`,
       icon: GiTakeMyMoney,
       bgColor: "bg-blue-500",
       textColor: "text-white",
     },
     {
       title: "Current Gold Investment",
-      value: "₹ 9,500",
+      value: `${sellerWallerInfo?.currentGoldInvestment}`,
       icon: FaArrowTrendUp,
       bgColor: "bg-purple-500",
       textColor: "text-white",

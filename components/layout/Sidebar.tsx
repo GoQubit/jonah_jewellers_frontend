@@ -12,6 +12,10 @@ import { HiOutlineUser } from "react-icons/hi2";
 import { MdContactSupport } from "react-icons/md";
 import { IoClose } from "react-icons/io5"
 import { Avatar, AvatarFallback } from "../ui/Avatar"
+import useLogout from "@/hooks/useLogout"
+import { RootState } from "@/redux/store"
+import { useSelector } from "react-redux"
+import { useRouter } from "next/navigation"
 
 
 interface UserAccountSidebarProps {
@@ -34,52 +38,63 @@ interface MenuItem {
   onClick: () => void
 }
 
-export function Sidebar({ isOpen, onClose, user }: UserAccountSidebarProps) {
+export function Sidebar({ isOpen, onClose }: UserAccountSidebarProps) {
+  const user = useSelector((state: RootState) => state.user)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const logout = useLogout() // Custom hook to handle logout logic
+  const router = useRouter()
 
-  const defaultUser = {
-    name: "Ankita Pandey",
-    email: "ankitaap38@gmail.com",
-    initials: "AP",
-  }
 
-  const currentUser = user || defaultUser
+  const nameInitials = user.firstName && user.lastName ? `${user.firstName.charAt(0).toLocaleUpperCase()}${user.lastName.charAt(0).toLocaleUpperCase()}` : "NA"
 
   const menuItems: MenuItem[] = [
-    {
-      id: "kitty-plan",
-      icon: <RiWallet3Line className="w-5 h-5" />,
-      iconStyle: " bg-[#DBEAFE] text-[#2C70CC]",
-      title: "My Kitty Plan",
-      description: "Manage your kitty portfolio",
-      badge: 4,
-      onClick: () => {
-        console.log("[v0] Navigating to Kitty Plan")
-        // Navigate to kitty plan page
-      },
-    },
-    {
-      id: "dashboard",
-      icon: <AiFillGolden className="w-5 h-5" />,
-      iconStyle: " bg-[#FFFBEA] text-[#E8A83E]",
-      title: "Jonah Seller Dashboard",
-      description: "Manage your Gold Investments",
-      badge: 1,
-      onClick: () => {
-        console.log("[v0] Navigating to Dashboard")
-        // Navigate to dashboard
-      },
-    },
+    // Show only for BUYER
+    ...(user.role === "BUYER"
+      ? [
+        {
+          id: "kitty-plan",
+          icon: <RiWallet3Line className="w-5 h-5" />,
+          iconStyle: " bg-[#DBEAFE] text-[#2C70CC]",
+          title: "My Kitty Plan",
+          description: "Manage your kitty portfolio",
+          onClick: () => {
+            console.log("[v0] Navigating to Kitty Plan")
+            router.push("/kitty-dashboard")
+            onClose()
+          },
+        },
+      ]
+      : []),
+
+    // Show only for SELLER
+    ...(user.role === "SELLER"
+      ? [
+        {
+          id: "dashboard",
+          icon: <AiFillGolden className="w-5 h-5" />,
+          iconStyle: " bg-[#FFFBEA] text-[#E8A83E]",
+          title: "Jonah Seller Dashboard",
+          description: "Manage your Gold Investments",
+          onClick: () => {
+            console.log("[v0] Navigating to Dashboard")
+            router.push("/seller-dashboard")
+            onClose()
+          },
+        },
+      ]
+      : []),
+
+    // Common for both roles
     {
       id: "orders",
       icon: <FiPackage className="w-5 h-5" />,
       iconStyle: " bg-[#DCFCE7] text-[#45D777]",
       title: "My Orders",
       description: "View order status & history",
-      badge: 2,
       onClick: () => {
         console.log("[v0] Navigating to Orders")
-        // Navigate to orders page
+        router.push("/orders")
+        onClose()
       },
     },
     {
@@ -87,10 +102,11 @@ export function Sidebar({ isOpen, onClose, user }: UserAccountSidebarProps) {
       icon: <HiOutlineUser className="w-5 h-5" />,
       iconStyle: " bg-[#FFE5E5] text-[#CE1414]",
       title: "Edit My Profile",
-      description: "Edit profile information & address",
+      description: "Edit profile & address",
       onClick: () => {
         console.log("[v0] Navigating to Profile Edit")
-        // Navigate to profile edit page
+        router.push("/profile?profile=edit")
+        onClose()
       },
     },
     {
@@ -101,19 +117,16 @@ export function Sidebar({ isOpen, onClose, user }: UserAccountSidebarProps) {
       description: "Get assistance & FAQs",
       onClick: () => {
         console.log("[v0] Navigating to Support")
-        // Navigate to support page
       },
     },
   ]
 
+
+  // Handle logout action
   const handleLogout = async () => {
     setIsLoggingOut(true)
-    console.log("[v0] Logging out user")
-
-    // Simulate logout API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
     // Handle logout logic here
+    logout() // Call the logout function from the custom hook
     setIsLoggingOut(false)
     onClose()
   }
@@ -126,7 +139,7 @@ export function Sidebar({ isOpen, onClose, user }: UserAccountSidebarProps) {
       <div className="fixed max-h-screen inset-0 bg-black/50 z-40 transition-opacity" onClick={onClose} />
 
       {/* Sidebar */}
-      <div className="fixed right-0 top-0 h-full w-80 md:w-[400px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out">
+      <div className="fixed right-0 top-0 h-full w-[90%] md:w-[400px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out">
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
@@ -141,12 +154,12 @@ export function Sidebar({ isOpen, onClose, user }: UserAccountSidebarProps) {
             <div className="flex items-center space-x-3">
               <Avatar className="!h-16 !w-16 bg-brand">
                 <AvatarFallback className="bg-brand text-3xl font-nunito text-white font-semibold">
-                  {currentUser.initials}
+                  {nameInitials}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-xl font-medium text-gray-900 truncate">{currentUser.name}</p>
-                <p className="text-lg text-[#7B7B7B] truncate">{currentUser.email}</p>
+                <p className="text-xl font-medium text-gray-900 truncate">{`${user.firstName} ${user.lastName} `}  </p>
+                <p className="text-lg text-[#7B7B7B] truncate">{user.mobileNumber}</p>
               </div>
             </div>
           </div>

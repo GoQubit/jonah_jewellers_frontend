@@ -3,6 +3,7 @@ import { AmountSelector } from "./AmountSelection"
 import { InvestmentGoalSelector } from "./InvestmentGoalSelector"
 import { PlanDurationSelector } from "./PlanDurationSelector"
 import { ProceedButton } from "./ProceedButton"
+import { TermsAndConditions } from "@/components/ui/TermsAndConditions"
 
 interface InvestmentConfigurationProps {
   monthlyAmount: number
@@ -12,6 +13,7 @@ interface InvestmentConfigurationProps {
   investmentGoal: string
   setInvestmentGoal: (goal: string) => void
   termsAccepted: boolean
+  setTermsAccepted: (accepted: boolean) => void
 }
 
 export function InvestmentConfiguration({
@@ -22,6 +24,7 @@ export function InvestmentConfiguration({
   investmentGoal,
   setInvestmentGoal,
   termsAccepted,
+  setTermsAccepted
 }: InvestmentConfigurationProps) {
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -48,6 +51,7 @@ export function InvestmentConfiguration({
           setInvestmentGoal={setInvestmentGoal}
         />
 
+        <TermsAndConditions termsAccepted={termsAccepted} setTermsAccepted={setTermsAccepted} />
         <ProceedButton
           termsAccepted={termsAccepted}
           monthlyAmount={monthlyAmount}

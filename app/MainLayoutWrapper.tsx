@@ -5,11 +5,25 @@ import { usePathname } from 'next/navigation';
 import React from 'react'
 import { ToastContainer } from 'react-toastify'
 
-const excludeHeaderPathRegex = [/^\/cart?$/, /^\/admin.*?$/]
+const excludeHeaderPathRegex = [
+  /^\/cart?$/,
+  /^\/admin.*?$/,
+  /^\/orders?$/,
+  /^\/profile?$/,
+  /^\/seller-dashboard.*?$/,
+]
 const excludeFooterPathRegex = [/^\/admin.*?$/]
 
 const MainLayoutWrapper = ({ children }: { children: any }) => {
   const pathname = usePathname();
+
+  // Add all routes where you DON'T want the default header
+  // const hideHeaderRoutes = ['/cart', "/orders", "/profile", "/seller-dashboard", '/admin'];
+
+  // const shouldHideHeader = hideHeaderRoutes.some((path) =>
+  //   pathname.startsWith(path)
+  // );
+
   return (
     <div className="min-h-screen flex flex-col">
 
@@ -17,6 +31,8 @@ const MainLayoutWrapper = ({ children }: { children: any }) => {
         !excludeHeaderPathRegex.find(pattern => pathname.match(pattern)) &&
         <Header />
       }
+
+      {/* {!shouldHideHeader && <Header />} */}
 
       <main className="flex-grow">
         <ToastContainer

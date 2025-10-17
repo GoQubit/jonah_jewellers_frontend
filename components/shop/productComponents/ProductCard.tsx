@@ -7,6 +7,9 @@ import { IoIosRocket } from "react-icons/io";
 import { AiFillTag } from "react-icons/ai"
 import { FaHeart, FaRegHeart } from "react-icons/fa"
 import AddToCartToast from "@/components/Toast/AddToCartToast";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux/Features/cartSlice/cartSlice";
+import { useRouter } from "next/navigation";
 
 
 interface ProductCardProps {
@@ -17,8 +20,9 @@ interface ProductCardProps {
   images: string[]
   badge?: "Best Seller" | "New Arrival"
   isWishlisted?: boolean
-  onAddToCart: (id: string) => void
-  onToggleWishlist: (id: string) => void
+  onAddToCart?: (id: string) => void
+  onToggleWishlist?: (id: string) => void,
+  isShowAddToCartBtn?: boolean
 }
 
 export default function ProductCard({
@@ -31,9 +35,25 @@ export default function ProductCard({
   isWishlisted = false,
   onAddToCart,
   onToggleWishlist,
+  isShowAddToCartBtn = true
 }: ProductCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [showToast, setShowToast] = useState(false);
+  const router = useRouter()
+  const dispatch = useDispatch()
+
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        id,
+        name,
+        price,
+        originalPrice,
+        image: images[0],
+      })
+    )
+    setShowToast(true)
+  }
 
   const closeToast = () => {
     setShowToast(false);
@@ -51,12 +71,19 @@ export default function ProductCard({
     return `₹ ${price.toLocaleString()}`
   }
 
+  const pushRouter = (path: string) => {
+    router.push(path)
+  }
+
   return (
     <>
       <AddToCartToast show={showToast} onClose={closeToast} customButtonId="blog_view_product_cart" />
       <div className="bg-white rounded-lg overflow-hidden group">
         {/* Image Section */}
-        <div className="relative aspect-square bg-gray-50">
+
+        <div
+          onClick={() => pushRouter(`/shop/product/${id}`)}
+          className="relative aspect-square bg-gray-50 cursor-pointer ">
           {/* Badge */}
           {badge && (
             <div
@@ -67,18 +94,6 @@ export default function ProductCard({
               {badge}
             </div>
           )}
-
-          {/* Wishlist Button */}
-          {/* <button
-            onClick={() => onToggleWishlist(id)}
-            className="absolute top-2 right-2 z-10 p-1.5 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow duration-200"
-          >
-            {isWishlisted ? (
-              <FaHeart className="h-4 w-4 text-red-500" />
-            ) : (
-              <FaRegHeart className="h-4 w-4 text-gray-400" />
-            )}
-          </button> */}
 
           {/* Product Image */}
           <Image src={images?.[currentImageIndex] || "/placeholder.svg"} alt={name} fill className="object-cover" />
@@ -122,15 +137,18 @@ export default function ProductCard({
 
           <div className="flex items-center gap-2 mb-3">
             <span className="text-lg font-medium text-gray-900 font-besley">{formatPrice(price)}</span>
-            {originalPrice && <span className="text-sm text-gray-500 line-through">{formatPrice(originalPrice)}</span>}
+            {/* {originalPrice && <span className="text-sm text-gray-500 line-through">{formatPrice(originalPrice)}</span>} */}
           </div>
-
-          <button
-            onClick={() => onAddToCart(id)}
-            className="w-full bg-transparent border text-black  hover:bg-brand hover:text-white text-sm font-medium py-3 px-4 rounded-md transition-colors duration-200 font-besley "
-          >
-            Add to Cart
-          </button>
+          
+          {
+            isShowAddToCartBtn &&
+            <button
+              onClick={handleAddToCart}
+              className="w-full bg-transparent border text-black  hover:bg-brand hover:text-white text-sm font-medium py-3 px-4 rounded-md transition-colors duration-200 font-besley "
+            >
+              Add to Cart
+            </button>
+          }
         </div>
       </div>
     </>

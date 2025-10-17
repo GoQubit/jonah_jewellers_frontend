@@ -10,6 +10,12 @@ import { IoChevronDownOutline, IoLocationSharp } from "react-icons/io5"
 import DownArrow from "../ui/DownArrow"
 import { BiDownArrow } from "react-icons/bi"
 import { BsArrowDown } from "react-icons/bs"
+import { registerUserApi } from "@/lib/api/auth/authApis"
+import { INDIAN_STATES } from "@/data/indianStateData"
+import { setUserProfile } from "@/redux/Features/userSlice/userSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { useRouter, useSearchParams } from "next/navigation"
+import { RootState } from "@/redux/store"
 
 
 type FormData = {
@@ -22,42 +28,26 @@ type FormData = {
   city: string
   state: string
   pin: string
+  role: "BUYER" | "SELLER" | any
 }
 
 type Errors = Partial<Record<keyof FormData, string>>
 
-const INDIAN_STATES = [
-  "Andhra Pradesh",
-  "Arunachal Pradesh",
-  "Assam",
-  "Bihar",
-  "Chhattisgarh",
-  "Delhi",
-  "Goa",
-  "Gujarat",
-  "Haryana",
-  "Himachal Pradesh",
-  "Jammu & Kashmir",
-  "Jharkhand",
-  "Karnataka",
-  "Kerala",
-  "Madhya Pradesh",
-  "Maharashtra",
-  "Manipur",
-  "Meghalaya",
-  "Mizoram",
-  "Nagaland",
-  "Odisha",
-  "Punjab",
-  "Rajasthan",
-  "Sikkim",
-  "Tamil Nadu",
-  "Telangana",
-  "Tripura",
-  "Uttarakhand",
-  "Uttar Pradesh",
-  "West Bengal",
-]
+const buildPayload = (form: FormData) => {
+  return {
+    firstName: form.firstName.trim(),
+    lastName: form.lastName.trim(),
+    address: {
+      line1: form.addressLine,
+      city: form.city,
+      state: form.state,
+      pincode: Number(form.pin),
+    },
+    role: form.role,
+    gender: form.gender,
+    email: form.email,
+  }
+}
 
 // Basic validators
 const required = (v: string, msg = "This field is required") => (v?.trim() ? "" : msg)
@@ -67,22 +57,30 @@ const isPhoneIN = (v: string) => (/^\d{10}$/.test(v) ? "" : "Enter 10-digit mobi
 const isPinIN = (v: string) => (/^\d{6}$/.test(v) ? "" : "Enter 6-digit PIN code")
 
 export default function CreateAccountForm() {
+  const user = useSelector((state: RootState) => state.user)
+  const phonenumber = localStorage.getItem('phonenumber') || ''
   const [form, setForm] = useState<FormData>({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    gender: "",
-    addressLine: "",
-    city: "",
-    state: "",
-    pin: "",
+    firstName: user.firstName || "",
+    lastName: user.lastName || "",
+    phone: phonenumber || user.mobileNumber || "",
+    email: user?.email || "",
+    gender: user?.gender || "",
+    addressLine: user?.address?.line1 || "",
+    city: user?.address?.city || "",
+    state: user?.address?.state || "",
+    pin: user?.address?.pincode ? String(user.address.pincode) : "",
+    role: user?.role || "BUYER",
   })
   const [errors, setErrors] = useState<Errors>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [submitting, setSubmitting] = useState(false)
-  // const [banner, setBanner] = useState<{ type: "success" | "error"; msg: string } | null>(null)
+  const searchParams = useSearchParams()
+  const isEdit = searchParams.get('profile') === 'edit' ? true : false
+  const dispatch = useDispatch()
+  const router = useRouter()
 
+
+  // validate form field
   const validateField = (name: keyof FormData, value: string): string => {
     switch (name) {
       case "firstName":
@@ -104,6 +102,8 @@ export default function CreateAccountForm() {
         return required(value)
       case "pin":
         return required(value) || isPinIN(value)
+      case "role":
+        return required(value)
       default:
         return ""
     }
@@ -143,11 +143,14 @@ export default function CreateAccountForm() {
 
     setSubmitting(true)
     try {
-      // Simulated API call
-      await new Promise((r) => setTimeout(r, 900))
-      Toast.success('Account created successfully!')
-      // Optionally reset form here
-      // setForm({ ...initial })
+      const payload = buildPayload(form)
+      const res = await registerUserApi(payload)
+
+      if (res.status === 200) {
+        Toast.success('Account created successfully!')
+        dispatch(setUserProfile(res.data.user)) // store user in redux
+        router.push('/') // redirect to home
+      }
     } catch {
       Toast.error('Something went wrong. Please try again.')
     } finally {
@@ -161,11 +164,12 @@ export default function CreateAccountForm() {
   const helpCls = "mt-1 text-xs text-red-600"
 
   return (
-    <form noValidate onSubmit={onSubmit} className="  max-w-[600px] mx-auto flex flex-col gap-6 py-16 ">
+    <form noValidate onSubmit={onSubmit} className="  max-w-[600px] mx-auto flex flex-col gap-6 py-16 px-4 ">
 
       <div className="flex flex-col gap-1 text-center mb-10">
-        <h1 className="text-2xl ">Create Your Account</h1>
-        <p className="font-nunito text-brand font-normal text-lg ">Create your account to get exclusive Jonah privileges</p>
+        <h1 className="text-2xl ">{isEdit ? "Edit Your Personal Details" : "Create Your Account"}</h1>
+        <p className="font-nunito text-brand font-normal text-lg ">{
+          isEdit ? "" : 'Create your account to get exclusive Jonah privileges'}</p>
       </div>
 
       {/* Personal Information */}
@@ -231,6 +235,7 @@ export default function CreateAccountForm() {
               onChange={handleChange}
               onBlur={handleBlur}
               aria-invalid={!!errors.phone}
+              disabled={true}
             />
           </div>
           {touched.phone && errors.phone && <p className={helpCls}>{errors.phone}</p>}
@@ -269,10 +274,10 @@ export default function CreateAccountForm() {
                 onBlur={handleBlur}
               >
                 <option value="">Select Gender</option>
-                <option>Female</option>
-                <option>Male</option>
-                <option>Other</option>
-                <option>Prefer not to say</option>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
+                <option value="PREFER_NOT_TO_SAY" >Prefer not to say</option>
               </select>
               <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <IoChevronDownOutline />
@@ -280,6 +285,41 @@ export default function CreateAccountForm() {
             </div>
           </div>
         </div>
+
+        <div>
+          <label className={labelCls} htmlFor="role">
+            User Role*
+          </label>
+          <div className="flex gap-6">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="role"
+                value="BUYER"
+                checked={form.role === "BUYER"}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="h-4 w-4 text-brand"
+              />
+              <span>Buyer</span>
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="role"
+                value="SELLER"
+                checked={form.role === "SELLER"}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="h-4 w-4 text-brand"
+              />
+              <span>Seller</span>
+            </label>
+          </div>
+        </div>
+
+        {touched.role && errors.role && <p className={helpCls}>{errors.role}</p>}
       </section>
 
       {/* Address */}

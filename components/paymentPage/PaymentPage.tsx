@@ -8,6 +8,11 @@ import { PaymentSummary } from "./PaymentSummary"
 import { PaymentConfirmationModal } from "./PaymentConfirmationModal"
 import Modal from "../ui/Modal"
 import RecievedPaymentPopup from "./RecievedPaymentPopup"
+import { QRTransectionApi } from "@/lib/api/transection/qrTransectionApi"
+import { todayDate } from "@/utils/todayDate"
+import { kittyTransectionApi } from "@/lib/api/kittyApis/kittyApis"
+import { createSellerInvestmentApi } from "@/lib/api/sellerApis/sellerInvestmentsApis"
+import Toast from "../Toast/Toast"
 
 export default function PaymentGatewayPage() {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
@@ -18,6 +23,7 @@ export default function PaymentGatewayPage() {
 
   const paymentData = {
     planCategory: searchParams.get("planCategory") || "kitty",
+    kittyId: searchParams.get("kittyId") || "",
     plan: searchParams.get("plan") || "12 Months",
     planTitle: "Kitty Investment Plan",
     monthlyAmount: Number.parseInt(searchParams.get("monthlyAmount") || "5000"),
@@ -25,24 +31,48 @@ export default function PaymentGatewayPage() {
     gold: searchParams.get("gold") || "0",
     goldRate: goldRate,
     duration: searchParams.get("duration") || "12 Months",
-    startDate: new Date().toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }),
+    startDate: todayDate(),
     totalValue: Number.parseInt(searchParams.get("totalValue") || "60000"),
     savings: Number.parseInt(searchParams.get("savings") || "5000"),
     amountToPay: Number.parseInt(searchParams.get("amountToPay") || "55000"),
   }
 
-  const handlePaymentMade = () => {
+  const handlePaymentMade = async () => {
     setShowConfirmationModal(true)
   }
 
-  const handleConfirmPayment = (transactionId: string) => {
-    console.log("[v0] Payment confirmed with transaction ID:", transactionId)
-    setShowConfirmationModal(false)
-    setShowSuccessModal(true)
+  const handleConfirmPayment = async (transactionId: string, fileUrl: string) => {
+    if (paymentData.planCategory === 'kitty') {
+      const payload = {
+        amount: paymentData.monthlyAmount,
+        transactionId: transactionId,
+        kittyEnrolledId: paymentData.kittyId,
+        proofImage: fileUrl
+      }
+      // const res = await QRTransectionApi(payload)
+      const res = await kittyTransectionApi(payload)
+      if (res.status === 201) {
+        setShowConfirmationModal(false)
+        setShowSuccessModal(true)
+      } else {
+        Toast.error("Something went wrong please try again")
+      }
+    } else {
+      const payload = {
+        amount: paymentData.investmentAmount,
+        transactionId: transactionId,
+        proofImage: fileUrl
+      }
+      // const res = await QRTransectionApi(payload)
+      const res = await createSellerInvestmentApi(payload)
+      if (res.status === 200) {
+        setShowConfirmationModal(false)
+        setShowSuccessModal(true)
+      } else {
+        Toast.error("Something went wrong please try again")
+      }
+    }
+
     // router.push("/")
   }
 
@@ -75,7 +105,9 @@ export default function PaymentGatewayPage() {
 
         {showSuccessModal && (
           <Modal isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)}>
-            <RecievedPaymentPopup />
+            <RecievedPaymentPopup
+              planCategory={paymentData.planCategory}
+            />
           </Modal>
         )}
       </div>

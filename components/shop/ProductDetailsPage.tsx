@@ -1,11 +1,14 @@
 "use client"
-
-import { useState } from "react"
+import { useEffect, useState } from "react"
 // import RelatedProducts from "./productComponents/related-products"
 import JewelleryAssuranceSection from "../homePage/JewelleryAssuranceSection"
 import ProductImageGallery from "./productComponents/ProductImageGallary"
 import ProductInfo from "./productComponents/ProductDetailsInfo"
 import ProductTabs from "./productComponents/ProductTabs"
+import { getSingleProductApi } from "@/lib/api/products/productsApis"
+import { addToCart } from "@/redux/Features/cartSlice/cartSlice"
+import { useDispatch } from "react-redux"
+import AddToCartToast from "../Toast/AddToCartToast"
 
 const productData = {
   id: 1,
@@ -36,31 +39,68 @@ const productData = {
   ],
 }
 
-export default function ProductDetailsPage() {
+export default function ProductDetailsPage({ productId }: { productId: string }) {
   const [selectedImage, setSelectedImage] = useState(0)
+  const [productDetails, setProductDetails] = useState<any>(null)
+
+  const [showToast, setShowToast] = useState(false);
+  const dispatch = useDispatch()
+
+
+  const fetchProductDetails = async (product_id: string) => {
+    const res = await getSingleProductApi(product_id)
+    console.log("Product Details:", res);
+    if (res.status === 200) {
+      setProductDetails(res.data)
+    }
+  }
+  useEffect(() => {
+    fetchProductDetails(productId)
+  }, [])
+
+
+  const addToCartHandler = () => {
+    dispatch(
+      addToCart({
+        id: productDetails._id,
+        name: productDetails.name,
+        price: productDetails.price,
+        image: productDetails.images[0],
+      })
+    )
+    setShowToast(true)
+  }
+
+
+  const producCategory = productDetails?.category === "GOLD" ? "gold" : productDetails?.category === "SILVER" ? "silver" : "diamond"
 
   return (
     <div className="min-h-screen bg-background py-[40px] md:py-[80px] ">
+      <AddToCartToast show={showToast} onClose={() => setShowToast(false)} customButtonId="blog_view_product_cart" />
       <main className="wrapper">
         {/* Product Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <ProductImageGallery
-            images={productData.images}
+            images={productDetails?.images}
             selectedImage={selectedImage}
             onImageSelect={setSelectedImage}
           />
-          <ProductInfo product={productData} />
+          <ProductInfo
+            name={productDetails?.name}
+            price={productDetails?.price}
+            metalDetails={productDetails?.[producCategory]}
+            productCategory={productDetails?.category}
+            addToCartHandler={addToCartHandler}
+          />
         </div>
 
         {/* Product Details Tabs */}
         <ProductTabs
-          details={productData.details}
-          description={productData.description}
+          productCategory={productDetails?.category}
+          metalDetails={productDetails?.[producCategory]}
+          description={productDetails?.description}
           priceBreakup={productData.priceBreakup}
         />
-
-        {/* Related Products */}
-        {/* <RelatedProducts /> */}
 
         {/* Company Assurance */}
         <JewelleryAssuranceSection />

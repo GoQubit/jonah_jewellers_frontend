@@ -4,42 +4,28 @@ import { Button } from "../ui/buttons/Button"
 import { Card } from "../ui/Card"
 import { Progress } from "../ui/ProgessBar"
 import { RiWallet3Line } from "react-icons/ri"
-
-interface InvestmentPlan {
-  id: string
-  name: string
-  description: string
-  status: "completed" | "active"
-  progress: { current: number; total: number }
-  monthlyAmount: number
-  currentBalance: number
-  totalValue?: number
-  bonus?: number | string
-  nextPayment: string
-}
+import { InvestmentPlan } from "./InvestmentPlansSection"
 
 interface KittyInvestmentPlanCardProps {
   plan: InvestmentPlan
 }
 
 export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) {
-  const progressPercentage = (plan.progress.current / plan.progress.total) * 100
+  const progressPercentage = (plan.noOfInstallmentsDone / plan.planDuration) * 100
   const formatCurrency = (amount: number) => `₹ ${amount.toLocaleString()}`
-
-  console.log("progressPercentage", progressPercentage);
 
 
   return (
     <Card className=" flex flex-col p-6 space-y-4">
       <div className="flex items-start justify-between">
         <div>
-          <h3 className="font-medium text-lg text-gray-900 font-nunito">{plan.name}</h3>
+          <h3 className="font-medium text-lg text-gray-900 font-nunito">{plan.title}</h3>
         </div>
         <Badge
-          variant={plan.status === "completed" ? "default" : "secondary"}
-          className={plan.status === "completed" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}
+          variant={plan.status === "COMPLETED" ? "default" : "secondary"}
+          className={plan.status === "COMPLETED" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}
         >
-          {plan.status === "completed" ? "Completed" : "Active"}
+          {plan.status === "COMPLETED" ? "Completed" : "Active"}
         </Badge>
       </div>
 
@@ -47,7 +33,7 @@ export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) 
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Progress</span>
           <span className="font-medium">
-            {plan.progress.current}/{plan.progress.total} Months
+            {plan.noOfInstallmentsDone}/{plan.planDuration} Months
           </span>
         </div>
         <Progress value={progressPercentage} className="h-2" />
@@ -56,11 +42,11 @@ export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) 
       <div className="flex flex-col gap-2 text-sm text-[#6A6A6A] ">
         <div className="flex justify-between items-center">
           <p className="text-gray-600">Monthly Amount</p>
-          <p className="font-semibold">{formatCurrency(plan.monthlyAmount)}</p>
+          <p className="font-semibold">{formatCurrency(plan.monthlyInstallment)}</p>
         </div>
         <div className="flex justify-between items-center">
           <p className="text-gray-600">Current Balance</p>
-          <p className="font-semibold">{formatCurrency(plan.currentBalance)}</p>
+          <p className="font-semibold">{formatCurrency(plan.amountPaid)}</p>
         </div>
         {
           plan.bonus &&
@@ -71,18 +57,18 @@ export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) 
         }
         <div className="flex justify-between items-center">
           <p className="text-gray-600">Next Payment</p>
-          <p className="font-semibold">{plan.nextPayment}</p>
+          <p className="font-semibold"> 1-10-2025 </p>
         </div>
-        {plan.totalValue && (
+        {plan.totalAmountToBePaid && (
           <div className="flex justify-between items-center border-t pt-2 mt-2 font-semibold text-base">
             <p className="text-gray-600">Total Value</p>
-            <p className="font-semibold">{formatCurrency(plan.totalValue)}</p>
+            <p className="font-semibold">{formatCurrency(plan.totalAmountToBePaid)}</p>
           </div>
         )}
       </div>
 
       <div className="flex gap-2 pt-2 w-full self-center ">
-        {plan.status === "completed" ? (
+        {plan.status === "COMPLETED" ? (
           <Button size="sm"
             variant="brand-solid"
             className="flex-1 ">

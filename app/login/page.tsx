@@ -23,12 +23,13 @@ export default function Page() {
           backStep={() => setStep('phone')}
         />
       }
-      {/* {
+      {
         step === "user-details" && (
           <CreateAccountForm
-           />
+          />
         )
-      } */}
+      }
+
       {/* {step === "done" && (
         <div className="space-y-3 text-center">
           <h3 className="text-xl font-semibold">You’re in!</h3>

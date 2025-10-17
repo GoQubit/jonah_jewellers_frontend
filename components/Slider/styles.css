@@ -26,3 +26,14 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.swiper-pagination-bullet-active{
+  background: #e8a83e;
+}
+
+
+@media screen and (max-width: 768px) {
+  .swiper {
+    height: 370px;
+  }
+}

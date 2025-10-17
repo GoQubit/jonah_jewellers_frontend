@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local'
 import { Inter } from 'next/font/google';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { ReduxProvider } from '@/components/providers/ReduxProvider';
 import './globals.css';
 import MainLayoutWrapper from './MainLayoutWrapper';
@@ -32,7 +30,7 @@ export default function RootLayout({
           </ModalProvider>
         </ReduxProvider>
       </body>
-    </html>
+    </html >
   );
 }
 

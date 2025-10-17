@@ -1,44 +1,42 @@
+import { useDispatch, useSelector } from "react-redux"
 import { CartItem } from "./CartItem"
+import { RootState } from "@/redux/store"
+import { removeFromCart, updateQuantity } from "@/redux/Features/cartSlice/cartSlice"
+import { memo } from "react"
 
 
-const cartItems = [
-  {
-    id: 1,
-    name: "Dazzling Grace Ring",
-    specifications: "22k Gold | 6.285 Gram",
-    price: 59048,
-    originalPrice: 60000,
-    image: "/images/productsImgs/2.png",
-    ringSize: 7,
-    quantity: 1,
-    hasRingSize: true,
-  },
-  {
-    id: 2,
-    name: "Dazzling Grace Earring",
-    specifications: "22k Gold | 0.285 Gram",
-    price: 59048,
-    originalPrice: 60000,
-    image: "/images/productsImgs/1.png",
-    quantity: 1,
-    hasRingSize: false,
-  },
-]
+const CartItems = () => {
+  const { items } = useSelector((state: RootState) => state.cart)
+  const dispatch = useDispatch()
 
-export function CartItems() {
+  console.log("items", items);
+
+
   return (
     <div className="bg-white rounded-lg shadow-sm">
-      <div className="p-6 border-b border-gray-200">
-        <h2 className="text-lg font-besley font-normal text-[#585858]">
-          My Shopping Cart ({cartItems.length} Item{cartItems.length !== 1 ? "s" : ""})
+      <div className="p-3 md:p-6 border-b border-gray-200">
+        <h2 className="text-lg font-besley text-[#585858]">
+          My Shopping Cart ({items.length} Item{items.length !== 1 ? "s" : ""})
         </h2>
       </div>
 
       <div className="divide-y divide-gray-200">
-        {cartItems.map((item) => (
-          <CartItem key={item.id} item={item} />
-        ))}
+        {items.length === 0 ? (
+          <p className="p-6 text-gray-500">Your cart is empty</p>
+        ) : (
+          items.map((item) => (
+            <CartItem
+              key={item.id}
+              item={item}
+              onRemove={() => dispatch(removeFromCart({ id: item.id, ringSize: item.ringSize }))}
+              onQuantityChange={(q: any) => dispatch(updateQuantity({ id: item.id, quantity: q, ringSize: item.ringSize }))}
+            />
+          ))
+        )}
       </div>
     </div>
   )
 }
+
+
+export default memo(CartItems)

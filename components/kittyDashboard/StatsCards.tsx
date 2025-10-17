@@ -3,17 +3,11 @@ import { LuCalendarDays } from "react-icons/lu";
 import { TbTargetArrow } from "react-icons/tb";
 import { Card } from "../ui/Card";
 import { useRouter } from "next/navigation";
+import { DashboardInfoDataType } from "./KittyDashboard";
 
-
-interface StatsData {
-  totalInvestmentValue: number
-  availableForShopping: number
-  monthlyCommitment: number
-  activePlans: { current: number; total: number }
-}
 
 interface StatsCardsProps {
-  data: StatsData
+  data: DashboardInfoDataType
 }
 
 export function StatsCards({ data }: StatsCardsProps) {
@@ -22,7 +16,7 @@ export function StatsCards({ data }: StatsCardsProps) {
   const statsCards = [
     {
       title: "Total Investment Value",
-      value: formatCurrency(data.totalInvestmentValue),
+      value: formatCurrency(data?.totalInvestmentValue),
       icon: RiWallet3Line,
       bgColor: "bg-amber-500",
       textColor: "text-white",
@@ -30,21 +24,21 @@ export function StatsCards({ data }: StatsCardsProps) {
     },
     {
       title: "Available for Shopping",
-      value: formatCurrency(data.availableForShopping),
+      value: formatCurrency(data?.availableForShopping),
       icon: RiShoppingBag4Line,
       bgColor: "bg-green-500",
       textColor: "text-white",
     },
     {
       title: "Monthly Commitment",
-      value: formatCurrency(data.monthlyCommitment),
+      value: formatCurrency(data?.monthlyCommitment),
       icon: LuCalendarDays,
       bgColor: "bg-blue-500",
       textColor: "text-white",
     },
     {
       title: "Active Plans",
-      value: `${data.activePlans.current}/${data.activePlans.total}`,
+      value: `${data?.activePlan}/${data?.totalPlans}`,
       icon: TbTargetArrow,
       bgColor: "bg-purple-500",
       textColor: "text-white",
