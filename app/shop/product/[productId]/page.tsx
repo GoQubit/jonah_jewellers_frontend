@@ -1,5 +1,4 @@
 import ProductDetailsPage from '@/components/shop/ProductDetailsPage'
-import React from 'react'
 
 interface PageProps {
   params: {
@@ -7,12 +6,12 @@ interface PageProps {
   }
 }
 
-const Page = async ({ params }: PageProps) => {
+async function Page({ params }: { params: any }) {
   return (
     <div>
-      <ProductDetailsPage productId={params.productId} />
+      <ProductDetailsPage productId={params?.productId} />
     </div>
   )
 }
 
-export default Page
+export default Page;
