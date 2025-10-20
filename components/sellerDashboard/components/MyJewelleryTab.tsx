@@ -34,7 +34,7 @@ const MyJewelleryTab = () => {
   // ⏳ Loading state
   if (loading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-pulse">
         {Array.from({ length: 4 }).map((_, index) => (
           <ProductCardSkeletons key={index} />
         ))}
@@ -60,7 +60,7 @@ const MyJewelleryTab = () => {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {productsData.map((item: any) => (
           <ProductCard
             key={item._id}

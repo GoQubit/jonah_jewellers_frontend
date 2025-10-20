@@ -299,7 +299,8 @@ export default function CreateAccountForm() {
                 checked={form.role === "BUYER"}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className="h-4 w-4 text-brand"
+                className="h-4 w-4 text-brand accent-brand "
+                disabled={isEdit}
               />
               <span>Buyer</span>
             </label>
@@ -312,7 +313,8 @@ export default function CreateAccountForm() {
                 checked={form.role === "SELLER"}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className="h-4 w-4 text-brand"
+                className="h-4 w-4 text-brand accent-brand "
+                disabled={isEdit}
               />
               <span>Seller</span>
             </label>

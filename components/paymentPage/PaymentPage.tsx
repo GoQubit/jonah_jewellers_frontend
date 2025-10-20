@@ -13,13 +13,16 @@ import { todayDate } from "@/utils/todayDate"
 import { kittyTransectionApi } from "@/lib/api/kittyApis/kittyApis"
 import { createSellerInvestmentApi } from "@/lib/api/sellerApis/sellerInvestmentsApis"
 import Toast from "../Toast/Toast"
+import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
 
 export default function PaymentGatewayPage() {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const gold = useSelector((state: RootState) => state.materials.gold)
   const router = useRouter()
   const searchParams = useSearchParams()
-  const goldRate = 6500 // Example rate in INR
+  const goldRate = gold?.price // Rate in INR
 
   const paymentData = {
     planCategory: searchParams.get("planCategory") || "kitty",
@@ -104,7 +107,11 @@ export default function PaymentGatewayPage() {
         )}
 
         {showSuccessModal && (
-          <Modal isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)}>
+          <Modal
+            isOpen={showSuccessModal}
+            onClose={() => setShowSuccessModal(false)}
+            isShowCloseBtn = {false}
+          >
             <RecievedPaymentPopup
               planCategory={paymentData.planCategory}
             />
