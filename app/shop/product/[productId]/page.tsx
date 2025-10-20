@@ -1,7 +1,13 @@
 import ProductDetailsPage from '@/components/shop/ProductDetailsPage'
 import React from 'react'
 
-const page = ({ params }: { params: { productId: string } }) => {
+interface PageProps {
+  params: {
+    productId: string
+  }
+}
+
+const Page = async ({ params }: PageProps) => {
   return (
     <div>
       <ProductDetailsPage productId={params.productId} />
@@ -9,4 +15,4 @@ const page = ({ params }: { params: { productId: string } }) => {
   )
 }
 
-export default page
+export default Page
