@@ -59,17 +59,17 @@ export function YourInvestmentsTab() {
 
 
   return (
-    <Card>
-      <CardContent className="p-6">
+    <Card className="py-0">
+      <CardContent className="px-4">
         <div className="w-full overflow-x-auto">
-          <div className="min-w-[600px] space-y-4">
+          <div className="min-w-[600px] ">
             {/* ✅ Table Header */}
-            <div className="grid grid-cols-5 !font-semibold text-gray-700 border-b border-gray-200 pb-3">
-              <p>Investment Title</p>
-              <p className="text-center">Transaction ID</p>
-              <p className="text-center">Assigned Gold</p>
-              <p className="text-center">Status</p>
-              <p className="text-center">Amount</p>
+            <div className="grid grid-cols-5 text-gray-700 border-b border-gray-200 py-4  ">
+              <p className="font-semibold">Title</p>
+              <p className="text-center font-semibold">Transaction ID</p>
+              <p className="text-center font-semibold">Assigned Gold</p>
+              <p className="text-center font-semibold">Status</p>
+              <p className="text-center font-semibold">Amount</p>
             </div>
 
             {/* ✅ Table Rows */}
@@ -83,9 +83,9 @@ export function YourInvestmentsTab() {
                   {/* <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
                       <AiFillGolden size={20} className="text-amber-600" />
                     </div> */}
-                  <h3 className="">
+                  <p className="">
                     Investment-{index + 1}
-                  </h3>
+                  </p>
                 </div>
 
                 {/* Transaction ID */}
@@ -102,7 +102,7 @@ export function YourInvestmentsTab() {
                 <div className="text-center">
                   <Badge
                     variant={
-                      investment.transactionStatus === "COMPLETED"
+                      investment.transactionStatus === "SUCCESS"
                         ? "success"
                         : investment.transactionStatus === "PENDING"
                           ? "pending"

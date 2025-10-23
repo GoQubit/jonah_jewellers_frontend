@@ -1,8 +1,6 @@
-import { Order } from "./OrderCard"
-
 
 interface OrderDetailsProps {
-  order: Order
+  order: any
 }
 
 export function OrderDetails({ order }: OrderDetailsProps) {

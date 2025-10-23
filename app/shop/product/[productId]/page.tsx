@@ -1,12 +1,17 @@
 import ProductDetailsPage from '@/components/shop/ProductDetailsPage'
-import React from 'react'
 
-const page = ({ params }: { params: { productId: string } }) => {
+interface PageProps {
+  params: {
+    productId: string
+  }
+}
+
+async function Page({ params }: { params: any }) {
   return (
     <div>
-      <ProductDetailsPage productId={params.productId} />
+      <ProductDetailsPage productId={params?.productId} />
     </div>
   )
 }
 
-export default page
+export default Page;

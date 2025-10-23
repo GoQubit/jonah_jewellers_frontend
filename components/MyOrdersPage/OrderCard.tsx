@@ -1,13 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Order } from "@/types/orderType"
 import { Card } from "../ui/Card"
 import { OrderActions } from "./OrderAction"
 import { OrderHeader } from "./OrderHeader"
 import { OrderItemComponent } from "./OrderItem"
 import { OrderProgress } from "./OrderProgess"
 import { Button } from "../ui/buttons/Button"
+import { Order } from "@/types/orderType"
 
 interface OrderCardProps {
   order: Order

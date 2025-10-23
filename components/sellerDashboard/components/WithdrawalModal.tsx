@@ -1,9 +1,11 @@
 "use client"
 
+import Toast from "@/components/Toast/Toast"
 import { Button } from "@/components/ui/buttons/Button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/Input"
 import { TextArea } from "@/components/ui/TextArea"
+import { createWithdrawalsApi, WithdrawalsData } from "@/lib/api/sellerApis/withdrawalsApis"
 import type React from "react"
 
 import { useState } from "react"
@@ -24,15 +26,25 @@ export function WithdrawalModal({ isOpen, onClose, availableToWithdraw }: Withdr
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
+    try {
+      setIsSubmitting(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
-    setIsSubmitting(false)
-    setAmount("")
-    setReason("")
-    onClose()
+      const payload: WithdrawalsData = {
+        amount: +amount,
+        reason: reason
+      }
+      const res = await createWithdrawalsApi(payload)
+      if (res.status === 201) {
+        Toast.success("Withdrawal request successfully created!")
+        setAmount("")
+        setReason("")
+        onClose()
+      }
+    } catch (error) {
+      console.error("Error:", error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (

@@ -36,9 +36,9 @@ const JewelleryAssuranceSection = () => {
         ></div>
 
         {/* Content overlay */}
-        <div className='relative w-full p-12 px-16 z-10 flex flex-col justify-center'>
+        <div className='relative w-full p-4 py-16  md:p-12 md:px-16 z-10 flex flex-col justify-center'>
           <div className='flex flex-col justify-center items-center'>
-            <h2 className="text-2xl 500:text-3xl md:text-[44px] !font-besley text-black mb-3 tracking-wide font-medium">
+            <h2 className="text-2xl 500:text-3xl md:text-[44px] !font-besley text-black mb-3 tracking-wide text-center font-medium">
               JONAH Jewellery Assurance
             </h2>
             {/* Subtitle */}
@@ -47,7 +47,7 @@ const JewelleryAssuranceSection = () => {
             </p>
           </div>
 
-          <div className='grid grid-cols-2 md:grid-cols-4 place-items-center gap-6 mt-8 md:px-12 '>
+          <div className='grid grid-cols-2 md:grid-cols-4 place-items-baseline gap-6 mt-8 md:px-12 '>
             {assuranceData.map((item, index) => (
               <AssuranceCard
                 key={index}
@@ -68,8 +68,8 @@ export default JewelleryAssuranceSection
 const AssuranceCard = ({ title, description, icon }: { title: string, description?: string, icon: any }) => {
 
   return (
-    <div className=' w-[130px] flex flex-col gap-1 items-center justify-center text-center'>
-      <div className='w-[111px] h-[111px] flex justify-center items-center text-white text-[50px] rounded-full bg-brand  '>
+    <div className='  w-[130px] flex flex-col gap-1 items-center justify-center text-center '>
+      <div className='w-[111px] h-[111px] flex justify-center items-center text-white text-[50px] rounded-full bg-brand '>
         {icon}
       </div>
       <span className='text-brand'>{title}</span>

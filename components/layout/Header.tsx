@@ -126,7 +126,7 @@ const Header = () => {
               {/* <span className="w-2 h-2 rounded-full bg-red-600"></span> */}
               <AiFillGold className="text-brand w-4 h-4 " />
               <span className="hidden sm:block">Today’s Price:</span>
-              <span>₹ {gold?.price}/gm</span>
+              <span>₹ {gold?.price}/10gm</span>
             </div>
 
             {/* Search icon for mobile */}
