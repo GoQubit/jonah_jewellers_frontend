@@ -35,13 +35,13 @@ const WeddingChapterSection = () => {
       />
 
 
-      <div className=' font-besley w-full flex gap-6 justify-between flex-wrap '>
+      <div className=' font-besley w-full flex gap-6 justify-between overflow-x-scroll'>
         {
           data.map((item: any, index: number) => (
             <div key={index} className='flex flex-col gap-4 justify-center '>
               <img src={item.image}
                 alt="earrings img"
-                className='w-[220px] h-[330px] rounded-md overflow-hidden object-cover '
+                className='!min-w-[120px] !min-h-[150px] md:w-[220px] md:h-[330px] rounded-md overflow-hidden object-cover '
               />
               <span className='text-center font-medium text-lg md:text-[22px] font-besley '>{item.title}</span>
             </div>

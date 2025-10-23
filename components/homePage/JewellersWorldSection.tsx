@@ -13,11 +13,12 @@ const JewellersWorldSection = () => {
         size='sm'
       />
 
-      <div className='grid grid-cols-1 md:grid-cols-12 grid-rows-6 gap-6'>
-        <div className='relative overflow-hidden rounded-t-lg rounded-b-sm group md:row-span-6 md:col-span-5 ' >
+      <div className='grid grid-cols-2 grid-rows-3 md:grid-cols-12 md:grid-rows-6 gap-6'>
+        <div className='relative overflow-hidden rounded-t-lg rounded-b-sm group 
+        col-span-2 row-span-1 md:row-span-6 md:col-span-5 ' >
           <img src="/images/categoryImgs/wedding.png"
             alt="Gold Jewellery Collection"
-            className="w-full h-full object-cover"
+            className="w-full h-[200px] md:h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-300" />
           <div className="absolute bottom-8 left-8">
@@ -62,6 +63,7 @@ const JewellersWorldSection = () => {
             <h3 className=" text-xl md:text-2xl font-serif font-light tracking-wide">Anniversary</h3>
           </div>
         </div>
+
       </div>
 
     </div>
