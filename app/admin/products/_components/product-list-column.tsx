@@ -2,6 +2,8 @@ import { DataTableColumnHeader } from "@/components/data-table";
 import { productStatusOptions } from "../const";
 import { useModal } from "@/hooks/useModal";
 import { SquarePen } from "lucide-react";
+import BaseModal from "@/components/base-modal";
+import EditProductView from "./edit-product-view";
 
 export const productTableColumns = [
     {
@@ -180,11 +182,11 @@ export const productTableColumns = [
             return (
                 <SquarePen
                     className="w-4 h-4 text-gray-500 hover:text-gray-600 cursor-pointer"
-                    // onClick={() => setOpen(
-                    //     <BaseModal>
-                    //         <OrderDetailView onClose={() => setClose()} />
-                    //     </BaseModal>
-                    // )}
+                    onClick={() => setOpen(
+                        <BaseModal>
+                            <EditProductView onClose={() => setClose()} />
+                        </BaseModal>
+                    )}
                 />
             )
         }
