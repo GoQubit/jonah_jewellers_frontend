@@ -17,9 +17,9 @@ export function AddressList({
 
   return (
     <div className="space-y-4">
-      {addresses.map((a) => (
+      {addresses.map((a, index: number) => (
         <AddressCard
-          key={a.id}
+          key={index}
           address={{ ...a, selected: a.id === selectedId }}
           onSelect={(id) => {
             setSelectedId(id)

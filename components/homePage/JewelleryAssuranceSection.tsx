@@ -47,7 +47,7 @@ const JewelleryAssuranceSection = () => {
             </p>
           </div>
 
-          <div className='grid grid-cols-2 md:grid-cols-4 place-items-baseline gap-6 mt-8 md:px-12 '>
+          <div className='grid grid-cols-2 md:grid-cols-4 place-items-baseline justify-center gap-6 mt-8 md:px-12 '>
             {assuranceData.map((item, index) => (
               <AssuranceCard
                 key={index}

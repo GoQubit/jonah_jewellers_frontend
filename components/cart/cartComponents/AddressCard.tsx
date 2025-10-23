@@ -8,10 +8,11 @@ import { AiFillEdit } from "react-icons/ai"
 
 export type Address = {
   id: string
-  user:any
+  user: any
   line1: string
   city: string,
   state: string,
+  phone: string,
   pinCode: number,
   selected?: boolean
 }
@@ -50,48 +51,50 @@ export function AddressCard({
           </div>
           <div className="space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-lg font-medium">{address.user.firstName} {address.user.lastName} </h3>
+              {/* <h3 className="text-lg font-medium">{address.user.firstName} {address.user.lastName} </h3> */}
               {/* <Badge variant="outline" className="rounded-md text-xs">
                 {address.label}
               </Badge> 
               */}
             </div>
             <div className="flex flex-col gap-1 text-sm text-muted-foreground leading-6">
-              <span>{address?.line1}</span>
-              <span>{address?.city}, {address?.state}, {address?.pinCode}</span>
+              <span>{address?.line1}, {address?.city}, {address?.state}, {address?.pinCode}</span>
             </div>
             <div className="mt-2 grid gap-2 text-sm">
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <BsMailbox className="h-4 w-4 text-muted-foreground" />
                 <span>{address.user.email}</span>
-              </div>
+              </div> */}
               <div className="flex items-center gap-2">
                 <BiPhone className="h-4 w-4 text-muted-foreground" />
-                <span>{address?.user?.mobileNumber}</span>
+                <span>{address?.phone}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex">
-          <Button
+        {
+          address?.id &&
+          <div className="flex">
+            {/* <Button
             variant="ghost"
             aria-label="Edit address"
             onClick={(e) => { setIsEditAddressModalOpen(true) }}
           >
             <AiFillEdit className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            aria-label="Delete address"
-            onClick={(e) => {
-              e.stopPropagation()
-              onDelete?.(address.id)
-            }}
-          >
-            <BiTrash className="h-4 w-4 text-red-600" />
-          </Button>
-        </div>
+          </Button> */}
+            <Button
+              variant="ghost"
+              aria-label="Delete address"
+              onClick={(e) => {
+                e.stopPropagation()
+                onDelete?.(address.id)
+              }}
+            >
+              <BiTrash className="h-4 w-4 text-red-600" />
+            </Button>
+          </div>
+        }
       </div>
     </article>
   )

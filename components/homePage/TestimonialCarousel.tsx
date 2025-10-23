@@ -1,10 +1,9 @@
 "use client"
 import { useState } from "react"
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi"
-import { CiPlay1 } from "react-icons/ci";
-import { FaStar } from "react-icons/fa";
-import SectionHeading from "../ui/SectionHeading";
-
+import { CiPlay1 } from "react-icons/ci"
+import { FaStar } from "react-icons/fa"
+import SectionHeading from "../ui/SectionHeading"
 
 interface Review {
   id: number
@@ -103,36 +102,48 @@ const TestimonialCarousel = () => {
     <section className="wrapper">
       {/* Header */}
       <SectionHeading
-        title='Sunehra Safar, Sachchi Kahaniyan'
-        Subtitle='From dreams to reality, our gold has been part of every milestone'
-        size='md'
+        title="Sunehra Safar, Sachchi Kahaniyan"
+        Subtitle="From dreams to reality, our gold has been part of every milestone"
+        size="md"
       />
 
-      {/* Reviews Container */}
       <div className="relative">
-        {/* Navigation Buttons */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow duration-300 disabled:opacity-50"
-          disabled={currentIndex === 0}
-        >
-          <BiChevronLeft className="w-6 h-6 text-gray-600" />
-        </button>
+        {/* Desktop Navigation */}
+        <div className="hidden md:block">
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow duration-300 disabled:opacity-50"
+            disabled={currentIndex === 0}
+          >
+            <BiChevronLeft className="w-6 h-6 text-gray-600" />
+          </button>
 
-        <button
-          onClick={nextSlide}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow duration-300 disabled:opacity-50"
-          disabled={currentIndex + reviewsPerPage >= reviews.length}
-        >
-          <BiChevronRight className="w-6 h-6 text-gray-600" />
-        </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow duration-300 disabled:opacity-50"
+            disabled={currentIndex + reviewsPerPage >= reviews.length}
+          >
+            <BiChevronRight className="w-6 h-6 text-gray-600" />
+          </button>
+        </div>
 
-        {/* Reviews Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
-          {currentReviews.map((review) => (
+        {/* Responsive Reviews */}
+        <div
+          className="
+            grid gap-6 px-4 
+            grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
+            overflow-x-auto md:overflow-visible 
+            flex-nowrap md:grid 
+            scroll-smooth snap-x snap-mandatory
+          "
+        >
+          {reviews.map((review) => (
             <div
               key={review.id}
-              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden"
+              className="
+                bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden
+                w-[85%] sm:w-[70%] md:w-auto flex-shrink-0 snap-center
+              "
             >
               {review.type === "video" ? (
                 <div className="relative">
@@ -155,9 +166,7 @@ const TestimonialCarousel = () => {
 
               <div className="p-6">
                 <div className="flex items-center mb-3">{renderStars(review.rating)}</div>
-
                 <p className="text-gray-700 text-sm leading-relaxed mb-4 line-clamp-4">{review.content}</p>
-
                 <div className="border-t pt-4">
                   <h4 className="font-semibold text-gray-900">{review.name}</h4>
                   {review.location && <p className="text-sm text-gray-500">{review.location}</p>}
@@ -166,11 +175,9 @@ const TestimonialCarousel = () => {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   )
 }
 
-
-export default TestimonialCarousel;
+export default TestimonialCarousel

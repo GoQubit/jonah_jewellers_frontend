@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/buttons/Button"
 import Checkbox from "@/components/ui/Checkbox"
-import {useState, useMemo } from "react"
+import { useState, useMemo } from "react"
 import { RootState } from "@/redux/store"
 import { useSelector } from "react-redux"
 import { IoMdPricetag } from "react-icons/io"
@@ -158,9 +158,22 @@ export function OrderSummary({ nextStep,
           {/* Payable row */}
           <div className="border-t pt-4 font-nunito">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-base font-normal">Total Payable</span>
+              <span className="text-base font-normal">Total Cart Amount</span>
               <span className="text-lg font-medium">
                 {formatPrice(payableAmount)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-base font-normal">GST (3%):</span>
+              <span className="text-lg font-medium">
+                ₹{(payableAmount * 0.03).toFixed(2)}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-base font-normal">Total Payable</span>
+              <span className="text-lg font-medium">
+                ₹{(payableAmount * 1.03).toFixed(2)}
               </span>
             </div>
 

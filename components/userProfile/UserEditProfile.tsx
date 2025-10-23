@@ -41,7 +41,7 @@ const buildPayload = (form: FormData) => {
       line1: form.addressLine,
       city: form.city,
       state: form.state,
-      pincode: Number(form.pin),
+      pinCode: Number(form.pin),
     },
     role: form.role,
     gender: form.gender,
@@ -68,7 +68,7 @@ export default function CreateAccountForm() {
     addressLine: user?.address?.line1 || "",
     city: user?.address?.city || "",
     state: user?.address?.state || "",
-    pin: user?.address?.pincode ? String(user.address.pincode) : "",
+    pin: user?.address?.pinCode ? String(user.address.pinCode) : "",
     role: user?.role || "BUYER",
   })
   const [errors, setErrors] = useState<Errors>({})

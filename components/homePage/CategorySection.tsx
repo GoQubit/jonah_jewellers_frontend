@@ -63,7 +63,7 @@ const CategorySection = () => {
       </div>
 
       <div className='w-full text-center font-besley mt-6 md:mt-12 text-[#757575] '>
-        <Link href={'/products'}
+        <Link href={'/shop/jewellery'}
           className=' flex gap-1 items-center justify-center font-medium text-lg md:text-[22px] hover:underline hover:text-brand cursor-pointer smooth  '
         >
           View All

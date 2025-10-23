@@ -12,6 +12,7 @@ type AddressFormData = {
   city: string
   state: string
   pinCode: string
+  phone: string
 }
 
 type Errors = Partial<Record<keyof AddressFormData, string>>
@@ -28,15 +29,21 @@ export default function AddressModal({ initialData, onClose, onSave }: Props) {
     city: initialData?.city || "",
     state: initialData?.state || "",
     pinCode: initialData?.pinCode || "",
+    phone: initialData?.phone || "",
   })
+
   const [errors, setErrors] = useState<Errors>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [submitting, setSubmitting] = useState(false)
 
-  // validators
+  // --- VALIDATORS ---
   const required = (v: string) => (v?.trim() ? "" : "This field is required")
-  const onlyLetters = (v: string) => (/^[a-zA-Z\s'-]+$/.test(v) ? "" : "Only letters are allowed")
-  const isPinIN = (v: string) => (/^\d{6}$/.test(v) ? "" : "Enter 6-digit PIN code")
+  const onlyLetters = (v: string) =>
+    /^[a-zA-Z\s'-]+$/.test(v) ? "" : "Only letters are allowed"
+  const isPinIN = (v: string) =>
+    /^\d{6}$/.test(v) ? "" : "Enter 6-digit PIN code"
+  const isPhoneIN = (v: string) =>
+    /^\d{10}$/.test(v) ? "" : "Enter a valid 10-digit mobile number"
 
   const validateField = (name: keyof AddressFormData, value: string): string => {
     switch (name) {
@@ -48,31 +55,42 @@ export default function AddressModal({ initialData, onClose, onSave }: Props) {
         return required(value)
       case "pinCode":
         return required(value) || isPinIN(value)
+      case "phone":
+        return required(value) || isPhoneIN(value)
       default:
         return ""
     }
   }
 
-
   const validateAll: () => Errors = () => {
-    const out: Errors = {};
-    (Object.keys(form) as (keyof AddressFormData)[]).forEach((k) => {
-      const e = validateField(k, form[k]);
-      if (e) out[k] = e;
-    });
-    return out;
-  };
+    const out: Errors = {}
+      ; (Object.keys(form) as (keyof AddressFormData)[]).forEach((k) => {
+        const e = validateField(k, form[k])
+        if (e) out[k] = e
+      })
+    return out
+  }
 
   const isValid = useMemo(() => Object.keys(validateAll()).length === 0, [form])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target as { name: keyof AddressFormData; value: string }
-    const next = name === "pinCode" ? value.replace(/[^\d]/g, "") : value
+    let next = value
+
+    if (name === "pinCode" || name === "phone") {
+      next = value.replace(/[^\d]/g, "") // remove non-digits
+      if (name === "phone" && next.length > 10) next = next.slice(0, 10) // limit to 10 digits
+    }
+
     setForm((f: any) => ({ ...f, [name]: next }))
     setErrors((prev) => ({ ...prev, [name]: validateField(name, next) }))
   }
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name } = e.target as { name: keyof AddressFormData }
     setTouched((t) => ({ ...t, [name]: true }))
     setErrors((prev) => ({ ...prev, [name]: validateField(name, form[name]) }))
@@ -82,14 +100,19 @@ export default function AddressModal({ initialData, onClose, onSave }: Props) {
     e.preventDefault()
     const next = validateAll()
     setErrors(next)
-    setTouched(Object.keys(form).reduce((acc, k) => ({ ...acc, [k]: true }), {} as Record<string, boolean>))
+    setTouched(
+      Object.keys(form).reduce(
+        (acc, k) => ({ ...acc, [k]: true }),
+        {} as Record<string, boolean>
+      )
+    )
 
     if (Object.keys(next).length > 0) return
 
     setSubmitting(true)
     try {
       const res = await createNewAddressApi(form)
-      console.log("res", res);
+      console.log("res", res)
       if (res.status === 200) {
         onSave()
         Toast.success("Address saved successfully!")
@@ -106,7 +129,7 @@ export default function AddressModal({ initialData, onClose, onSave }: Props) {
 
   const labelCls = "mb-1 block font-nunito font-normal text-base"
   const inputBase =
-    "block w-full rounded-md border focus:border-brand bg-white px-3 py-4 text-sm placeholder:text-gray-400 outline-none  "
+    "block w-full rounded-md border focus:border-brand bg-white px-3 py-4 text-sm placeholder:text-gray-400 outline-none"
   const helpCls = "mt-1 text-xs text-red-600"
 
   return (
@@ -117,6 +140,7 @@ export default function AddressModal({ initialData, onClose, onSave }: Props) {
         </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {/* Address */}
           <div>
             <label className={labelCls} htmlFor="line1">
               House Number / Building / Area / Colony*
@@ -134,6 +158,7 @@ export default function AddressModal({ initialData, onClose, onSave }: Props) {
             {touched.line1 && errors.line1 && <p className={helpCls}>{errors.line1}</p>}
           </div>
 
+          {/* City */}
           <div>
             <label className={labelCls} htmlFor="city">
               City*
@@ -151,6 +176,7 @@ export default function AddressModal({ initialData, onClose, onSave }: Props) {
             {touched.city && errors.city && <p className={helpCls}>{errors.city}</p>}
           </div>
 
+          {/* State */}
           <div>
             <label className={labelCls} htmlFor="state">
               State*
@@ -179,6 +205,7 @@ export default function AddressModal({ initialData, onClose, onSave }: Props) {
             </div>
           </div>
 
+          {/* Pin Code */}
           <div>
             <label className={labelCls} htmlFor="pinCode">
               Pin Code*
@@ -196,14 +223,50 @@ export default function AddressModal({ initialData, onClose, onSave }: Props) {
               onBlur={handleBlur}
               aria-invalid={!!errors.pinCode}
             />
-            {touched.pinCode && errors.pinCode && <p className={helpCls}>{errors.pinCode}</p>}
+            {touched.pinCode && errors.pinCode && (
+              <p className={helpCls}>{errors.pinCode}</p>
+            )}
           </div>
 
+          {/* Phone */}
+          <div>
+            <label className={labelCls} htmlFor="phone">
+              Phone Number*
+            </label>
+            <input
+              id="phone"
+              name="phone"
+              inputMode="numeric"
+              pattern="\d*"
+              maxLength={10}
+              className={inputBase}
+              placeholder="10-digit mobile number"
+              value={form.phone}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              aria-invalid={!!errors.phone}
+            />
+            {touched.phone && errors.phone && (
+              <p className={helpCls}>{errors.phone}</p>
+            )}
+          </div>
+
+          {/* Buttons */}
           <div className="flex gap-4 mt-4">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              className="flex-1"
+            >
               Cancel
             </Button>
-            <Button type="submit" variant="brand-solid" disabled={!isValid || submitting} className="flex-1">
+            <Button
+              type="submit"
+              variant="brand-solid"
+              disabled={!isValid || submitting}
+              className="flex-1"
+            >
               {submitting ? "Saving..." : "Save Address"}
             </Button>
           </div>

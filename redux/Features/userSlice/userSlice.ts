@@ -4,7 +4,8 @@ interface Address {
   line1: string;
   city: string;
   state: string;
-  pincode: number;
+  pinCode: number;
+  phone: string
 }
 
 interface UserState {
