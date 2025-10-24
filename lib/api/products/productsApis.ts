@@ -42,8 +42,8 @@ export const createProductApi = async (payload: any) => {
   try {
     const response = await axiosInstance.post(`${product_url}`, payload)
     return response
-  } catch (error) {
-    return
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || error?.message)
   }
 }
 
@@ -52,8 +52,8 @@ export const updateProductApi = async (product_id: string, payload: any) => {
   try {
     const response = await axiosInstance.put(`${product_url}/${product_id}`, payload)
     return response
-  } catch (error) {
-    return
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || error?.message)
   }
 }
 
@@ -62,7 +62,7 @@ export const deleteProductApi = async (product_id: string) => {
   try {
     const response = await axiosInstance.delete(`${product_url}/${product_id}`)
     return response
-  } catch (error) {
-    return
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || error?.message)
   }
 }

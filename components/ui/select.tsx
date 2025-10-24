@@ -16,7 +16,7 @@ const SelectTrigger = React.forwardRef<
       ring-offset-background placeholder:text-muted-foreground
       focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
       disabled:cursor-not-allowed disabled:opacity-50
-      className`}
+      ${className}`}
     {...props}
   >
     {children}
@@ -42,7 +42,7 @@ const SelectContent = React.forwardRef<
         data-[state=open]:animate-in data-[state=closed]:animate-out
         data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0
         data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2
-        className`}
+        ${className}`}
       {...props}
     >
       <SelectPrimitive.ScrollUpButton className="flex cursor-default items-center justify-center py-1">
@@ -74,7 +74,7 @@ const SelectItem = React.forwardRef<
     className={`relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none
       focus:bg-accent focus:text-accent-foreground
       data-[disabled]:pointer-events-none data-[disabled]:opacity-50
-      className`}
+      ${className}`}
     {...props}
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
