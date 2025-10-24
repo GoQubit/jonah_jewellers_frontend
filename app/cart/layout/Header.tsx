@@ -43,12 +43,8 @@ export function CartHeader() {
         }
       </div>
       {
-        isAuth ?
-          <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-          :
-          <Link href={'/login'} >
-            Login
-          </Link>
+        isAuth &&
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       }
     </header>
   )

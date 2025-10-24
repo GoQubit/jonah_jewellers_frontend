@@ -16,6 +16,7 @@ import { setUserProfile } from "@/redux/Features/userSlice/userSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter, useSearchParams } from "next/navigation"
 import { RootState } from "@/redux/store"
+import RadioButton from "../ui/RadioButton"
 
 
 type FormData = {
@@ -79,6 +80,8 @@ export default function CreateAccountForm() {
   const dispatch = useDispatch()
   const router = useRouter()
 
+  // Get redirect target from URL
+  const redirect = searchParams.get("redirect") || "/"
 
   // validate form field
   const validateField = (name: keyof FormData, value: string): string => {
@@ -149,7 +152,7 @@ export default function CreateAccountForm() {
       if (res.status === 200) {
         Toast.success('Account created successfully!')
         dispatch(setUserProfile(res.data.user)) // store user in redux
-        router.push('/') // redirect to home
+        router.push(redirect) // ✅ redirect user to original page
       }
     } catch {
       Toast.error('Something went wrong. Please try again.')
@@ -287,41 +290,30 @@ export default function CreateAccountForm() {
         </div>
 
         <div>
-          <label className={labelCls} htmlFor="role">
-            User Role*
-          </label>
+          <label className={labelCls}>User Role*</label>
           <div className="flex gap-6">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="role"
-                value="BUYER"
-                checked={form.role === "BUYER"}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className="h-4 w-4 text-brand accent-brand "
-                disabled={isEdit}
-              />
-              <span>Buyer</span>
-            </label>
-
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="role"
-                value="SELLER"
-                checked={form.role === "SELLER"}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className="h-4 w-4 text-brand accent-brand "
-                disabled={isEdit}
-              />
-              <span>Seller</span>
-            </label>
+            <RadioButton
+              name="role"
+              value="BUYER"
+              checked={form.role === "BUYER"}
+              label="Buyer"
+              onChange={(val) => handleChange({ target: { name: "role", value: val } } as any)}
+              onBlur={() => handleBlur({ target: { name: "role" } } as any)}
+              disabled={isEdit}
+            />
+            <RadioButton
+              name="role"
+              value="SELLER"
+              checked={form.role === "SELLER"}
+              label="Seller"
+              onChange={(val) => handleChange({ target: { name: "role", value: val } } as any)}
+              onBlur={() => handleBlur({ target: { name: "role" } } as any)}
+              disabled={isEdit}
+            />
           </div>
+          {touched.role && errors.role && <p className={helpCls}>{errors.role}</p>}
         </div>
 
-        {touched.role && errors.role && <p className={helpCls}>{errors.role}</p>}
       </section>
 
       {/* Address */}

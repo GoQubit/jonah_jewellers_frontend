@@ -8,7 +8,7 @@ const useLogout = () => {
   const router = useRouter();
   const dispatch = useDispatch()
 
-  const logout = () => {
+  const logout = async (redirectTo: string = "/") => {
     // Clear all localStorage data
     localStorage.clear();
 
@@ -21,8 +21,8 @@ const useLogout = () => {
     });
 
 
-    // Redirect to the login page
-    window.location.replace('/');
+    // // redirect where you want or home page
+    router.push(redirectTo); 
   };
 
   return logout;

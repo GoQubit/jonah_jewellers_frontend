@@ -26,6 +26,7 @@ import { LuChevronRight } from "react-icons/lu";
 
 const Header = () => {
   const { items } = useSelector((state: RootState) => state.cart);
+  const user = useSelector((state: RootState) => state.user);
   const gold = useSelector((state: RootState) => state.materials.gold);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -147,7 +148,23 @@ const Header = () => {
                 }
               }}
             >
-              <HiOutlineUser className="w-5 h-5 text-grayDark hover:text-brand cursor-pointer" />
+              {
+                isAuth ? (
+                  <Image
+                    src={
+                      user?.gender?.toLowerCase() === "female"
+                        ? "/images/female-avatar.webp"
+                        : "/images/dummy-avatar.jpeg"
+                    }
+                    alt="profile-avatar"
+                    width={25}
+                    height={25}
+                    className="bg-cover rounded-full cursor-pointer"
+                  />
+                ) : (
+                  <HiOutlineUser className="w-5 h-5 text-grayDark hover:text-brand cursor-pointer" />
+                )
+              }
             </div>
 
             {/* Cart */}

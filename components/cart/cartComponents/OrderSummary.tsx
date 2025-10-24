@@ -1,11 +1,14 @@
 "use client"
+
 import { Button } from "@/components/ui/buttons/Button"
 import Checkbox from "@/components/ui/Checkbox"
+import { Input } from "@/components/ui/Input"
 import { useState, useMemo } from "react"
 import { RootState } from "@/redux/store"
 import { useSelector } from "react-redux"
 import { IoMdPricetag } from "react-icons/io"
-import { Input } from "@/components/ui/Input"
+import { useRouter, usePathname } from "next/navigation"
+import useIsAuth from "@/hooks/useIsAuth"
 
 type PromoCodeType = {
   code: string
@@ -27,40 +30,43 @@ type OrderSummaryProps = {
   walletCash?: number
 }
 
-export function OrderSummary({ nextStep,
+export function OrderSummary({
+  nextStep,
   setUseWalletCash,
   useWalletCash,
   setPromoCode,
   promoCode,
   walletCash = 0
 }: OrderSummaryProps) {
+  const router = useRouter()
+  const pathname = usePathname()
+
+  // 🧠 Get user from Redux or any auth context
+  const isAuth = useIsAuth()
   const { items } = useSelector((state: RootState) => state.cart)
+
   const [appliedPromo, setAppliedPromo] = useState<PromoCodeType | null>(null)
   const [isExpanded, setIsExpanded] = useState(false)
   const [promoCodeInvalid, setPromoCodeInvalid] = useState(false)
 
-
-  // 🔹 Calculate cart total dynamically
+  // 🔹 Calculate cart total
   const total = useMemo(() => {
-    return items.reduce((acc, item) => {
-      const price = item.price ?? 0
-      return acc + price * (item.quantity ?? 1)
-    }, 0)
+    return items.reduce((acc, item) => acc + (item.price ?? 0) * (item.quantity ?? 1), 0)
   }, [items])
 
-  // 🔹 Deduct promo first, then wallet
+  // 🔹 Deduct promo first
   const discountedTotal = useMemo(() => {
-    if (!appliedPromo) return total
-    return Math.max(total - appliedPromo.discount, 0)
+    return appliedPromo ? Math.max(total - appliedPromo.discount, 0) : total
   }, [total, appliedPromo])
 
+  // 🔹 Apply wallet cash
   const payableAmount = useMemo(() => {
     if (!useWalletCash) return discountedTotal
     return discountedTotal > walletCash ? discountedTotal - walletCash : 0
   }, [discountedTotal, useWalletCash])
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-IN", {
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
       minimumFractionDigits: 0,
@@ -68,15 +74,23 @@ export function OrderSummary({ nextStep,
     })
       .format(price)
       .replace("₹", "₹ ")
-  }
 
+  // ✅ Handle Place Order
   const handlePlaceOrder = () => {
-    if (nextStep) {
-      nextStep()
+    // 🧾 Check if user is logged in
+    if (!isAuth) {
+      // save current page for redirect
+      const redirectUrl = encodeURIComponent(pathname)
+      router.push(`/login?redirect=${redirectUrl}`)
+      return
     }
+
+    // 🛒 Proceed to next step if logged in
+    if (nextStep) nextStep()
     console.log("Placing order with payable:", payableAmount, "Applied promo:", appliedPromo)
   }
 
+  // ✅ Handle promo apply
   const handleApply = () => {
     const found = PROMO_CODES.find(
       (promo) => promo.code.toLowerCase() === promoCode.trim().toLowerCase()
@@ -90,9 +104,7 @@ export function OrderSummary({ nextStep,
     }
   }
 
-  const handleRemovePromo = () => {
-    setAppliedPromo(null)
-  }
+  const handleRemovePromo = () => setAppliedPromo(null)
 
   return (
     <>
@@ -102,7 +114,6 @@ export function OrderSummary({ nextStep,
         </div>
 
         <div className="p-3 md:p-6 space-y-4">
-          {/* Total row */}
           <div className="flex items-center justify-between font-nunito">
             <span className="text-[#585858]">
               Total ({items.length} Item{items.length > 1 ? "s" : ""})
@@ -114,7 +125,6 @@ export function OrderSummary({ nextStep,
             Tax included and shipping calculated at checkout
           </p>
 
-          {/* Promo deduction */}
           {appliedPromo && (
             <div className="flex items-center justify-between text-sm font-nunito text-blue-600">
               <span>
@@ -122,10 +132,7 @@ export function OrderSummary({ nextStep,
               </span>
               <div className="flex items-center gap-2">
                 <span>- {formatPrice(appliedPromo.discount)}</span>
-                <button
-                  onClick={handleRemovePromo}
-                  className="text-xs text-red-500 underline"
-                >
+                <button onClick={handleRemovePromo} className="text-xs text-red-500 underline">
                   Remove
                 </button>
               </div>
@@ -147,7 +154,6 @@ export function OrderSummary({ nextStep,
             </label>
           </div>
 
-          {/* Deduction Row */}
           {useWalletCash && (
             <div className="flex items-center justify-between text-sm font-nunito text-green-600">
               <span>Wallet Applied</span>
@@ -155,26 +161,19 @@ export function OrderSummary({ nextStep,
             </div>
           )}
 
-          {/* Payable row */}
+          {/* Payable rows */}
           <div className="border-t pt-4 font-nunito">
             <div className="flex items-center justify-between mb-4">
               <span className="text-base font-normal">Total Cart Amount</span>
-              <span className="text-lg font-medium">
-                {formatPrice(payableAmount)}
-              </span>
+              <span className="text-lg font-medium">{formatPrice(payableAmount)}</span>
             </div>
             <div className="flex items-center justify-between mb-4">
               <span className="text-base font-normal">GST (3%):</span>
-              <span className="text-lg font-medium">
-                ₹{(payableAmount * 0.03).toFixed(2)}
-              </span>
+              <span className="text-lg font-medium">₹{(payableAmount * 0.03).toFixed(2)}</span>
             </div>
-
             <div className="flex items-center justify-between mb-4">
               <span className="text-base font-normal">Total Payable</span>
-              <span className="text-lg font-medium">
-                ₹{(payableAmount * 1.03).toFixed(2)}
-              </span>
+              <span className="text-lg font-medium">₹{(payableAmount * 1.03).toFixed(2)}</span>
             </div>
 
             <Button
@@ -182,7 +181,7 @@ export function OrderSummary({ nextStep,
               className="w-full !text-lg !font-nunito !p-2 md:!p-3"
               onClick={handlePlaceOrder}
             >
-              Place Order
+              {isAuth ? "Place Order" : "Login to Continue"}
             </Button>
           </div>
 
@@ -192,7 +191,7 @@ export function OrderSummary({ nextStep,
         </div>
       </div>
 
-      {/* Promo code section */}
+      {/* Promo section */}
       <div className="pt-4">
         {!appliedPromo && (
           <>
@@ -212,19 +211,17 @@ export function OrderSummary({ nextStep,
                   onChange={(e) => setPromoCode(e.target.value)}
                   className="flex-1"
                 />
-                <Button
-                  variant="brand-solid"
-                  onClick={handleApply}
-                  className=" "
-                >
+                <Button variant="brand-solid" onClick={handleApply}>
                   Apply
                 </Button>
               </div>
             )}
-            {
-              promoCodeInvalid &&
-              <span className="text-sm text-red-500 self-center">The coupon code entered is not valid. </span>
-            }
+
+            {promoCodeInvalid && (
+              <span className="text-sm text-red-500 self-center">
+                The coupon code entered is not valid.
+              </span>
+            )}
           </>
         )}
       </div>

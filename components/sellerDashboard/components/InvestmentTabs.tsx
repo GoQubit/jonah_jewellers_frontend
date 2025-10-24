@@ -42,7 +42,7 @@ export function InvestmentTabs({ onWithdrawalRequest, sellerWallerInfo }: Invest
           {activeTab === "withdrawal" && "Withdrawal Request"}
         </h2>
 
-        <TabsList className=" order-1 md:order-2 grid grid-cols-3 mb-6">
+        <TabsList className=" order-1 md:order-2 grid grid-cols-3 gap-2 mb-6 overflow-x-scroll whitespace-nowrap ">
           <TabsTrigger value="investments" className="flex items-center gap-2">
             Your Investments
           </TabsTrigger>

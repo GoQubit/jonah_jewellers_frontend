@@ -4,7 +4,7 @@ import Toast from '../Toast/Toast'
 import { Button } from '../ui/buttons/Button'
 import OtpInput from './OtpInput'
 import { sendOtpApi, verifyOtpApi } from '@/lib/api/auth/authApis'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Cookies from 'js-cookie'
 import { setUserProfile } from '@/redux/Features/userSlice/userSlice'
 import { useAppDispatch } from '@/redux/hooks'
@@ -15,7 +15,11 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
   const [countdown, setCountdown] = React.useState(0)
   const storedPhonenumber = localStorage.getItem("phonenumber") || ''
   const router = useRouter()
+  const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
+
+  // 🧭 Get redirect target from URL
+  const redirect = searchParams.get("redirect") || "/"
 
   const onResend = async () => {
     if (countdown > 0) return
@@ -25,6 +29,7 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
       startTimer()
     }
   }
+
 
   const onVerifyOTP = async () => {
     try {
@@ -40,16 +45,18 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
       const res = await verifyOtpApi(payload)
       if (res.status === 200) {
         Toast.success(res.data.message)
-        const token = res.data.tokens.access.token // authToken
-        localStorage.setItem("phonenumber", res.data.user.mobileNumber); //store phone number
-        Cookies.set('authToken', token) // store token in cookie
+        const token = res.data.tokens.access.token
+        Cookies.set('authToken', token)
+        localStorage.setItem("phonenumber", res.data.user.mobileNumber)
+        dispatch(setUserProfile(res.data.user))
+
+        // Redirect after login
         if (res.data.isNewUser) {
-          router.push('/profile')
+          // Pass original redirect to profile
+          router.push(`/profile?redirect=${encodeURIComponent(redirect)}`)
         } else {
-          dispatch(setUserProfile(res.data.user)) // store user in redux
-          router.push('/')
+          router.push(redirect)
         }
-        // nextStep()
       }
     } catch (error) {
       console.error(error)
@@ -59,10 +66,17 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
     }
   }
 
-
   const startTimer = () => {
     setCountdown(30)
   }
+
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout
+    if (countdown > 0) {
+      timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000)
+    }
+    return () => clearTimeout(timer)
+  }, [countdown])
 
   const editNumber = () => {
     backStep()
