@@ -193,9 +193,9 @@ const ProductForm = ({
                         </FieldLabel>
                         <Select
                           name={field.name}
-                          value={field.value.toString()}
+                          value={field?.value?.toString()}
                           onValueChange={(value) => field.onChange(parseInt(value))}
-                          defaultValue={field.value.toString()}
+                          defaultValue={field?.value?.toString()}
                           disabled={disableForm}
                         >
                           <SelectTrigger id="product-form-subcategory" className='flex items-center justify-between !h-12'>
@@ -931,7 +931,6 @@ const ProductForm = ({
                   </Button>
                 </Field>
               </FieldGroup>
-
 
             </>
           )}
