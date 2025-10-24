@@ -1,4 +1,4 @@
-export type GenderEnum = "" | "MALE" | "FEMALE" | "OTHER"
+export type GenderEnum = "" | "MALE" | "FEMALE" | "UNISEX"
 
 export type ProductCategoryEnum = "" | "GOLD" | "DIAMOND" | "SILVER"
 

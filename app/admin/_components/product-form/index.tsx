@@ -83,7 +83,8 @@ const ProductForm = ({
           throw new Error("Product not created!")
         }
       } else {
-        response = await updateProductApi(formData._id!, formData)
+        const { _id, createdAt, updatedAt, ...rest } = formData
+        response = await updateProductApi(formData._id!, rest)
         if (response.status === 200) {
           productData = response.data
           form.reset(response.data)
@@ -92,7 +93,7 @@ const ProductForm = ({
         }
       }
     } catch (e: any) {
-      form.setError("root", {message: e?.message || "Invalid form data"})
+      form.setError("root", { message: e?.message || "Invalid form data" })
     }
   }
 
@@ -280,7 +281,15 @@ const ProductForm = ({
                 <FieldGroup className='grid grid-cols-2 gap-4'>
 
                   <Controller
-                    name="color"
+                    name={
+                      values.category === "GOLD"
+                        ? "gold.color"
+                        : (
+                          values.category === "DIAMOND"
+                            ? "diamond.color"
+                            : "silver.color"
+                        )
+                    }
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
@@ -302,7 +311,15 @@ const ProductForm = ({
                   />
 
                   <Controller
-                    name="grossWeight"
+                    name={
+                      values.category === "GOLD"
+                        ? "gold.grossWeight"
+                        : (
+                          values.category === "DIAMOND"
+                            ? "diamond.grossWeight"
+                            : "silver.grossWeight"
+                        )
+                    }
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
@@ -681,28 +698,6 @@ const ProductForm = ({
                   />
 
                   <Controller
-                    name="size"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                        <FieldLabel htmlFor="product-form-size" className="text-gray-500">
-                          Product Size
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          id="product-form-size"
-                          placeholder="Enter Size"
-                          disabled={disableForm}
-                          className='h-12'
-                        />
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
-
-                  <Controller
                     name="basePrice"
                     control={form.control}
                     render={({ field, fieldState }) => (
@@ -729,32 +724,34 @@ const ProductForm = ({
                     )}
                   />
 
-                  <Controller
-                    name="price"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                        <FieldLabel htmlFor="product-form-price" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                          Price
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          type="number"
-                          id="product-form-price"
-                          placeholder="Enter Price"
-                          disabled={disableForm}
-                          onChange={e => field.onChange(parseFloat(e.target.value))}
-                          value={field.value?.toString()}
-                          min={0}
-                          step="any"
-                          className='h-12'
-                        />
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
+                  {["DIAMOND"].includes(values.category!) && (
+                    <Controller
+                      name="diamond.price"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                          <FieldLabel htmlFor="product-form-price" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                            Price
+                          </FieldLabel>
+                          <Input
+                            {...field}
+                            type="number"
+                            id="product-form-price"
+                            placeholder="Enter Price"
+                            disabled={disableForm}
+                            onChange={e => field.onChange(parseFloat(e.target.value))}
+                            value={field.value?.toString()}
+                            min={0}
+                            step="any"
+                            className='h-12'
+                          />
+                          {fieldState.invalid && (
+                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+                  )}
 
                   <Controller
                     name="makingCharges"
@@ -769,33 +766,6 @@ const ProductForm = ({
                           type="number"
                           id="product-form-makingCharges"
                           placeholder="Enter Making Charges"
-                          onChange={e => field.onChange(parseFloat(e.target.value))}
-                          value={field.value?.toString()}
-                          min={0}
-                          step="any"
-                          disabled={disableForm}
-                          className='h-12'
-                        />
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
-
-                  <Controller
-                    name="additionalCharges"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                        <FieldLabel htmlFor="product-form-additionalCharges" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                          Additional Charges
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          type="number"
-                          id="product-form-additionalCharges"
-                          placeholder="Enter Additional Charges"
                           onChange={e => field.onChange(parseFloat(e.target.value))}
                           value={field.value?.toString()}
                           min={0}
@@ -938,6 +908,11 @@ const ProductForm = ({
               </Empty>
 
               <FieldGroup>
+                {form.formState.errors?.root && (
+                  <span className='text-left text-red-500'>
+                    {form.formState.errors?.root?.message}
+                  </span>
+                )}
                 <Field orientation="horizontal">
                   <Button
                     type="submit"
@@ -956,6 +931,7 @@ const ProductForm = ({
                   </Button>
                 </Field>
               </FieldGroup>
+
 
             </>
           )}

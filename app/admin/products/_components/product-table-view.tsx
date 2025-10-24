@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import DataTable, { useDataTable } from '@/components/data-table'
-import { productListData} from '../const'
 import { productTableColumns } from './product-list-column'
 import { getAllProductsApi } from '@/lib/api/products/productsApis'
 import { Loader } from '@/components/ui/Loader/Loader'
@@ -70,8 +69,6 @@ const ProductTableView = (props: Props) => {
             <div>{products.error}</div>
         )
     }
-
-
 
     return (
         <DataTable
