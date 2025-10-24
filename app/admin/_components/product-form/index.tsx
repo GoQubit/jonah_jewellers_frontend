@@ -15,6 +15,9 @@ import { Input } from '@/components/ui/Input'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/utils/cn'
+import { UploadMediaField } from './upload-media-field'
+import { createProductApi, updateProductApi } from '@/lib/api/products/productsApis'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   productData?: ProductFormSchema | {},
@@ -25,6 +28,8 @@ const ProductForm = ({
   productData = {},
   addProduct = true,
 }: Props) => {
+
+  const router = useRouter()
 
   const [subCategories, setSubCategories] = useState<{
     isLoading: boolean,
@@ -67,8 +72,28 @@ const ProductForm = ({
 
   const { control } = form
 
-  const onHandleSubmit = (formData: ProductFormSchema) => {
-    console.log("FormData", formData)
+  const onHandleSubmit = async (formData: ProductFormSchema) => {
+    try {
+      let response = null
+      if (addProduct) {
+        response = await createProductApi(formData)
+        if (response.status === 201) {
+          router.replace("/admin/products")
+        } else {
+          throw new Error("Product not created!")
+        }
+      } else {
+        response = await updateProductApi(formData._id!, formData)
+        if (response.status === 200) {
+          productData = response.data
+          form.reset(response.data)
+        } else {
+          throw new Error("Product update failed!")
+        }
+      }
+    } catch (e: any) {
+      form.setError("root", {message: e?.message || "Invalid form data"})
+    }
   }
 
   const resetForm = () => {
@@ -97,9 +122,12 @@ const ProductForm = ({
     <div className="w-full">
       <FormProvider {...form}>
         <form
-          onSubmit={form.handleSubmit(onHandleSubmit)}
+          onSubmit={form.handleSubmit(onHandleSubmit, (errors) => {
+            console.log("❌ Validation failed:", errors);
+          })}
           className="max-w-[600px] w-full space-y-4 gap-4"
         >
+
           <FieldGroup className='col-start-1 col-span-2'>
             <Controller
               name="category"
@@ -164,9 +192,9 @@ const ProductForm = ({
                         </FieldLabel>
                         <Select
                           name={field.name}
-                          value={field.value}
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value.toString()}
+                          onValueChange={(value) => field.onChange(parseInt(value))}
+                          defaultValue={field.value.toString()}
                           disabled={disableForm}
                         >
                           <SelectTrigger id="product-form-subcategory" className='flex items-center justify-between !h-12'>
@@ -252,7 +280,7 @@ const ProductForm = ({
                 <FieldGroup className='grid grid-cols-2 gap-4'>
 
                   <Controller
-                    name="gold.color"
+                    name="color"
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
@@ -274,15 +302,7 @@ const ProductForm = ({
                   />
 
                   <Controller
-                    name={
-                      values.category === "GOLD"
-                        ? "gold.grossWeight"
-                        : (
-                          values.category === "DIAMOND"
-                            ? "diamond.grossWeight"
-                            : "silver.grossWeight"
-                        )
-                    }
+                    name="grossWeight"
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
@@ -340,7 +360,6 @@ const ProductForm = ({
                       )}
                     />
                   )}
-
 
                   {["DIAMOND"].includes(values.category!) && (
                     <Controller
@@ -906,13 +925,25 @@ const ProductForm = ({
                 </FieldGroup>
               </Empty>
 
+              {/* Images & Videos */}
+              <Empty className="col-start-1 md:col-start-3 col-span-2 border border-solid p-5 md:p-5 items-start gap-3">
+                <EmptyHeader className="flex flex-row items-center justify-start">
+                  <Tag className="w-4 h-4" />
+                  <span>Images & Videos</span>
+                </EmptyHeader>
+
+                <FieldGroup>
+                  <UploadMediaField />
+                </FieldGroup>
+              </Empty>
+
               <FieldGroup>
                 <Field orientation="horizontal">
                   <Button
                     type="submit"
                     disabled={!form.formState.isDirty || disableForm}
                   >
-                    Submit
+                    {disableForm ? "Submitting..." : "Submit"}
                   </Button>
                   <Button
                     type="button"

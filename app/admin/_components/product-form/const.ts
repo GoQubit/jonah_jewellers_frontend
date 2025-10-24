@@ -6,16 +6,12 @@ export const categoryEnum = ['GOLD', 'DIAMOND', 'SILVER'] as const
 
 
 const goldSchema = z.object({
-    color: z.string(),
-    grossWeight: z.number(),
     netWeight: z.number(),
     goldPurity: z.number(),
     hallmarked: z.boolean(),
 });
 
 const diamondSchema = z.object({
-    color: z.string(),
-    grossWeight: z.number(),
     metalWeight: z.number(),
     stoneWeightInCarat: z.number(),
     stoneWeightInGrams: z.number(),
@@ -26,15 +22,13 @@ const diamondSchema = z.object({
 });
 
 const silverSchema = z.object({
-    color: z.string(),
-    grossWeight: z.number(),
     netWeight: z.number(),
     silverPurityGrade: z.string(),
     hallmarked: z.boolean(),
 });
 
 const baseProductSchema = z.object({
-    _id: z.string().nullable().optional(),
+    _id: z.string().optional(),
     name: z.string()
         .min(5, "Product name must be at least 5 characters.")
         .max(100, "Product name must be at most 32 characters."),
@@ -43,7 +37,9 @@ const baseProductSchema = z.object({
         .max(200, "Product description must be at most 200 characters."),
     targetGender: z.enum(genderEnum),
     category: z.enum(categoryEnum),
-    subCategory: z.string(),
+    subCategory: z.number(),
+    color: z.string(),
+    grossWeight: z.number(),
     stock: z.number(),
     size: z.string(),
     basePrice: z.number(),
@@ -52,8 +48,8 @@ const baseProductSchema = z.object({
     additionalCharges: z.number(),
     tags: z.array(z.string()),
     archive: z.boolean().optional(),
-    // images: z.array(z.string().url()),
-    // videos: z.array(z.string()),
+    images: z.array(z.string().url()),
+    videos: z.array(z.string()),
     isSellerFunded: z.boolean().optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
@@ -63,20 +59,14 @@ export const productFormSchema = z.discriminatedUnion("category", [
     baseProductSchema.extend({
         category: z.literal("GOLD"),
         gold: goldSchema,
-        diamond: z.undefined(),
-        silver: z.undefined(),
     }),
     baseProductSchema.extend({
         category: z.literal("DIAMOND"),
         diamond: diamondSchema,
-        gold: z.undefined(),
-        silver: z.undefined(),
     }),
     baseProductSchema.extend({
         category: z.literal("SILVER"),
         silver: silverSchema,
-        gold: z.undefined(),
-        diamond: z.undefined(),
     }),
 ]);
 
@@ -154,11 +144,11 @@ export const defaultProductFormData: {
         "description": "22k plain gold ring for men",
         "targetGender": "MALE",
         "category": "GOLD",
-        "subCategory": "1",
+        "subCategory": 1,
         "makingCharges": 1200,
         "stock": 10,
-        // "images": ["https://example.com/images/gold-ring.jpg"],
-        // "videos": ["https://example.com/videos/gold-ring.mp4"],
+        "images": [],
+        "videos": [],
         "isSellerFunded": false,
         "tags": ["ring", "gold", "22k"],
         "archive": false,
@@ -168,15 +158,13 @@ export const defaultProductFormData: {
         "price": 56000,
         "additionalCharges": 500,
         "size": "Medium",
+        "color": "Yellow",
+        "grossWeight": 10.5,
         "gold": {
-            "color": "Yellow",
-            "grossWeight": 10.5,
             "netWeight": 9.8,
             "goldPurity": 22,
             "hallmarked": true
-        },
-        silver: undefined,
-        diamond: undefined,
+        }
     },
     diamondData: {
         "_id": "JONAH-2025-002",
@@ -184,11 +172,11 @@ export const defaultProductFormData: {
         "description": "Beautiful necklace with natural diamonds and 18k gold base",
         "targetGender": "FEMALE",
         "category": "DIAMOND",
-        "subCategory": "2",
+        "subCategory": 2,
         "makingCharges": 2500,
         "stock": 5,
-        // "images": ["https://example.com/images/diamond-necklace.jpg"],
-        // "videos": [],
+        "images": [],
+        "videos": [],
         "isSellerFunded": true,
         "tags": ["diamond", "necklace", "luxury"],
         "archive": false,
@@ -198,9 +186,9 @@ export const defaultProductFormData: {
         "price": 275000,
         "additionalCharges": 2000,
         "size": "Medium",
+        "color": "E",
+        "grossWeight": 16.2,
         "diamond": {
-            "color": "E",
-            "grossWeight": 16.2,
             "metalWeight": 15.5,
             "stoneWeightInCarat": 3.2,
             "stoneWeightInGrams": 0.64,
@@ -208,9 +196,7 @@ export const defaultProductFormData: {
             "noOfDiamonds": 45,
             "metalUsed": "Gold",
             "metalPurity": "18K",
-        },
-        gold: undefined,
-        silver: undefined,
+        }
     },
     silverData: {
         "_id": "JONAH-2025-003",
@@ -218,11 +204,11 @@ export const defaultProductFormData: {
         "description": "Polished silver bracelet with minimalist design",
         "targetGender": "OTHER",
         "category": "SILVER",
-        "subCategory": "3",
+        "subCategory": 3,
         "makingCharges": 800,
         "stock": 25,
-        // "images": ["https://example.com/images/silver-bracelet.jpg"],
-        // "videos": [],
+        "images": [],
+        "videos": [],
         "isSellerFunded": false,
         "tags": ["silver", "bracelet"],
         "archive": false,
@@ -232,14 +218,12 @@ export const defaultProductFormData: {
         "price": 4500,
         "additionalCharges": 100,
         "size": "Medium",
+        "color": "White",
+        "grossWeight": 25.2,
         "silver": {
-            "color": "White",
-            "grossWeight": 25.2,
             "netWeight": 24.8,
             "silverPurityGrade": "925",
             "hallmarked": false
-        },
-        gold: undefined,
-        diamond: undefined,
+        }
     }
 }

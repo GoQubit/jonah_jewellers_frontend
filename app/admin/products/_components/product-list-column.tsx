@@ -7,20 +7,39 @@ import EditProductView from "./edit-product-view";
 
 export const productTableColumns = [
     {
-        id: "id",
-        accessorKey: "id",
+        id: "_id",
+        accessorKey: "_id",
         header: () => {
             return (
                 <DataTableColumnHeader title={"Product ID"} />
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original.id) {
+            if (!row.original._id) {
                 return <span>-</span>;
             }
             return (
                 <span className={""}>
-                    {row.original.id}
+                    {row.original._id}
+                </span>
+            )
+        }
+    },
+    {
+        id: "name",
+        accessorKey: "name",
+        header: () => {
+            return (
+                <DataTableColumnHeader title={"Name"} />
+            )
+        },
+        cell: ({ row }: { row: any }) => {
+            if (!row.original?.name) {
+                return <span>-</span>;
+            }
+            return (
+                <span className={""}>
+                    {row.original.name}
                 </span>
             )
         }
@@ -53,50 +72,31 @@ export const productTableColumns = [
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original.subCategory) {
+            if (!row.original?.subCategory?.name) {
                 return <span>-</span>;
             }
             return (
                 <span className={""}>
-                    {row.original.subCategory}
+                    {row.original.subCategory.name}
                 </span>
             )
         }
     },
     {
-        id: "amount",
-        accessorKey: "amount",
+        id: "price",
+        accessorKey: "price",
         header: () => {
             return (
-                <DataTableColumnHeader title={"Amount"} />
+                <DataTableColumnHeader title={"Price"} />
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original?.amount == undefined) {
+            if (!row.original?.price == undefined) {
                 return <span>-</span>;
             }
             return (
                 <span className={""}>
-                    {row.original.amount}
-                </span>
-            )
-        }
-    },
-    {
-        id: "amount",
-        accessorKey: "amount",
-        header: () => {
-            return (
-                <DataTableColumnHeader title={"Amount"} />
-            )
-        },
-        cell: ({ row }: { row: any }) => {
-            if (!row.original?.amount == undefined) {
-                return <span>-</span>;
-            }
-            return (
-                <span className={""}>
-                    {row.original.amount.toLocaleString("en-IN", {
+                    {row.original?.price.toLocaleString("en-IN", {
                         style: "currency",
                         currency: "INR",
                         maximumFractionDigits: 2,
@@ -105,25 +105,25 @@ export const productTableColumns = [
             )
         }
     },
-    {
-        id: "material",
-        accessorKey: "material",
-        header: () => {
-            return (
-                <DataTableColumnHeader title={"Material"} />
-            )
-        },
-        cell: ({ row }: { row: any }) => {
-            if (!row.original?.material) {
-                return <span>-</span>;
-            }
-            return (
-                <span className={""}>
-                    {row.original.material}
-                </span>
-            )
-        }
-    },
+    // {
+    //     id: "material",
+    //     accessorKey: "material",
+    //     header: () => {
+    //         return (
+    //             <DataTableColumnHeader title={"Material"} />
+    //         )
+    //     },
+    //     cell: ({ row }: { row: any }) => {
+    //         if (!row.original?.material) {
+    //             return <span>-</span>;
+    //         }
+    //         return (
+    //             <span className={""}>
+    //                 {row.original.material}
+    //             </span>
+    //         )
+    //     }
+    // },
     {
         id: "stock",
         accessorKey: "stock",
@@ -152,11 +152,8 @@ export const productTableColumns = [
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original?.status) {
-                return <span>-</span>;
-            }
-
-            const statusOption = productStatusOptions.find((option) => option.value === row.original.status);
+            let status = (row.original?.stock && row.original?.stock > 1) ? "active" : "out_of_stock" 
+            const statusOption = productStatusOptions.find((option) => option.value === status);
             return (
                 <div className={"w-32 py-0.5 rounded border text-sm font-medium text-center capitalize"} style={{
                     backgroundColor: statusOption?.light_color || "#f3f4f6",
@@ -184,7 +181,10 @@ export const productTableColumns = [
                     className="w-4 h-4 text-gray-500 hover:text-gray-600 cursor-pointer"
                     onClick={() => setOpen(
                         <BaseModal>
-                            <EditProductView onClose={() => setClose()} />
+                            <EditProductView
+                                productId={row.original._id}
+                                onClose={() => setClose()}
+                            />
                         </BaseModal>
                     )}
                 />

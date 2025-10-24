@@ -100,7 +100,7 @@ const ProductListFilterView = () => {
           className='px-3 w-fit h-10 border border-[#BFBFBF] rounded-md focus:outline-none flex flex-row items-center justify-between gap-3'
         >
           <span>
-            <span>Type: </span>
+            <span>Status: </span>
             <span style={{ color: productStatusOptions.find((status) => filters.status === status.value)?.dark_color || "" }}>
               {productStatusOptions.find((status) => filters.status === status.value)?.label || "All"}
             </span>

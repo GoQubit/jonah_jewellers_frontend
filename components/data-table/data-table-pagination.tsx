@@ -12,17 +12,19 @@ import { Button } from "@/components/ui/button"
 
 interface DataTablePaginationProps<TData> {
     table: Table<TData>
+    totalResults?: number
 }
 
 export default function DataTablePagination<TData>({
     table,
+    totalResults=1
 }: DataTablePaginationProps<TData>) {
     return (
         <div className="flex w-full flex-col-reverse items-center justify-between gap-4 overflow-auto px-3 py-1.5 sm:flex-row sm:gap-8 border">
             <div className="flex-1 whitespace-nowrap text-sm text-muted-foreground">
                 <div className="flex items-center space-x-2">
                     <p className="whitespace-nowrap text-sm font-medium">
-                        Showing {table.getState()?.pagination?.pageIndex + 1} to {table.getPageCount()} of {"97"} results
+                        Showing {table.getState()?.pagination?.pageIndex + 1} to {table.getPageCount()} of {totalResults} results
                     </p>
                 </div>
             </div>

@@ -16,12 +16,14 @@ import { cn } from "@/utils/cn";
 interface DataTableProps<TData> extends React.HTMLAttributes<HTMLDivElement> {
     table: TanstackTable<TData>
     message?: React.ReactNode | string | null
+    totalResults?: number
 }
 
 export default function DataTable<TData>({
     table,
     className,
     message = "No data found",
+    totalResults = 1,
     ...props
 }: DataTableProps<TData>) {
     return (
@@ -87,7 +89,10 @@ export default function DataTable<TData>({
                 </Table>
             </div>
             <div className="flex flex-col gap-2.5">
-                <DataTablePagination table={table} />
+                <DataTablePagination
+                    table={table}
+                    totalResults={totalResults}
+                />
             </div>
         </div>
     )
