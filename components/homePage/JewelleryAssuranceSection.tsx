@@ -27,7 +27,7 @@ const JewelleryAssuranceSection = () => {
   ]
 
   return (
-    <div className='wrapper w-full '>
+    <div className='wrapper md:w-full'>
       <div className='relative flex w-full min-h-[450px] mb-16 '>
         {/* Background image div */}
         <div
@@ -47,7 +47,7 @@ const JewelleryAssuranceSection = () => {
             </p>
           </div>
 
-          <div className='grid grid-cols-2 md:grid-cols-4 place-items-baseline justify-center gap-6 mt-8 md:px-12 '>
+          <div className='grid grid-cols-2 md:grid-cols-4 place-items-baseline !justify-center items-center gap-6 mt-8 md:px-12 '>
             {assuranceData.map((item, index) => (
               <AssuranceCard
                 key={index}
@@ -68,11 +68,13 @@ export default JewelleryAssuranceSection
 const AssuranceCard = ({ title, description, icon }: { title: string, description?: string, icon: any }) => {
 
   return (
-    <div className='  w-[130px] flex flex-col gap-1 items-center justify-center text-center '>
-      <div className='w-[111px] h-[111px] flex justify-center items-center text-white text-[50px] rounded-full bg-brand '>
-        {icon}
+    <div className='flex w-full h-full justify-center items-start '>
+      <div className='  w-[130px] flex flex-col gap-1 items-center justify-center text-center '>
+        <div className='w-[111px] h-[111px] flex justify-center items-center text-white text-[50px] rounded-full bg-brand '>
+          {icon}
+        </div>
+        <span className='text-brand'>{title}</span>
       </div>
-      <span className='text-brand'>{title}</span>
     </div>
   )
 }

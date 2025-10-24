@@ -3,7 +3,19 @@ import React from 'react'
 const FooterBannerSection = () => {
   return (
     <div>
-      <img src="/images/bannerImgs/home_bottom_banner.png" alt="festival featured image" />
+      {/* Desktop banner */}
+      <img
+        src="/images/bannerImgs/home_bottom_banner.png"
+        alt="festival featured image"
+        className="hidden md:block w-full"
+      />
+
+      {/* Mobile banner */}
+      <img
+        src="/images/bannerImgs/home_bottom_banner_mobile.png"
+        alt="festival featured image"
+        className="block md:hidden w-full"
+      />
     </div>
   )
 }

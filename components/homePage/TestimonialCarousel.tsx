@@ -1,180 +1,197 @@
 "use client"
-import { useState } from "react"
-import { BiChevronLeft, BiChevronRight } from "react-icons/bi"
-import { CiPlay1 } from "react-icons/ci"
-import { FaStar } from "react-icons/fa"
+
+import { useState, useEffect } from "react"
+import { ChevronLeft, ChevronRight, Play } from "lucide-react"
 import SectionHeading from "../ui/SectionHeading"
 
-interface Review {
+interface JewelryReview {
   id: number
-  type: "text" | "video"
   name: string
+  location: string
   rating: number
-  content: string
-  videoThumbnail?: string
-  videoUrl?: string
-  location?: string
+  review: string
+  media: {
+    type: "image" | "video"
+    url: string
+    thumbnail?: string
+  }
 }
 
-const reviews: Review[] = [
+const reviews: JewelryReview[] = [
   {
     id: 1,
-    type: "text",
-    name: "Priya Sharma",
+    name: "Meera Reddy",
+    location: "Bangalore",
     rating: 5,
-    content:
-      "Absolutely stunning jewelry! The craftsmanship is exceptional and the designs are timeless. I purchased a diamond necklace set and received so many compliments. Highly recommended!",
-    location: "Mumbai",
+    review:
+      "Beautiful gold jewelry collection! The traditional designs with modern touch are perfect. Great customer service and authentic pieces.",
+    media: { type: "image", url: "/images/jewelleryPosters/collection_img_1.png" },
   },
   {
     id: 2,
-    type: "video",
-    name: "Ankita Patel",
-    rating: 4,
-    content:
-      "Amazing experience shopping at Jonah Jewellers. The staff was very helpful and the quality is outstanding.",
-    videoThumbnail: "/indian-woman-purple-saree.png",
-    videoUrl: "#",
-    location: "Delhi",
+    name: "Kavya Singh",
+    location: "Chennai",
+    rating: 5,
+    review: "Love my new mangalsutra from Jonah Jewellers. Perfect for my wedding!",
+    media: {
+      type: "video",
+      url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      thumbnail: "/images/jewelleryPosters/collection_img_2.png",
+    },
   },
   {
     id: 3,
-    type: "text",
-    name: "Meera Reddy",
+    name: "Priya Sharma",
+    location: "Mumbai",
     rating: 5,
-    content:
-      "Beautiful gold jewelry collection! The traditional designs with modern touch are perfect. Great customer service and authentic pieces.",
-    location: "Bangalore",
+    review:
+      "Exceptional craftsmanship and quality. The earrings are absolutely stunning and arrived beautifully packaged.",
+    media: { type: "image", url: "/images/jewelleryPosters/collection_img_1.png" },
   },
   {
     id: 4,
-    type: "video",
-    name: "Kavya Singh",
+    name: "Anjali Patel",
+    location: "Delhi",
     rating: 5,
-    content: "Love my new mangalsutra from Jonah Jewellers. Perfect for my wedding!",
-    videoThumbnail: "/indian-bride-gold.png",
-    videoUrl: "#",
-    location: "Chennai",
+    review:
+      "Best investment in jewelry! The designs are timeless and the quality is unmatched. Highly recommend!",
+    media: {
+      type: "video",
+      url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      thumbnail: "/images/jewelleryPosters/collection_img_2.png",
+    },
   },
   {
     id: 5,
-    type: "text",
-    name: "Ritu Agarwal",
-    rating: 4,
-    content:
-      "Excellent variety of silver jewelry. The designs are unique and the pricing is reasonable. Will definitely shop again.",
+    name: "Neha Gupta",
     location: "Pune",
-  },
-  {
-    id: 6,
-    type: "text",
-    name: "Sneha Gupta",
     rating: 5,
-    content:
-      "Outstanding service and beautiful jewelry pieces. The earrings I bought are exactly what I was looking for. Thank you Jonah Jewellers!",
-    location: "Hyderabad",
+    review:
+      "The necklace is absolutely gorgeous! Perfect for both casual and formal occasions. Worth every penny!",
+    media: { type: "image", url: "/images/jewelleryPosters/collection_img_3.png" },
   },
 ]
 
+const StarRating = ({ rating }: { rating: number }) => (
+  <div className="flex gap-1">
+    {[...Array(5)].map((_, i) => (
+      <svg
+        key={i}
+        className={`w-5 h-5 ${i < rating ? "fill-yellow-400 text-yellow-400" : "fill-gray-300 text-gray-300"}`}
+        viewBox="0 0 20 20"
+      >
+        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+      </svg>
+    ))}
+  </div>
+)
+
 const TestimonialCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const reviewsPerPage = 3
+  const [current, setCurrent] = useState(0)
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + reviewsPerPage >= reviews.length ? 0 : prev + reviewsPerPage))
+  const next = () => {
+    setCurrent((prev) => (prev + 1) % reviews.length)
   }
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? Math.max(0, reviews.length - reviewsPerPage) : Math.max(0, prev - reviewsPerPage),
-    )
+  const prev = () => {
+    setCurrent((prev) => (prev - 1 + reviews.length) % reviews.length)
   }
 
-  const currentReviews = reviews.slice(currentIndex, currentIndex + reviewsPerPage)
-
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <FaStar key={i} className={`w-4 h-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} />
-    ))
+  const goToSlide = (index: number) => {
+    setCurrent(index)
   }
 
   return (
     <section className="wrapper">
-      {/* Header */}
+
       <SectionHeading
-        title="Sunehra Safar, Sachchi Kahaniyan"
-        Subtitle="From dreams to reality, our gold has been part of every milestone"
-        size="md"
+        title='Customer Reviews'
+        Subtitle='See what our customers love about our jewelry collection'
+        size='sm'
       />
+      {/* <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Customer Reviews</h2>
+        <p className="text-lg text-muted-foreground">See what our customers love about our jewelry collection</p>
+      </div> */}
 
-      <div className="relative">
-        {/* Desktop Navigation */}
-        <div className="hidden md:block">
-          <button
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow duration-300 disabled:opacity-50"
-            disabled={currentIndex === 0}
-          >
-            <BiChevronLeft className="w-6 h-6 text-gray-600" />
-          </button>
-
-          <button
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow duration-300 disabled:opacity-50"
-            disabled={currentIndex + reviewsPerPage >= reviews.length}
-          >
-            <BiChevronRight className="w-6 h-6 text-gray-600" />
-          </button>
-        </div>
-
-        {/* Responsive Reviews */}
+      {/* Carousel */}
+      <div className="relative w-full overflow-hidden">
         <div
-          className="
-            grid gap-6 px-4 
-            grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
-            overflow-x-auto md:overflow-visible 
-            flex-nowrap md:grid 
-            scroll-smooth snap-x snap-mandatory
-          "
+          className="flex transition-transform duration-700 ease-out"
+          style={{
+            transform: `translateX(-${current * (100 / (window.innerWidth < 768 ? 1 : 3))}%)`,
+          }}
         >
           {reviews.map((review) => (
             <div
               key={review.id}
-              className="
-                bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden
-                w-[85%] sm:w-[70%] md:w-auto flex-shrink-0 snap-center
-              "
+              className="flex-shrink-0 w-full md:w-1/3 px-2"
             >
-              {review.type === "video" ? (
-                <div className="relative">
-                  <img
-                    src={review.videoThumbnail || "/placeholder.svg"}
-                    alt={`${review.name} video review`}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-                    <button className="bg-white bg-opacity-90 rounded-full p-4 hover:bg-opacity-100 transition-all duration-300">
-                      <CiPlay1 className="w-8 h-8 text-gray-800 ml-1" />
-                    </button>
-                  </div>
+              <div className="h-full bg-card border border-border rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col">
+                <div className="relative w-full h-56 md:h-64 bg-muted overflow-hidden">
+                  {review.media.type === "image" ? (
+                    <img
+                      src={review.media.url || "/placeholder.svg"}
+                      alt={`${review.name} review`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <>
+                      <img
+                        src={review.media.thumbnail || "/placeholder.svg"}
+                        alt={`${review.name} video review`}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors">
+                        <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-lg">
+                          <Play className="w-7 h-7 text-primary fill-primary" />
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
-              ) : (
-                <div className="h-48 bg-gradient-to-br from-yellow-50 to-yellow-100 flex items-center justify-center p-6">
-                  <div className="text-6xl text-yellow-600 opacity-20 font-serif">"</div>
-                </div>
-              )}
 
-              <div className="p-6">
-                <div className="flex items-center mb-3">{renderStars(review.rating)}</div>
-                <p className="text-gray-700 text-sm leading-relaxed mb-4 line-clamp-4">{review.content}</p>
-                <div className="border-t pt-4">
-                  <h4 className="font-semibold text-gray-900">{review.name}</h4>
-                  {review.location && <p className="text-sm text-gray-500">{review.location}</p>}
+                <div className="p-4 md:p-6 flex flex-col flex-grow">
+                  <StarRating rating={review.rating} />
+                  <p className="text-sm md:text-base text-foreground leading-relaxed mb-4 flex-grow line-clamp-3 mt-2">
+                    {review.review}
+                  </p>
+                  <div className="pt-2 border-t border-border">
+                    <h3 className="font-semibold text-sm md:text-base text-foreground">{review.name}</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground">{review.location}</p>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Navigation Buttons */}
+        <button
+          onClick={prev}
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-primary text-white p-2 rounded-full shadow-md hover:bg-primary/90 transition"
+          aria-label="Previous"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <button
+          onClick={next}
+          className="absolute right-0 top-1/2 -translate-y-1/2 bg-primary text-white p-2 rounded-full shadow-md hover:bg-primary/90 transition"
+          aria-label="Next"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Dots */}
+      <div className="flex justify-center gap-2 mt-6">
+        {reviews.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`rounded-full transition-all duration-300 ${index === current ? "bg-brand w-8 h-3" : "bg-accentLight w-3 h-3 hover:bg-brand/50"}`}
+          />
+        ))}
       </div>
     </section>
   )
