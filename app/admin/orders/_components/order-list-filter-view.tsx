@@ -29,8 +29,8 @@ const OrderListFilterView = () => {
             ...prev,
             search: searchParams.get("search") || "",
             status: (searchParams.get("status") as OrderStatus) || "",
-            fromDate: searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
-            toDate: searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
+            startDate: searchParams.get("startDate") ? new Date(searchParams.get("startDate")!) : undefined,
+            endDate: searchParams.get("endDate") ? new Date(searchParams.get("endDate")!) : undefined,
         }))
     }, [searchParams])
 
@@ -52,9 +52,9 @@ const OrderListFilterView = () => {
             urlSearchParams.set("status", filters.status)
         }
 
-        if (filters.fromDate && filters.toDate) {
-            urlSearchParams.set("fromDate", filters.fromDate.toISOString())
-            urlSearchParams.set("toDate", filters.toDate.toISOString())
+        if (filters.startDate && filters.endDate) {
+            urlSearchParams.set("startDate", filters.startDate.toISOString())
+            urlSearchParams.set("endDate", filters.endDate.toISOString())
         }
 
         const queryString = urlSearchParams.toString()
@@ -66,8 +66,8 @@ const OrderListFilterView = () => {
     const clearFilterCheck = useMemo(() => (
         searchParams.get("search") ||
         searchParams.get("status") ||
-        searchParams.get("fromDate") ||
-        searchParams.get("toDate")
+        searchParams.get("startDate") ||
+        searchParams.get("endDate")
     ), [searchParams])
 
     const onClearFilter = useCallback(() => {
@@ -75,7 +75,7 @@ const OrderListFilterView = () => {
     }, [])
 
     return (
-        <div className="flex items-center justify-start flex-nowrap gap-5">
+        <div className="flex items-center justify-start flex-nowrap overflow-x-auto gap-5">
             {/* search input */}
             <div className="w-80 h-10 rounded-md border border-[#BFBFBF] flex items-center focus-within:border-brand px-3 py-1">
                 <Input
@@ -91,9 +91,9 @@ const OrderListFilterView = () => {
             {/* status dropdown menu */}
             <DropdownMenu>
                 <DropdownMenuTrigger
-                    className='px-3 w-fit h-10 border border-[#BFBFBF] rounded-md focus:outline-none flex flex-row items-center justify-between gap-3'
+                    className='px-3 w-fit h-10 border border-[#BFBFBF] rounded-md focus:outline-none flex flex-row whitespace-nowrap items-center justify-between gap-3'
                 >
-                    <span>
+                    <span className="whitespace-nowrap">
                         <span>Status: </span>
                         <span style={{ color: orderStatusOptions.find((orderStatus) => filters.status === orderStatus.value)?.dark_color || "" }}>
                             {orderStatusOptions.find((orderStatus) => filters.status === orderStatus.value)?.label || "All"}
@@ -131,8 +131,8 @@ const OrderListFilterView = () => {
                         id="date-range"
                         className="w-60 h-10 font-normal hover:bg-transparent border border-[#BFBFBF] rounded-md focus:outline-none flex flex-row items-center justify-between gap-3"
                     >
-                        {filters?.fromDate && filters?.toDate
-                            ? `${filters.fromDate.toLocaleDateString()} - ${filters.toDate.toLocaleDateString()}`
+                        {filters?.startDate && filters?.endDate
+                            ? `${filters.startDate.toLocaleDateString()} - ${filters.endDate.toLocaleDateString()}`
                             : "Select Date Range"}
                         <ChevronDownIcon className="w-6 h-6" />
                     </Button>
@@ -142,15 +142,15 @@ const OrderListFilterView = () => {
                         <CardContent className="px-4">
                             <Calendar
                                 mode="range"
-                                defaultMonth={filters?.fromDate || new Date(new Date().setHours(0, 0, 0, 0))}
+                                defaultMonth={filters?.startDate || new Date(new Date().setHours(0, 0, 0, 0))}
                                 selected={{
-                                    from: filters?.fromDate,
-                                    to: filters?.toDate
+                                    from: filters?.startDate,
+                                    to: filters?.endDate
                                 }}
                                 onSelect={(selected) => setFilters(prev => ({
                                     ...prev,
-                                    fromDate: selected?.from,
-                                    toDate: selected?.to
+                                    startDate: selected?.from,
+                                    endDate: selected?.to
                                 }))}
                                 numberOfMonths={1}
                                 className="bg-transparent p-0 [--cell-size:2.375rem]"
@@ -167,8 +167,8 @@ const OrderListFilterView = () => {
                                     onClick={() => {
                                         setFilters(prev => ({
                                             ...prev,
-                                            fromDate: preset?.from,
-                                            toDate: preset?.to
+                                            startDate: preset?.from,
+                                            endDate: preset?.to
                                         }))
                                     }}
                                 >

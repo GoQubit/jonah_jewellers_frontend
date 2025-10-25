@@ -68,6 +68,13 @@ export default function useDataTable<TData, TValue>({
     }
   )
 
+  React.useEffect(() => {
+    setPagination({
+      pageIndex: page - 1,
+      pageSize: initialPageSize,
+    })
+  }, [initialPageSize, page])
+
   const pagination = React.useMemo(() => ({ pageIndex, pageSize }), [pageIndex, pageSize])
 
   React.useEffect(() => {

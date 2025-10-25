@@ -7,12 +7,13 @@ import { useSearchParams } from 'next/navigation'
 type Props = {
   productId: string
   onClose?: () => void
+  getProducts?: Function
 }
 
 type InitialProduct = { isLoading: boolean, data: null | any, error: null | string }
 const initialProducts: InitialProduct = { isLoading: false, data: null, error: null }
 
-const EditProductView = ({ productId, onClose }: Props) => {
+const EditProductView = ({ productId, onClose, getProducts }: Props) => {
 
   const searchParams = useSearchParams()
   const [product, setProduct] = useState(initialProducts)
@@ -56,13 +57,15 @@ const EditProductView = ({ productId, onClose }: Props) => {
           <ProductForm
             productData={product.data}
             addProduct={false}
+            onClose={onClose}
+            getProducts={getProducts}
           />
         </div>
       )}
 
       {/* close button */}
-      <div className="absolute z-[51] top-0 left-[50%] -translate-y-28 translate-x-[-50%] w-10 h-10 bg-white rounded-full shadow flex items-center justify-center cursor-pointer hover:bg-gray-100">
-        <X onClick={onClose} />
+      <div onClick={onClose} className="absolute z-[51] top-0 left-[50%] -translate-y-16 translate-x-[-50%] w-10 h-10 bg-white rounded-full shadow flex items-center justify-center cursor-pointer hover:bg-gray-100">
+        <X />
       </div>
     </div>
   )

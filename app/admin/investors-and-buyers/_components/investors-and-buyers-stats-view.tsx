@@ -12,7 +12,7 @@ const statsData: StatsCardProp[] = [
         bgColor: "bg-green-50",
     },
     {
-        title: "Total Gold Investment Customer",
+        title: "Total Gold Investor",
         value: "12",
         icon: CircleStar,
         textColor: "text-blue-500",
@@ -30,7 +30,7 @@ const statsData: StatsCardProp[] = [
 
 const InvestorsAndBuyersStatsView = () => {
     return (
-        <div className="flex flex-row items-center gap-5 overflow-x-auto">
+        <div className="flex flex-row flex-nowrap items-center gap-5 overflow-x-auto">
             {statsData.map((stat, index) => (
                 <StatsCard key={index} {...stat} />
             ))}

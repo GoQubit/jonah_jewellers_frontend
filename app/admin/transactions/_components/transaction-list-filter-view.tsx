@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Input } from '@/components/ui/Input'
 import { TransactionListFilters, TransactionStatus, TransactionType } from '../types'
-import {transactionListFilters, transactionStatusOptions, transactionTypeOptions } from '../const'
+import { transactionListFilters, transactionStatusOptions, transactionTypeOptions } from '../const'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { IoIosSearch } from 'react-icons/io'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
@@ -27,11 +27,11 @@ const TransactionListFilterView = () => {
     useEffect(() => {
         setFilters(prev => ({
             ...prev,
-            search: searchParams.get("search") || "",
+            q: searchParams.get("search") || "",
             transactionType: (searchParams.get("transactionType") as TransactionType) || "",
             transactionStatus: (searchParams.get("transactionStatus") as TransactionStatus) || "",
-            fromDate: searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
-            toDate: searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
+            startDate: searchParams.get("startDate") ? new Date(searchParams.get("startDate")!) : undefined,
+            endDate: searchParams.get("endDate") ? new Date(searchParams.get("endDate")!) : undefined,
         }))
     }, [searchParams])
 
@@ -57,9 +57,9 @@ const TransactionListFilterView = () => {
             urlSearchParams.set("transactionStatus", filters.transactionStatus)
         }
 
-        if (filters.fromDate && filters.toDate) {
-            urlSearchParams.set("fromDate", filters.fromDate.toISOString())
-            urlSearchParams.set("toDate", filters.toDate.toISOString())
+        if (filters.startDate && filters.endDate) {
+            urlSearchParams.set("startDate", filters.startDate.toISOString())
+            urlSearchParams.set("endDate", filters.endDate.toISOString())
         }
 
         const queryString = urlSearchParams.toString()
@@ -72,8 +72,8 @@ const TransactionListFilterView = () => {
         searchParams.get("search") ||
         searchParams.get("transactionType") ||
         searchParams.get("transactionStatus") ||
-        searchParams.get("fromDate") ||
-        searchParams.get("toDate")
+        searchParams.get("startDate") ||
+        searchParams.get("endDate")
     ), [searchParams])
 
     const onClearFilter = useCallback(() => {
@@ -81,7 +81,7 @@ const TransactionListFilterView = () => {
     }, [])
 
     return (
-        <div className="flex items-center justify-start flex-nowrap gap-5">
+        <div className="flex items-center justify-start flex-nowrap gap-5 overflow-x-auto">
             {/* search input */}
             <div className="w-80 h-10 rounded-md border border-[#BFBFBF] flex items-center focus-within:border-brand px-3 py-1">
                 <Input
@@ -97,9 +97,9 @@ const TransactionListFilterView = () => {
             {/* status dropdown menu */}
             <DropdownMenu>
                 <DropdownMenuTrigger
-                    className='px-3 w-fit h-10 border border-[#BFBFBF] rounded-md focus:outline-none flex flex-row items-center justify-between gap-3'
+                    className='px-3 w-fit h-10 border border-[#BFBFBF] rounded-md focus:outline-none flex flex-row whitespace-nowrap items-center justify-between gap-3'
                 >
-                    <span>
+                    <span className="whitespace-nowrap">
                         <span>Status: </span>
                         <span style={{ color: transactionStatusOptions.find((transactionStatus) => filters.transactionStatus === transactionStatus.value)?.dark_color || "" }}>
                             {transactionStatusOptions.find((transactionStatus) => filters.transactionStatus === transactionStatus.value)?.label || "All"}
@@ -137,8 +137,8 @@ const TransactionListFilterView = () => {
                         id="date-range"
                         className="w-60 h-10 font-normal hover:bg-transparent border border-[#BFBFBF] rounded-md focus:outline-none flex flex-row items-center justify-between gap-3"
                     >
-                        {filters?.fromDate && filters?.toDate
-                            ? `${filters.fromDate.toLocaleDateString()} - ${filters.toDate.toLocaleDateString()}`
+                        {filters?.startDate && filters?.endDate
+                            ? `${filters.startDate.toLocaleDateString()} - ${filters.endDate.toLocaleDateString()}`
                             : "Select Date Range"}
                         <ChevronDownIcon className="w-6 h-6" />
                     </Button>
@@ -148,15 +148,15 @@ const TransactionListFilterView = () => {
                         <CardContent className="px-4">
                             <Calendar
                                 mode="range"
-                                defaultMonth={filters?.fromDate || new Date(new Date().setHours(0, 0, 0, 0))}
+                                defaultMonth={filters?.startDate || new Date(new Date().setHours(0, 0, 0, 0))}
                                 selected={{
-                                    from: filters?.fromDate,
-                                    to: filters?.toDate
+                                    from: filters?.startDate,
+                                    to: filters?.endDate
                                 }}
                                 onSelect={(selected) => setFilters(prev => ({
                                     ...prev,
-                                    fromDate: selected?.from,
-                                    toDate: selected?.to
+                                    startDate: selected?.from,
+                                    endDate: selected?.to
                                 }))}
                                 numberOfMonths={1}
                                 className="bg-transparent p-0 [--cell-size:2.375rem]"
@@ -172,8 +172,8 @@ const TransactionListFilterView = () => {
                                     onClick={() => {
                                         setFilters(prev => ({
                                             ...prev,
-                                            fromDate: preset?.from,
-                                            toDate: preset?.to
+                                            startDate: preset?.from,
+                                            endDate: preset?.to
                                         }))
                                     }}
                                 >

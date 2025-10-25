@@ -6,8 +6,8 @@ export const transactionListFilters: TransactionListFilters = {
     search: '',
     transactionType: '',
     transactionStatus: '',
-    fromDate: undefined,
-    toDate: undefined,
+    startDate: undefined,
+    endDate: undefined,
 }
 
 export const transactionTypeOptions: TransactionTypeOptions[] = [

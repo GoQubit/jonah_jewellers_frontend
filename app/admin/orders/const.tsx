@@ -1,43 +1,62 @@
-import { OrderListFilters, OrderStatusOptions } from "./types";
+import { Order, OrderListFilters, OrderStatusOptions, PaymentStatusOptions } from "./types";
 
 export const orderListFilters: OrderListFilters = {
     search: '',
     status: '',
-    fromDate: undefined,
-    toDate: undefined,
+    startDate: undefined,
+    endDate: undefined,
 }
 
 export const orderStatusOptions: OrderStatusOptions[] = [
     {
-        value: "pending",
-        label: "Pending",
+        value: "PLACED",
+        label: "Placed",
         light_color: "#f9fafb",
         dark_color: "#64748b",
     },
     {
-        value: "processing",
-        label: "Processing",
+        value: "CONFIRMED",
+        label: "Confirmed",
         light_color: "#eff6ff",
         dark_color: "#3b82f6",
     },
     {
-        value: "shipped",
+        value: "SHIPPED",
         label: "Shipped",
         light_color: "#fefce8",
         dark_color: "#eab308",
     },
     {
-        value: "delivered",
+        value: "DELIVERED",
         label: "Delivered",
         light_color: "#f0fdf4",
         dark_color: "#22c55e",
     },
     {
-        value: "cancelled",
+        value: "CANCELLED",
         label: "Cancelled",
         light_color: "#fef2f2",
         dark_color: "#ef4444",
     },
+]
+
+export const paymentStatusOptions: PaymentStatusOptions[] = [
+    {
+        value: "PENDING",
+        label: "Pending",
+    },
+    {
+        value: "PAID",
+        label: "Paid",
+    },
+    {
+        value: "FAILED",
+        label: "Failed",
+    },
+    {
+        value: "REFUNDED",
+        label: "Refunded",
+    }
 ]
 
 export const orderListData = [
@@ -282,3 +301,57 @@ export const orderListData = [
         tracking_link: "940010010936113003126",
     }
 ]
+
+
+export const tempOrder: Order = {
+    "id": "9489cacf-7086-4236-86c1-e09d2933c00b",
+    "amount": 90283,
+    "taxAmount": 2708.49,
+    "totalAmount": 92991.49,
+    "paymentMode": "ONLINE",
+    "paymentStatus": "PENDING",
+    "orderStatus": "PLACED",
+    "couponCode": "",
+    "trackingLink": "",
+    "createdBy": 5,
+    "createdAt": "2025-10-01T20:32:31.351Z",
+    "updatedAt": "2025-10-01T20:32:31.351Z",
+    "shippingAddress": {
+        "name": "Md. Anas Ansari Pasha",
+        "phone": "9876543210",
+        "email": "mohdanas@gmail.com",
+        "addressLine1": "Cane Society Rd, near Majar, Bazpur,",
+        "city": "bazpur",
+        "state": "Uttarakhand",
+        "pinCode": 262401,
+        "country": "India"
+    },
+    "items": [
+        {
+            "product": "JONAH-2025-001",
+            "name": "Classic Gold Ring",
+            "productPrice": 87083,
+            "makingCharges": 3000,
+            "additionalCharges": 0,
+            "totalPrice": 90083,
+            "taxPercent": 3,
+            "taxAmount": 2702.49,
+            "totalAmount": 92785.49,
+            "quantity": 1,
+            "primaryImage": null
+        },
+        {
+            "product": "JONAH-2025-002",
+            "name": "Elegant Silver Bracelet",
+            "productPrice": 0,
+            "makingCharges": 200,
+            "additionalCharges": 0,
+            "totalPrice": 200,
+            "taxPercent": 3,
+            "taxAmount": 6,
+            "totalAmount": 206,
+            "quantity": 1,
+            "primaryImage": null
+        }
+    ],
+}

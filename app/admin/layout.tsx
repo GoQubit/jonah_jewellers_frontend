@@ -12,7 +12,7 @@ const AdminLayout = ({ children }: Props) => {
             <Header />
             <div className='flex flex-row'>
                 <SideBar />
-                <div className='grow'>
+                <div className='grow overflow-hidden'>
                     {children}
                 </div>
             </div>

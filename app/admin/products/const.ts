@@ -4,8 +4,8 @@ import { ProductListFilters, ProductStatusOptions } from "./types";
 export const productListFilters: ProductListFilters = {
     search: '',
     status: '',
-    fromDate: undefined,
-    toDate: undefined,
+    startDate: undefined,
+    endDate: undefined,
     archive: false
 }
 

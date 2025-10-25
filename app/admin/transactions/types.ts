@@ -4,8 +4,8 @@ export type TransactionListFilters = {
     search: string,
     transactionType: TransactionType,
     transactionStatus: TransactionStatus,
-    fromDate: undefined | Date,
-    toDate: undefined | Date,
+    startDate: undefined | Date,
+    endDate: undefined | Date,
 }
 
 export type TransactionTypeOptions = {

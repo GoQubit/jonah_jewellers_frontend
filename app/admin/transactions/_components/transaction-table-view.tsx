@@ -26,8 +26,8 @@ const TransactionTableView = (props: Props) => {
                 limit: 20,
                 page: searchParams.get("page") || "1",
                 q: searchParams.get("search") || "",
-                fromDate: searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
-                toDate: searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
+                startDate: searchParams.get("startDate") ? new Date(searchParams.get("startDate")!) : undefined,
+                endDate: searchParams.get("endDate") ? new Date(searchParams.get("endDate")!) : undefined,
             }
 
             const response = await getQRTransectionApi(queryParams)

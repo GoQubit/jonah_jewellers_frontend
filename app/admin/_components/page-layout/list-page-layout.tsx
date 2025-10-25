@@ -21,7 +21,7 @@ const ListPageLayout = ({
     children
 }: Props) => {
     return (
-        <div className="p-5 space-y-8">
+        <div className="p-5 space-y-8 relative">
             <div className="space-y-2">
                 <div className="flex flex-nowrap items-center justify-start gap-3">
                     <h1 className={cn("text-2xl font-medium font-besley text-gray-900", titleClassName)}>{title}</h1>

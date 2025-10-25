@@ -3,8 +3,8 @@ export type ProductStatus = '' | 'active' | 'out_of_stock'
 export type ProductListFilters = {
     search: string,
     status: ProductStatus,
-    fromDate: undefined | Date,
-    toDate: undefined | Date,
+    startDate: undefined | Date,
+    endDate: undefined | Date,
     archive: boolean
 }
 
