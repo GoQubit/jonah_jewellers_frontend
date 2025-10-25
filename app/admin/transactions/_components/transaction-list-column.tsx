@@ -1,6 +1,7 @@
 import { DataTableColumnHeader } from "@/components/data-table";
 import { transactionTypeOptions } from "../const";
 import { TransactionTypeOptions } from "../types";
+import { formatDate } from "@/utils/formatDate";
 
 export const transactionTableColumns = [
     {
@@ -16,65 +17,65 @@ export const transactionTableColumns = [
                 return <span>-</span>;
             }
             return (
-                <span className={""}>
+                <span className={" uppercase "}>
                     {row.original.transactionId}
                 </span>
             )
         }
     },
     {
-        id: "customerName",
-        accessorKey: "customerName",
+        id: "firstName",
+        accessorKey: "firstName",
         header: () => {
             return (
                 <DataTableColumnHeader title={"Customer name"} />
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original.customerName) {
+            if (!row.original?.userId?.firstName) {
                 return <span>-</span>;
             }
             return (
                 <span className={""}>
-                    {row.original.customerName}
+                    {row.original.userId.firstName} {row.original.userId.lastName}
                 </span>
             )
         }
     },
     {
-        id: "date",
-        accessorKey: "date",
+        id: "createdAt",
+        accessorKey: "createdAt",
         header: () => {
             return (
                 <DataTableColumnHeader title={"Date"} />
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original.date) {
+            if (!row.original.createdAt) {
                 return <span>-</span>;
             }
             return (
                 <span className={""}>
-                    {row.original.date}
+                    {formatDate(row.original.createdAt)}
                 </span>
             )
         }
     },
     {
-        id: "category",
-        accessorKey: "category",
+        id: "userType",
+        accessorKey: "userType",
         header: () => {
             return (
                 <DataTableColumnHeader title={"Category"} />
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original.category) {
+            if (!row.original.userType) {
                 return <span>-</span>;
             }
             return (
                 <span className={""}>
-                    {row.original.category}
+                    {row.original.userType === "BUYER" ? 'Kitty' : 'Gold Investment'}
                 </span>
             )
         }
@@ -88,38 +89,37 @@ export const transactionTableColumns = [
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original.modeOfPayment) {
+            if (!row.original.transactionId) {
                 return <span>-</span>;
             }
             return (
                 <span className={""}>
-                    {row.original.modeOfPayment}
+                    {/* {row.original.modeOfPayment} */}
+                    UPI Scanner
                 </span>
             )
         }
     },
     {
-        id: "type",
-        accessorKey: "type",
+        id: "status",
+        accessorKey: "status",
         header: () => {
             return (
-                <DataTableColumnHeader title={"Type"} />
+                <DataTableColumnHeader title={"Status"} />
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original.type) {
+            if (!row.original.status) {
                 return <span>-</span>;
             }
 
-            const typeOption = transactionTypeOptions.find((typeOption: TransactionTypeOptions) => typeOption?.value === row.original.type)
-            const Icon = typeOption?.icon
+            const color = row.original.status === 'SUCCESS' ? '#14863D' : row.original.status === 'PENDING' ? '#E8A83E' : '#FF0000'
             return (
                 <span
-                    className={"flex items-center justify-center gap-1.5"}
-                    style={{ color: typeOption?.dark_color || "" }}
+                    className={`flex items-center justify-center gap-1.5`}
+                    style={{ color: color }}
                 >
-                    {Icon && <Icon className="w-4 h-4" />}
-                    {typeOption?.label || ""}
+                    {row.original.status || ""}
                 </span>
             )
         }

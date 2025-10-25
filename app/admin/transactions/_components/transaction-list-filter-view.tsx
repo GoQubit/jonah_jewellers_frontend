@@ -2,8 +2,8 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Input } from '@/components/ui/Input'
-import { TransactionListFilters, TransactionType } from '../types'
-import {transactionListFilters, transactionTypeOptions } from '../const'
+import { TransactionListFilters, TransactionStatus, TransactionType } from '../types'
+import {transactionListFilters, transactionStatusOptions, transactionTypeOptions } from '../const'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { IoIosSearch } from 'react-icons/io'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
@@ -29,6 +29,7 @@ const TransactionListFilterView = () => {
             ...prev,
             search: searchParams.get("search") || "",
             transactionType: (searchParams.get("transactionType") as TransactionType) || "",
+            transactionStatus: (searchParams.get("transactionStatus") as TransactionStatus) || "",
             fromDate: searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
             toDate: searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
         }))
@@ -52,6 +53,10 @@ const TransactionListFilterView = () => {
             urlSearchParams.set("transactionType", filters.transactionType)
         }
 
+        if (filters.transactionStatus) {
+            urlSearchParams.set("transactionStatus", filters.transactionStatus)
+        }
+
         if (filters.fromDate && filters.toDate) {
             urlSearchParams.set("fromDate", filters.fromDate.toISOString())
             urlSearchParams.set("toDate", filters.toDate.toISOString())
@@ -66,6 +71,7 @@ const TransactionListFilterView = () => {
     const clearFilterCheck = useMemo(() => (
         searchParams.get("search") ||
         searchParams.get("transactionType") ||
+        searchParams.get("transactionStatus") ||
         searchParams.get("fromDate") ||
         searchParams.get("toDate")
     ), [searchParams])
@@ -94,9 +100,9 @@ const TransactionListFilterView = () => {
                     className='px-3 w-fit h-10 border border-[#BFBFBF] rounded-md focus:outline-none flex flex-row items-center justify-between gap-3'
                 >
                     <span>
-                        <span>Type: </span>
-                        <span style={{ color: transactionTypeOptions.find((transactionType) => filters.transactionType === transactionType.value)?.dark_color || "" }}>
-                            {transactionTypeOptions.find((transactionType) => filters.transactionType === transactionType.value)?.label || "All"}
+                        <span>Status: </span>
+                        <span style={{ color: transactionStatusOptions.find((transactionStatus) => filters.transactionStatus === transactionStatus.value)?.dark_color || "" }}>
+                            {transactionStatusOptions.find((transactionStatus) => filters.transactionStatus === transactionStatus.value)?.label || "All"}
                         </span>
                     </span>
                     <ChevronDownIcon className="w-6 h-6" />
@@ -104,20 +110,20 @@ const TransactionListFilterView = () => {
                 <DropdownMenuContent
                     className="w-40 p-0 bg-white"
                 >
-                    {transactionTypeOptions.map((transactionType) => (
+                    {transactionStatusOptions.map((transactionStatus) => (
                         <DropdownMenuItem
-                            key={transactionType.value}
+                            key={transactionStatus.value}
                             className={cn(
                                 "py-1.5 text-lg focus:bg-transparent focus:outline-none cursor-pointer",
-                                filters.transactionType === transactionType.value && "border-l-4"
+                                filters.transactionStatus === transactionStatus.value && "border-l-4"
                             )}
                             style={{
-                                color: transactionType.dark_color,
-                                borderColor: filters.transactionType === transactionType.value ? transactionType.dark_color : ""
+                                color: transactionStatus.dark_color,
+                                borderColor: filters.transactionStatus === transactionStatus.value ? transactionStatus.dark_color : ""
                             }}
-                            onClick={() => setFilters(s => ({ ...s, status: transactionType.value }))}
+                            onClick={() => setFilters(s => ({ ...s, status: transactionStatus.value }))}
                         >
-                            {transactionType.label}
+                            {transactionStatus.label}
                         </DropdownMenuItem>
                     ))}
                 </DropdownMenuContent>
@@ -154,7 +160,6 @@ const TransactionListFilterView = () => {
                                 }))}
                                 numberOfMonths={1}
                                 className="bg-transparent p-0 [--cell-size:2.375rem]"
-
                             />
                         </CardContent>
                         <CardFooter className="flex flex-wrap gap-2 border-t px-4 !pt-4">

@@ -54,7 +54,11 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
         if (res.data.isNewUser) {
           // Pass original redirect to profile
           router.push(`/profile?redirect=${encodeURIComponent(redirect)}`)
-        } else {
+        }
+        else if (res.data.user.role === 'ADMIN') {
+          router.push(`/admin`)
+        }
+        else {
           router.push(redirect)
         }
       }

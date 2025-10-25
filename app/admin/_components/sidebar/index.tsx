@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/buttons/Button"
 import { cn } from "@/utils/cn"
 
 import { menuItems } from "./const"
+import useLogout from "@/hooks/useLogout"
 
 const Sidebar = () => {
 
   const pathname = usePathname()
   const router = useRouter()
+  const logout = useLogout()
 
   return (
     <aside className="sticky top-[64px] z-40 w-64 flex flex-col justify-between bg-white border-r border-gray-200 h-[calc(100vh-64px)]">
@@ -36,7 +38,11 @@ const Sidebar = () => {
       </nav>
 
       <div className="p-4">
-        <Button variant="ghost" className="w-full !justify-start items-center gap-3 text-lg text-gray-700 font-normal bg-grayLight">
+        <Button
+          onClick={() => {
+            logout(`/login`)
+          }}
+          variant="ghost" className="w-full !justify-start items-center gap-3 text-lg text-gray-700 font-normal bg-grayLight">
           <FiLogOut className="w-5 h-5" />
           Logout
         </Button>

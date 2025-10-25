@@ -49,7 +49,7 @@ const baseProductSchema = z.object({
     makingCharges: z.number(),
     stock: z.number(),
     images: z.array(z.string().url()),
-    videos: z.array(z.string()),
+    videos: z.array(z.string()).optional(),
     tags: z.array(z.string()),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
