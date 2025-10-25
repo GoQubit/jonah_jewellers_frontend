@@ -11,7 +11,7 @@ const DashboarStatsView = ({ analyticsData }: { analyticsData: any }) => {
   const statsData: StatsCardProp[] = [
     {
       title: "Total Revenue",
-      value: analyticsData.orderRevenue,
+      value: analyticsData?.orderRevenue || 0,
       icon: Wallet,
       textColor: "text-yellow-500",
       bgColor: "bg-yellow-50",
@@ -19,7 +19,7 @@ const DashboarStatsView = ({ analyticsData }: { analyticsData: any }) => {
     },
     {
       title: "Total Orders",
-      value: analyticsData.totalOrders,
+      value: analyticsData?.totalOrders || 0,
       icon: ShoppingCart,
       textColor: "text-green-500",
       bgColor: "bg-green-50",
@@ -27,7 +27,7 @@ const DashboarStatsView = ({ analyticsData }: { analyticsData: any }) => {
     },
     {
       title: "Total Kitty Members",
-      value: analyticsData.kittyUserCount,
+      value: analyticsData?.kittyUserCount || 0,
       icon: TbUserShield,
       textColor: "text-blue-500",
       bgColor: "bg-blue-50",
@@ -35,7 +35,7 @@ const DashboarStatsView = ({ analyticsData }: { analyticsData: any }) => {
     },
     {
       title: "Total Investors",
-      value: analyticsData.investmentUserCount,
+      value: analyticsData?.investmentUserCount,
       icon: LuUsers,
       textColor: "text-purple-500",
       bgColor: "bg-purple-50",

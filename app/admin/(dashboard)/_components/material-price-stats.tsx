@@ -13,21 +13,21 @@ const MaterialPriceStats = ({ materialPrices }: { materialPrices: any }) => {
   const statsData: StatsCardProp[] = [
     {
       title: "Gold Price (per 10gm)",
-      value: materialPrices.gold || 0,
+      value: materialPrices?.gold || 0,
       icon: GiGoldBar,
       textColor: "text-yellow-500",
       bgColor: "bg-yellow-50",
     },
     {
       title: "Diamond Price (per carat)",
-      value: materialPrices.diamond || 0,
+      value: materialPrices?.diamond || 0,
       icon: IoDiamondOutline,
       textColor: "text-green-500",
       bgColor: "bg-green-50",
     },
     {
       title: "Silver Price (per 10gm)",
-      value: materialPrices.silver || 0,
+      value: materialPrices?.silver || 0,
       icon: AiTwotoneGold,
       textColor: "text-gray-500",
       bgColor: "bg-blue-50",
