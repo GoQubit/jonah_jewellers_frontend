@@ -21,9 +21,10 @@ const initialOrder: InitialOrder = { isLoading: false, data: tempOrder, error: n
 type Props = {
     orderId: string
     onClose?: () => void
+    getOrders?: Function
 }
 
-const OrderDetailView = ({ orderId, onClose }: Props) => {
+const OrderDetailView = ({ orderId, onClose, getOrders }: Props) => {
     const [order, setOrder] = useState(initialOrder)
     const [orderStatus, setOrderStatus] = useState<OrderStatus>('')
     const [trackingLink, setTrackingLink] = useState<string>('')
@@ -62,6 +63,7 @@ const OrderDetailView = ({ orderId, onClose }: Props) => {
             if (response.status === 200) {
                 setUpdateOrder(s => ({ ...s, data: response.data, error: null }))
                 Toast.success("Order updated successfully")
+                getOrders && getOrders()
                 onClose && onClose()
             } else {
                 throw new Error("Order not found!")
@@ -84,7 +86,7 @@ const OrderDetailView = ({ orderId, onClose }: Props) => {
     }
 
     return (
-        <div className="relative bg-white p-8 rounded-lg shadow-lg w-[700px] max-w-full space-y-8">
+        <div className="relative bg-white p-8 rounded-lg shadow-lg w-[700px] max-w-full space-y-6">
 
             {order?.isLoading && (
                 <Loader />
@@ -95,7 +97,7 @@ const OrderDetailView = ({ orderId, onClose }: Props) => {
             )}
 
             {order?.data && (
-                <div className="h-[70vh] overflow-y-auto space-y-6">
+                <div className="h-[60vh] overflow-y-auto space-y-6">
                     <h2 className="font-besley text-left text-lg">Order Details: {order.data?.id}</h2>
 
                     <div className="flex flex-row items-start justify-between gap-8">
@@ -191,14 +193,14 @@ const OrderDetailView = ({ orderId, onClose }: Props) => {
                     </div>
 
                     {/* Order Item */}
-                    <div className="border border-[#CACACA] rounded-md p-3 space-y-3">
+                    <div className="border border-[#CACACA] rounded-md p-3 space-y-2">
                         <p className="inline-flex items-center justify-center gap-1 text-[#040404]">
                             <ShoppingBasket className="w-4 h-4" />
                             <span className="font-medium">Order Items</span>
                         </p>
 
                         {order.data?.items.map(((orderItem: OrderItem, index: number) => (
-                            <div key={index} className="flex flex-row items-start justify-between gap-5">
+                            <div key={index} className="flex flex-row items-start justify-between gap-5 border border-dashed rounded-md p-2">
                                 <div className="space-y-1 flex-[3] flex flex-row item-start justify-start gap-2">
                                     <Image
                                         src={orderItem?.primaryImage || ""}
@@ -235,36 +237,38 @@ const OrderDetailView = ({ orderId, onClose }: Props) => {
                             </div>
                         )))}
                     </div>
+                </div>
+            )}
 
-                    <div className="space-y-2">
-                        {updateOrder.error && (
-                            <span className="text-red-500 text-xs text-left">{updateOrder.error}</span>
-                        )}
-                        <div className="flex items-center justify-start gap-3">
-                            <Button
-                                // className="w-28 h-14"
-                                onClick={handleUpdateOrder}
-                                disabled={disableForm}
-                            >
-                                Save
-                            </Button>
+            {order?.data && (
+                <div className="space-y-2">
+                    {updateOrder.error && (
+                        <span className="text-red-500 text-xs text-left">{updateOrder.error}</span>
+                    )}
+                    <div className="flex items-center justify-start gap-3">
+                        <Button
+                            // className="w-28 h-14"
+                            onClick={handleUpdateOrder}
+                            disabled={disableForm}
+                        >
+                            Save
+                        </Button>
 
-                            <Button
-                                variant={"outline"}
-                                className=" hover:bg-transparent"
-                                onClick={handleReset}
-                                disabled={disableForm}
-                            >
-                                Reset
-                            </Button>
+                        <Button
+                            variant={"outline"}
+                            className=" hover:bg-transparent"
+                            onClick={handleReset}
+                            disabled={disableForm}
+                        >
+                            Reset
+                        </Button>
 
-                        </div>
                     </div>
                 </div>
             )}
 
             {/* close button */}
-            <div onClick={onClose} className="absolute z-[51] top-0 left-[50%] -translate-y-20 translate-x-[-50%] w-8 h-8 bg-white rounded-full shadow flex items-center justify-center cursor-pointer hover:bg-gray-100">
+            <div onClick={onClose} className="absolute z-[51] top-0 left-[50%] -translate-y-16 translate-x-[-50%] w-8 h-8 bg-white rounded-full shadow flex items-center justify-center cursor-pointer hover:bg-gray-100">
                 <X />
             </div>
         </div>

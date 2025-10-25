@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import DataTable, { useDataTable } from '@/components/data-table'
-import { productTableColumns } from './product-list-column'
+import { getProductTableColumns } from './product-list-column'
 import { getAllProductsApi } from '@/lib/api/products/productsApis'
 import { Loader } from '@/components/ui/Loader/Loader'
 import { useSearchParams } from 'next/navigation'
@@ -49,12 +49,14 @@ const ProductTableView = (props: Props) => {
         getProducts()
     }, [searchParams])
 
+    const productTableColumns = getProductTableColumns(getProducts)
+
     const { table } = useDataTable({
         data: products?.data?.results || [],
         columns: productTableColumns,
-        pageCount: products?.data?.totalPages || 1,
+        pageCount: products?.data?.totalPages,
         state: {
-            pagination: { pageIndex: 0, pageSize: products?.data?.limit || 1 },
+            pagination: { pageIndex: 0, pageSize: products?.data?.limit},
         },
     })
 

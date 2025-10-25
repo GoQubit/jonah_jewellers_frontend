@@ -32,8 +32,8 @@ export default function InvestorsAndBuyersTabsView() {
     const pathname = usePathname()
 
     return (
-        <div className="w-full">
-            <div className="w-full flex justify-start items-center border-b-4">
+        <div className="w-full overflow-auto">
+            <div className="w-full flex justify-start items-center border-b-4 flex-nowrap">
                 {tabLinks.map(({ name, value, icon: Icon, link }) => (
                     <Link
                         key={value}

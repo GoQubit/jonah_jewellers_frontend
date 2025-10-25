@@ -75,7 +75,7 @@ const TransactionListFilterView = () => {
     }, [])
 
     return (
-        <div className="flex items-center justify-start flex-nowrap gap-5">
+        <div className="flex items-center justify-start flex-nowrap gap-5 overflow-x-auto">
             {/* search input */}
             <div className="w-80 h-10 rounded-md border border-[#BFBFBF] flex items-center focus-within:border-brand px-3 py-1">
                 <Input
@@ -91,9 +91,9 @@ const TransactionListFilterView = () => {
             {/* status dropdown menu */}
             <DropdownMenu>
                 <DropdownMenuTrigger
-                    className='px-3 w-fit h-10 border border-[#BFBFBF] rounded-md focus:outline-none flex flex-row items-center justify-between gap-3'
+                    className='px-3 w-fit h-10 border border-[#BFBFBF] rounded-md focus:outline-none flex flex-row whitespace-nowrap items-center justify-between gap-3'
                 >
-                    <span>
+                    <span className="whitespace-nowrap">
                         <span>Type: </span>
                         <span style={{ color: transactionTypeOptions.find((transactionType) => filters.transactionType === transactionType.value)?.dark_color || "" }}>
                             {transactionTypeOptions.find((transactionType) => filters.transactionType === transactionType.value)?.label || "All"}

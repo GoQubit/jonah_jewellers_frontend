@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import DataTable, { useDataTable } from '@/components/data-table'
-import { orderTableColumns } from './order-list-columns'
+import { getOrderTableColumns } from './order-list-columns'
 import { useSearchParams } from 'next/navigation'
 import { getAllOrdersAdminApi } from '@/lib/api/order/orderApis'
 import { OrderStatus } from '../types'
@@ -46,12 +46,14 @@ const OrderTableView = (props: Props) => {
         getOrders()
     }, [searchParams])
 
+    const orderTableColumns = getOrderTableColumns(getOrders)
+
     const { table } = useDataTable({
         data: orders?.data?.results || [],
         columns: orderTableColumns,
-        pageCount: orders?.data?.totalPages || 1,
+        pageCount: orders?.data?.totalPages,
         state: {
-            pagination: { pageIndex: 0, pageSize: orders?.data?.limit || 1 },
+            pagination: { pageIndex: 0, pageSize: orders?.data?.limit },
         },
     })
 

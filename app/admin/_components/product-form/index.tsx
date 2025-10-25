@@ -18,15 +18,20 @@ import { cn } from '@/utils/cn'
 import { UploadMediaField } from './upload-media-field'
 import { createProductApi, updateProductApi } from '@/lib/api/products/productsApis'
 import { useRouter } from 'next/navigation'
+import { PrimaryImageField } from './primary-image-field'
 
 type Props = {
   productData?: ProductFormSchema | {},
   addProduct?: boolean
+  onClose?: Function
+  getProducts?: Function
 }
 
 const ProductForm = ({
   productData = {},
   addProduct = true,
+  onClose = () => { },
+  getProducts = () => { }
 }: Props) => {
 
   const router = useRouter()
@@ -88,6 +93,8 @@ const ProductForm = ({
         if (response.status === 200) {
           productData = response.data
           form.reset(response.data)
+          getProducts && getProducts()
+          onClose && onClose()
         } else {
           throw new Error("Product update failed!")
         }
@@ -120,21 +127,24 @@ const ProductForm = ({
   }, [values.category])
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-[500px]">
       <FormProvider {...form}>
         <form
           onSubmit={form.handleSubmit(onHandleSubmit, (errors) => {
             console.log("❌ Validation failed:", errors);
           })}
-          className="max-w-[600px] w-full space-y-4 gap-4"
+          className="w-full space-y-4"
         >
-
-          <FieldGroup className='col-start-1 col-span-2'>
+          <FieldGroup className={cn(
+            addProduct
+              ? "grid grid-cols-1 lg:grid-cols-2 gap-4"
+              : 'max-w-[600px]'
+          )}>
             <Controller
               name="category"
               control={form.control}
               render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid} className="gap-1">
+                <Field data-invalid={fieldState.invalid} className="gap-1 col-span-1">
                   <FieldLabel htmlFor="product-form-category" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
                     Category
                   </FieldLabel>
@@ -173,201 +183,144 @@ const ProductForm = ({
 
           {categoryEnum.includes(values?.category!) && (
 
-            <>
-              {/* Product Information */}
-              <Empty className="col-start-1 col-span-2 border border-solid p-5 md:p-5 items-start gap-3">
-                <EmptyHeader className="flex flex-row items-center justify-start">
-                  <Box className="w-4 h-4" />
-                  <span>Product Information</span>
-                </EmptyHeader>
+            <div className={cn(
+              "w-full space-y-4",
+              addProduct
+                ? "grid grid-cols-1 lg:grid-cols-2 gap-4"
+                : "max-w-[600px]"
+            )}>
+              <div className={cn(
+                "w-full space-y-4",
+                addProduct && "col-start-1 col-span-full lg:col-start-1 lg:col-span-1"
+              )}>
 
-                <FieldGroup>
+                {/* Product Information */}
+                <Empty className="border border-solid p-5 md:p-5 space-y-4">
+                  <EmptyHeader className="flex flex-row items-center justify-start">
+                    <Box className="w-4 h-4" />
+                    <span>Product Information</span>
+                  </EmptyHeader>
 
-                  <Controller
-                    name="subCategory"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className='gap-1'>
-                        <FieldLabel htmlFor="product-form-subcategory" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                          Sub Category
-                        </FieldLabel>
-                        <Select
-                          name={field.name}
-                          value={field?.value?.toString()}
-                          onValueChange={(value) => field.onChange(parseInt(value))}
-                          defaultValue={field?.value?.toString()}
-                          disabled={disableForm}
-                        >
-                          <SelectTrigger id="product-form-subcategory" className='flex items-center justify-between !h-12'>
-                            <SelectValue
-                              placeholder="Select Sub Category"
-                              aria-invalid={fieldState.invalid}
-                            />
-                            {subCategories?.isLoading && (<FaSpinner className='w-3 h-3 animate-spin' />)}
-                          </SelectTrigger>
-                          <SelectContent className="w-full bg-white">
-                            {subCategories?.data?.map(option => (
-                              <SelectItem
-                                key={option.id}
-                                value={option.id}
-                                className="w-full pl-8"
-                              >
-                                {option.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
+                  <FieldGroup>
 
-                  <Controller
-                    name="name"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="gap-1">
-                        <FieldLabel htmlFor="product-form-name" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                          Product Name
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          id="product-form-name"
-                          placeholder="Enter product name..."
-                          disabled={disableForm}
-                          className={cn("h-12", fieldState.invalid && "border-red-300")}
-                        />
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
+                    <Controller
+                      name="subCategory"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className='gap-1'>
+                          <FieldLabel htmlFor="product-form-subcategory" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                            Sub Category
+                          </FieldLabel>
+                          <Select
+                            name={field.name}
+                            value={field?.value?.toString()}
+                            onValueChange={(value) => field.onChange(parseInt(value))}
+                            defaultValue={field?.value?.toString()}
+                            disabled={disableForm}
+                          >
+                            <SelectTrigger id="product-form-subcategory" className='flex items-center justify-between !h-12'>
+                              <SelectValue
+                                placeholder="Select Sub Category"
+                                aria-invalid={fieldState.invalid}
+                              />
+                              {subCategories?.isLoading && (<FaSpinner className='w-3 h-3 animate-spin' />)}
+                            </SelectTrigger>
+                            <SelectContent className="w-full bg-white">
+                              {subCategories?.data?.map(option => (
+                                <SelectItem
+                                  key={option.id}
+                                  value={option.id}
+                                  className="w-full pl-8"
+                                >
+                                  {option.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          {fieldState.invalid && (
+                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
 
-                  <Controller
-                    name="description"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="gap-1">
-                        <FieldLabel htmlFor="product-form-description" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                          Description
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          id="product-form-description"
-                          placeholder="Enter product description..."
-                          disabled={disableForm}
-                          className="h-12"
-                        />
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
+                    <Controller
+                      name="name"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="gap-1">
+                          <FieldLabel htmlFor="product-form-name" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                            Product Name
+                          </FieldLabel>
+                          <Input
+                            {...field}
+                            id="product-form-name"
+                            placeholder="Enter product name..."
+                            disabled={disableForm}
+                            className={cn("h-12", fieldState.invalid && "border-red-300")}
+                          />
+                          {fieldState.invalid && (
+                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
 
-                </FieldGroup>
-              </Empty>
+                    <Controller
+                      name="description"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="gap-1">
+                          <FieldLabel htmlFor="product-form-description" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                            Description
+                          </FieldLabel>
+                          <Input
+                            {...field}
+                            id="product-form-description"
+                            placeholder="Enter product description..."
+                            disabled={disableForm}
+                            className="h-12"
+                          />
+                          {fieldState.invalid && (
+                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
 
-              {/* Pricing & Specifications */}
-              <Empty className="col-start-1 col-span-2 border border-solid p-5 md:p-5 items-start gap-3">
-                <EmptyHeader className="flex flex-row items-center justify-start">
-                  <Tag className="w-4 h-4" />
-                  <span>Pricing & Specifications</span>
-                </EmptyHeader>
+                  </FieldGroup>
+                </Empty>
 
-                <FieldGroup className='grid grid-cols-2 gap-4'>
+                {/* Pricing & Specifications */}
+                <Empty className="col-start-1 col-span-2 border border-solid p-5 md:p-5 items-start gap-3">
+                  <EmptyHeader className="flex flex-row items-center justify-start">
+                    <Tag className="w-4 h-4" />
+                    <span>Pricing & Specifications</span>
+                  </EmptyHeader>
 
-                  <Controller
-                    name={
-                      values.category === "GOLD"
-                        ? "gold.color"
-                        : (
-                          values.category === "DIAMOND"
-                            ? "diamond.color"
-                            : "silver.color"
-                        )
-                    }
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                        <FieldLabel htmlFor="product-form-color" className="text-gray-500">
-                          Material Color
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          id="product-form-color"
-                          placeholder="Enter Color"
-                          disabled={disableForm}
-                          className='h-12'
-                        />
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
+                  <FieldGroup className='grid grid-cols-2 gap-4'>
 
-                  <Controller
-                    name={
-                      values.category === "GOLD"
-                        ? "gold.grossWeight"
-                        : (
-                          values.category === "DIAMOND"
-                            ? "diamond.grossWeight"
-                            : "silver.grossWeight"
-                        )
-                    }
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                        <FieldLabel htmlFor="product-form-grossWeight" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                          Gross Weight (in grams)
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          type="number"
-                          id="product-form-grossWeight"
-                          placeholder="Enter Gross weight. eg: 12.1"
-                          disabled={disableForm}
-                          onChange={e => field.onChange(parseFloat(e.target.value))}
-                          value={field.value?.toString()}
-                          min={0}
-                          step="any"
-                          className='h-12'
-                        />
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
-
-                  {["GOLD", "SILVER"].includes(values.category!) && (
                     <Controller
                       name={
                         values.category === "GOLD"
-                          ? "gold.netWeight"
-                          : "silver.netWeight"
+                          ? "gold.color"
+                          : (
+                            values.category === "DIAMOND"
+                              ? "diamond.color"
+                              : "silver.color"
+                          )
                       }
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-netWeight" className="text-gray-500">
-                            Net Weight (in grams)
+                          <FieldLabel htmlFor="product-form-color" className="text-gray-500">
+                            Material Color
                           </FieldLabel>
                           <Input
                             {...field}
-                            type="number"
-                            id="product-form-netWeight"
-                            placeholder="Enter net weight. eg: 25.5"
+                            id="product-form-color"
+                            placeholder="Enter Color"
                             disabled={disableForm}
-                            onChange={e => field.onChange(parseFloat(e.target.value))}
-                            value={field.value?.toString()}
-                            min={0}
-                            step="any"
                             className='h-12'
                           />
                           {fieldState.invalid && (
@@ -376,22 +329,28 @@ const ProductForm = ({
                         </Field>
                       )}
                     />
-                  )}
 
-                  {["DIAMOND"].includes(values.category!) && (
                     <Controller
-                      name="diamond.metalWeight"
+                      name={
+                        values.category === "GOLD"
+                          ? "gold.grossWeight"
+                          : (
+                            values.category === "DIAMOND"
+                              ? "diamond.grossWeight"
+                              : "silver.grossWeight"
+                          )
+                      }
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-diamond-metalWeight" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                            Metal Weight (in grams)
+                          <FieldLabel htmlFor="product-form-grossWeight" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                            Gross Weight (in grams)
                           </FieldLabel>
                           <Input
                             {...field}
                             type="number"
-                            id="product-form-diamond-metalWeight"
-                            placeholder="Enter Metal Weight. eg: 22.2"
+                            id="product-form-grossWeight"
+                            placeholder="Enter Gross weight. eg: 12.1"
                             disabled={disableForm}
                             onChange={e => field.onChange(parseFloat(e.target.value))}
                             value={field.value?.toString()}
@@ -400,98 +359,324 @@ const ProductForm = ({
                             className='h-12'
                           />
                           {fieldState.invalid && (
-                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            <FieldError errors={[fieldState.error]} />
                           )}
                         </Field>
                       )}
                     />
-                  )}
 
-                  {["DIAMOND"].includes(values.category!) && (
+                    {["GOLD", "SILVER"].includes(values.category!) && (
+                      <Controller
+                        name={
+                          values.category === "GOLD"
+                            ? "gold.netWeight"
+                            : "silver.netWeight"
+                        }
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-netWeight" className="text-gray-500">
+                              Net Weight (in grams)
+                            </FieldLabel>
+                            <Input
+                              {...field}
+                              type="number"
+                              id="product-form-netWeight"
+                              placeholder="Enter net weight. eg: 25.5"
+                              disabled={disableForm}
+                              onChange={e => field.onChange(parseFloat(e.target.value))}
+                              value={field.value?.toString()}
+                              min={0}
+                              step="any"
+                              className='h-12'
+                            />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
+                    {["DIAMOND"].includes(values.category!) && (
+                      <Controller
+                        name="diamond.metalWeight"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-diamond-metalWeight" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                              Metal Weight (in grams)
+                            </FieldLabel>
+                            <Input
+                              {...field}
+                              type="number"
+                              id="product-form-diamond-metalWeight"
+                              placeholder="Enter Metal Weight. eg: 22.2"
+                              disabled={disableForm}
+                              onChange={e => field.onChange(parseFloat(e.target.value))}
+                              value={field.value?.toString()}
+                              min={0}
+                              step="any"
+                              className='h-12'
+                            />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
+                    {["DIAMOND"].includes(values.category!) && (
+                      <Controller
+                        name="diamond.stoneWeightInCarat"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-stoneWeightInCarat" className="text-gray-500">
+                              Stone Weight (in carat)
+                            </FieldLabel>
+                            <Input
+                              {...field}
+                              type="number"
+                              id="product-form-stoneWeightInCarat"
+                              placeholder="Enter Stone weight. eg: 22"
+                              disabled={disableForm}
+                              onChange={e => field.onChange(parseFloat(e.target.value))}
+                              value={field.value?.toString()}
+                              min={0}
+                              step="any"
+                              className='h-12'
+                            />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
+                    {["DIAMOND"].includes(values.category!) && (
+                      <Controller
+                        name="diamond.stoneWeightInGrams"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-stoneWeightInGrams" className="text-gray-500">
+                              Stone Weight (in grams)
+                            </FieldLabel>
+                            <Input
+                              {...field}
+                              type="number"
+                              id="product-form-stoneWeightInGrams"
+                              placeholder="Enter Stone weight. eg: 25.5"
+                              disabled={disableForm}
+                              onChange={e => field.onChange(parseFloat(e.target.value))}
+                              value={field.value?.toString()}
+                              min={0}
+                              step="any"
+                              className='h-12'
+                            />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
+                    {["GOLD"].includes(values.category!) && (
+                      <Controller
+                        name="gold.goldPurity"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-gold-goldpurity" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                              Gold Karats
+                            </FieldLabel>
+                            <Select
+                              name={field.name}
+                              value={field.value?.toString()}
+                              onValueChange={(value) => field.onChange(parseInt(value))}
+                              defaultValue={field.value?.toString()}
+                              disabled={disableForm}
+                            >
+                              <SelectTrigger id="product-form-gold-goldpurity" className='flex items-center justify-between !h-12'>
+                                <SelectValue
+                                  placeholder="Select Karats"
+                                  aria-invalid={fieldState.invalid}
+                                />
+                              </SelectTrigger>
+                              <SelectContent className="w-full bg-white">
+                                {goldPurityOptions?.map(option => (
+                                  <SelectItem
+                                    key={option.value}
+                                    value={option.value.toString()}
+                                    className="w-full pl-8"
+                                  >
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
+                    {["SILVER"].includes(values.category!) && (
+                      <Controller
+                        name="silver.silverPurityGrade"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-silver-silverPurityGrade" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                              Silver Purity
+                            </FieldLabel>
+                            <Input
+                              {...field}
+                              id="product-form-silver-silverPurityGrade"
+                              placeholder="Enter Silver Purity Grade"
+                              disabled={disableForm}
+                              className='h-12'
+                            />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
+                    {["DIAMOND"].includes(values.category!) && (
+                      <Controller
+                        name="diamond.clarityGrade"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-diamond-clarityGrade" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                              Clarity Grade
+                            </FieldLabel>
+                            <Input
+                              {...field}
+                              id="product-form-diamond-clarityGrade"
+                              placeholder="Enter Clarity Grade"
+                              disabled={disableForm}
+                              className='h-12'
+                            />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
+                    {["DIAMOND"].includes(values.category!) && (
+                      <Controller
+                        name="diamond.metalUsed"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-diamond-metalUsed" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                              Metal Used
+                            </FieldLabel>
+                            <Input
+                              {...field}
+                              id="product-form-diamond-metalUsed"
+                              placeholder="Enter Metal used"
+                              disabled={disableForm}
+                              className='h-12'
+                            />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
+                    {["DIAMOND"].includes(values.category!) && (
+                      <Controller
+                        name="diamond.metalPurity"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-diamond-metalPurity" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                              Metal Purity
+                            </FieldLabel>
+                            <Input
+                              {...field}
+                              id="product-form-diamond-metalPurity"
+                              placeholder="Enter Metal Purity eg: 18K"
+                              disabled={disableForm}
+                              className='h-12'
+                            />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
+                    {["DIAMOND"].includes(values.category!) && (
+                      <Controller
+                        name="diamond.noOfDiamonds"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-diamond-noOfDiamonds" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                              No of Diamonds
+                            </FieldLabel>
+                            <Input
+                              {...field}
+                              type="number"
+                              id="product-form-diamond-noOfDiamonds"
+                              placeholder="Enter No of diamonds. eg: 3"
+                              disabled={disableForm}
+                              onChange={e => field.onChange(parseInt(e.target.value))}
+                              value={field.value?.toString()}
+                              min={0}
+                              className='h-12'
+                            />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
                     <Controller
-                      name="diamond.stoneWeightInCarat"
+                      name="targetGender"
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-stoneWeightInCarat" className="text-gray-500">
-                            Stone Weight (in carat)
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            type="number"
-                            id="product-form-stoneWeightInCarat"
-                            placeholder="Enter Stone weight. eg: 22"
-                            disabled={disableForm}
-                            onChange={e => field.onChange(parseFloat(e.target.value))}
-                            value={field.value?.toString()}
-                            min={0}
-                            step="any"
-                            className='h-12'
-                          />
-                          {fieldState.invalid && (
-                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  )}
-
-                  {["DIAMOND"].includes(values.category!) && (
-                    <Controller
-                      name="diamond.stoneWeightInGrams"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-stoneWeightInGrams" className="text-gray-500">
-                            Stone Weight (in grams)
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            type="number"
-                            id="product-form-stoneWeightInGrams"
-                            placeholder="Enter Stone weight. eg: 25.5"
-                            disabled={disableForm}
-                            onChange={e => field.onChange(parseFloat(e.target.value))}
-                            value={field.value?.toString()}
-                            min={0}
-                            step="any"
-                            className='h-12'
-                          />
-                          {fieldState.invalid && (
-                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  )}
-
-                  {["GOLD"].includes(values.category!) && (
-                    <Controller
-                      name="gold.goldPurity"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-gold-goldpurity" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                            Gold Karats
+                          <FieldLabel htmlFor="product-form-targetGender" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                            Gender
                           </FieldLabel>
                           <Select
                             name={field.name}
-                            value={field.value?.toString()}
-                            onValueChange={(value) => field.onChange(parseInt(value))}
-                            defaultValue={field.value?.toString()}
+                            value={field.value}
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
                             disabled={disableForm}
                           >
-                            <SelectTrigger id="product-form-gold-goldpurity" className='flex items-center justify-between !h-12'>
+                            <SelectTrigger id="product-form-targetGender" className='flex items-center justify-between !h-12'>
                               <SelectValue
-                                placeholder="Select Karats"
+                                placeholder="Select Gender"
                                 aria-invalid={fieldState.invalid}
                               />
                             </SelectTrigger>
                             <SelectContent className="w-full bg-white">
-                              {goldPurityOptions?.map(option => (
+                              {genderOptions?.map(option => (
                                 <SelectItem
                                   key={option.value}
-                                  value={option.value.toString()}
+                                  value={option.value}
                                   className="w-full pl-8"
                                 >
                                   {option.label}
@@ -505,122 +690,24 @@ const ProductForm = ({
                         </Field>
                       )}
                     />
-                  )}
 
-                  {["SILVER"].includes(values.category!) && (
                     <Controller
-                      name="silver.silverPurityGrade"
+                      name="stock"
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-silver-silverPurityGrade" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                            Silver Purity
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            id="product-form-silver-silverPurityGrade"
-                            placeholder="Enter Silver Purity Grade"
-                            disabled={disableForm}
-                            className='h-12'
-                          />
-                          {fieldState.invalid && (
-                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  )}
-
-                  {["DIAMOND"].includes(values.category!) && (
-                    <Controller
-                      name="diamond.clarityGrade"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-diamond-clarityGrade" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                            Clarity Grade
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            id="product-form-diamond-clarityGrade"
-                            placeholder="Enter Clarity Grade"
-                            disabled={disableForm}
-                            className='h-12'
-                          />
-                          {fieldState.invalid && (
-                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  )}
-
-                  {["DIAMOND"].includes(values.category!) && (
-                    <Controller
-                      name="diamond.metalUsed"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-diamond-metalUsed" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                            Metal Used
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            id="product-form-diamond-metalUsed"
-                            placeholder="Enter Metal used"
-                            disabled={disableForm}
-                            className='h-12'
-                          />
-                          {fieldState.invalid && (
-                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  )}
-
-                  {["DIAMOND"].includes(values.category!) && (
-                    <Controller
-                      name="diamond.metalPurity"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-diamond-metalPurity" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                            Metal Purity
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            id="product-form-diamond-metalPurity"
-                            placeholder="Enter Metal Purity eg: 18K"
-                            disabled={disableForm}
-                            className='h-12'
-                          />
-                          {fieldState.invalid && (
-                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  )}
-
-                  {["DIAMOND"].includes(values.category!) && (
-                    <Controller
-                      name="diamond.noOfDiamonds"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-diamond-noOfDiamonds" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                            No of Diamonds
+                          <FieldLabel htmlFor="product-form-stock" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                            Stock
                           </FieldLabel>
                           <Input
                             {...field}
                             type="number"
-                            id="product-form-diamond-noOfDiamonds"
-                            placeholder="Enter No of diamonds. eg: 3"
-                            disabled={disableForm}
+                            id="product-form-stock"
+                            placeholder="Enter product stock"
                             onChange={e => field.onChange(parseInt(e.target.value))}
                             value={field.value?.toString()}
                             min={0}
+                            disabled={disableForm}
                             className='h-12'
                           />
                           {fieldState.invalid && (
@@ -629,120 +716,54 @@ const ProductForm = ({
                         </Field>
                       )}
                     />
-                  )}
 
-                  <Controller
-                    name="targetGender"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                        <FieldLabel htmlFor="product-form-targetGender" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                          Gender
-                        </FieldLabel>
-                        <Select
-                          name={field.name}
-                          value={field.value}
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          disabled={disableForm}
-                        >
-                          <SelectTrigger id="product-form-targetGender" className='flex items-center justify-between !h-12'>
-                            <SelectValue
-                              placeholder="Select Gender"
-                              aria-invalid={fieldState.invalid}
+                    {["DIAMOND"].includes(values.category!) && (
+                      <Controller
+                        name="diamond.price"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-price" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                              Price
+                            </FieldLabel>
+                            <Input
+                              {...field}
+                              type="number"
+                              id="product-form-price"
+                              placeholder="Enter Price"
+                              disabled={disableForm}
+                              onChange={e => field.onChange(parseFloat(e.target.value))}
+                              value={field.value?.toString()}
+                              min={0}
+                              step="any"
+                              className='h-12'
                             />
-                          </SelectTrigger>
-                          <SelectContent className="w-full bg-white">
-                            {genderOptions?.map(option => (
-                              <SelectItem
-                                key={option.value}
-                                value={option.value}
-                                className="w-full pl-8"
-                              >
-                                {option.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
                         )}
-                      </Field>
+                      />
                     )}
-                  />
 
-                  <Controller
-                    name="stock"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                        <FieldLabel htmlFor="product-form-stock" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                          Stock
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          type="number"
-                          id="product-form-stock"
-                          placeholder="Enter product stock"
-                          onChange={e => field.onChange(parseInt(e.target.value))}
-                          value={field.value?.toString()}
-                          min={0}
-                          disabled={disableForm}
-                          className='h-12'
-                        />
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
-
-                  <Controller
-                    name="basePrice"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                        <FieldLabel htmlFor="product-form-basePrice" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                          Base Price
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          type="number"
-                          id="product-form-basePrice"
-                          placeholder="Enter Base Price"
-                          disabled={disableForm}
-                          onChange={e => field.onChange(parseFloat(e.target.value))}
-                          value={field.value?.toString()}
-                          min={0}
-                          step="any"
-                          className='h-12'
-                        />
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
-
-                  {["DIAMOND"].includes(values.category!) && (
                     <Controller
-                      name="diamond.price"
+                      name="makingCharges"
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-price" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                            Price
+                          <FieldLabel htmlFor="product-form-makingCharges" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                            Making Charges
                           </FieldLabel>
                           <Input
                             {...field}
                             type="number"
-                            id="product-form-price"
-                            placeholder="Enter Price"
-                            disabled={disableForm}
+                            id="product-form-makingCharges"
+                            placeholder="Enter Making Charges"
                             onChange={e => field.onChange(parseFloat(e.target.value))}
                             value={field.value?.toString()}
                             min={0}
                             step="any"
+                            disabled={disableForm}
                             className='h-12'
                           />
                           {fieldState.invalid && (
@@ -751,163 +772,156 @@ const ProductForm = ({
                         </Field>
                       )}
                     />
-                  )}
 
-                  <Controller
-                    name="makingCharges"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                        <FieldLabel htmlFor="product-form-makingCharges" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                          Making Charges
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          type="number"
-                          id="product-form-makingCharges"
-                          placeholder="Enter Making Charges"
-                          onChange={e => field.onChange(parseFloat(e.target.value))}
-                          value={field.value?.toString()}
-                          min={0}
-                          step="any"
-                          disabled={disableForm}
-                          className='h-12'
-                        />
-                        {fieldState.invalid && (
-                          <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
-
-                  {["GOLD", "SILVER"].includes(values.category!) && (
-                    <Controller
-                      name={
-                        values.category === "GOLD"
-                          ? "gold.hallmarked"
-                          : "silver.hallmarked"
-                      }
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid} orientation="horizontal" className="col-span-2 border rounded-md px-2 py-3">
-                          <FieldLabel htmlFor="product-form-hallmarked" className='grow'>
-                            Hallmark
-                          </FieldLabel>
-                          <div className="w-fit">
-                            <Switch
-                              id="product-form-hallmarked"
-                              checked={!!field.value}
-                              onCheckedChange={field.onChange}
-                              disabled={disableForm}
-                              className='bg-gray-200'
-                            />
-                          </div>
-                          {fieldState.invalid && (
-                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  )}
-
-                  <Controller
-                    name="tags"
-                    control={form.control}
-                    render={({ field, fieldState }) => {
-                      const [inputValue, setInputValue] = useState("");
-
-                      const addTag = () => {
-                        const trimmed = inputValue.trim();
-                        if (trimmed && !(field?.value || []).includes(trimmed)) {
-                          field.onChange([...(field?.value || []), trimmed]);
-                          setInputValue("");
+                    {["GOLD", "SILVER"].includes(values.category!) && (
+                      <Controller
+                        name={
+                          values.category === "GOLD"
+                            ? "gold.hallmarked"
+                            : "silver.hallmarked"
                         }
-                      };
-
-                      const removeTag = (tag: string) => {
-                        field.onChange(field.value.filter((t: string) => t !== tag));
-                      };
-
-                      const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          addTag();
-                        }
-                      };
-
-                      return (
-                        <Field data-invalid={fieldState.invalid} className="col-span-2 gap-1">
-                          <FieldLabel
-                            htmlFor="product-form-tags"
-                            className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1"
-                          >
-                            Occasion Tags
-                          </FieldLabel>
-
-                          <div className="flex flex-col gap-2">
-                            <div className="flex items-center gap-2">
-                              <Input
-                                id="product-form-tags"
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value.toLowerCase())}
-                                onKeyDown={handleKeyDown}
-                                placeholder="Enter tag and press Enter or ✓"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} orientation="horizontal" className="col-span-2 border rounded-md px-2 py-3">
+                            <FieldLabel htmlFor="product-form-hallmarked" className='grow'>
+                              Hallmark
+                            </FieldLabel>
+                            <div className="w-fit">
+                              <Switch
+                                id="product-form-hallmarked"
+                                checked={!!field.value}
+                                onCheckedChange={field.onChange}
                                 disabled={disableForm}
-                                className="h-12 flex-1 capitalize"
+                                className='bg-gray-200'
                               />
-                              <button
-                                type="button"
-                                onClick={addTag}
-                                disabled={disableForm}
-                                className="border border-gray-300 bg-gray-100 hover:bg-gray-200 rounded px-3 py-2"
-                              >
-                                ✓
-                              </button>
                             </div>
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
 
-                            <div className="flex flex-wrap gap-2">
-                              {field?.value?.map((tag: string, i: number) => (
-                                <div
-                                  key={i}
-                                  className="flex items-center gap-2 bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm capitalize"
+                    <Controller
+                      name="tags"
+                      control={form.control}
+                      render={({ field, fieldState }) => {
+                        const [inputValue, setInputValue] = useState("");
+
+                        const addTag = () => {
+                          const trimmed = inputValue.trim();
+                          if (trimmed && !(field?.value || []).includes(trimmed)) {
+                            field.onChange([...(field?.value || []), trimmed]);
+                            setInputValue("");
+                          }
+                        };
+
+                        const removeTag = (tag: string) => {
+                          field.onChange(field.value.filter((t: string) => t !== tag));
+                        };
+
+                        const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            addTag();
+                          }
+                        };
+
+                        return (
+                          <Field data-invalid={fieldState.invalid} className="col-span-2 gap-1">
+                            <FieldLabel
+                              htmlFor="product-form-tags"
+                              className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1"
+                            >
+                              Occasion Tags
+                            </FieldLabel>
+
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-center gap-2">
+                                <Input
+                                  id="product-form-tags"
+                                  value={inputValue}
+                                  onChange={(e) => setInputValue(e.target.value.toLowerCase())}
+                                  onKeyDown={handleKeyDown}
+                                  placeholder="Enter tag and press Enter or ✓"
+                                  disabled={disableForm}
+                                  className="h-12 flex-1 capitalize"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={addTag}
+                                  disabled={disableForm}
+                                  className="border border-gray-300 bg-gray-100 hover:bg-gray-200 rounded px-3 py-2"
                                 >
-                                  <span>{tag}</span>
-                                  <button
-                                    type="button"
-                                    onClick={() => removeTag(tag)}
-                                    disabled={disableForm}
-                                    className="text-gray-500 hover:text-red-600"
+                                  ✓
+                                </button>
+                              </div>
+
+                              <div className="flex flex-wrap gap-2">
+                                {field?.value?.map((tag: string, i: number) => (
+                                  <div
+                                    key={i}
+                                    className="flex items-center gap-2 bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm capitalize"
                                   >
-                                    ✕
-                                  </button>
-                                </div>
-                              ))}
+                                    <span>{tag}</span>
+                                    <button
+                                      type="button"
+                                      onClick={() => removeTag(tag)}
+                                      disabled={disableForm}
+                                      className="text-gray-500 hover:text-red-600"
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                          {fieldState.invalid && (
-                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      );
-                    }}
-                  />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        );
+                      }}
+                    />
 
-                </FieldGroup>
-              </Empty>
+                  </FieldGroup>
+                </Empty>
 
-              {/* Images & Videos */}
-              <Empty className="col-start-1 md:col-start-3 col-span-2 border border-solid p-5 md:p-5 items-start gap-3">
-                <EmptyHeader className="flex flex-row items-center justify-start">
-                  <Tag className="w-4 h-4" />
-                  <span>Images & Videos</span>
-                </EmptyHeader>
+              </div>
 
-                <FieldGroup>
-                  <UploadMediaField />
-                </FieldGroup>
-              </Empty>
+              <div className={cn(
+                "w-full space-y-4",
+                addProduct && "col-start-1 col-span-full lg:col-start-2 lg:col-span-1"
+              )}>
 
-              <FieldGroup>
+                {/* Thumbnail Image */}
+                <Empty className="border border-solid p-5 md:p-5 items-start gap-3">
+                  <EmptyHeader className="flex flex-row items-center justify-start">
+                    <Tag className="w-4 h-4" />
+                    <span>Thumbnail Image</span>
+                  </EmptyHeader>
+
+                  <FieldGroup>
+                    <PrimaryImageField />
+                  </FieldGroup>
+                </Empty>
+
+                {/* Images & Videos */}
+                <Empty className="border border-solid p-5 md:p-5 items-start gap-3">
+                  <EmptyHeader className="flex flex-row items-center justify-start">
+                    <Tag className="w-4 h-4" />
+                    <span>Images & Videos</span>
+                  </EmptyHeader>
+
+                  <FieldGroup>
+                    <UploadMediaField />
+                  </FieldGroup>
+                </Empty>
+
+              </div>
+
+              <FieldGroup className="col-start-1 col-span-full">
                 {form.formState.errors?.root && (
                   <span className='text-left text-red-500'>
                     {form.formState.errors?.root?.message}
@@ -932,7 +946,7 @@ const ProductForm = ({
                 </Field>
               </FieldGroup>
 
-            </>
+            </div>
           )}
         </form>
       </FormProvider>

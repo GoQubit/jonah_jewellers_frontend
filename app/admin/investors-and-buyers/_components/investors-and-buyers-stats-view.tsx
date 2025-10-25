@@ -30,7 +30,7 @@ const statsData: StatsCardProp[] = [
 
 const InvestorsAndBuyersStatsView = () => {
     return (
-        <div className="flex flex-row items-center gap-5 overflow-x-auto">
+        <div className="flex flex-row flex-nowrap items-center gap-5 overflow-x-auto">
             {statsData.map((stat, index) => (
                 <StatsCard key={index} {...stat} />
             ))}

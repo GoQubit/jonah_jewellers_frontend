@@ -37,7 +37,7 @@ const statsData: StatsCardProp[] = [
 
 const OrderStatsView = () => {
     return (
-        <div className="flex flex-row items-center gap-5">
+        <div className="flex flex-row flex-nowrap items-center gap-5 overflow-x-auto">
             {statsData.map((stat, index) => (
                 <StatsCard key={index} {...stat} />
             ))}
