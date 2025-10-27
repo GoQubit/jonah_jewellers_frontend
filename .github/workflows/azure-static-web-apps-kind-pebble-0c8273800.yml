@@ -1,5 +1,11 @@
 name: Azure Static Web Apps CI/CD
 
+env:
+  NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+  RAZORPAY_KEY_ID: ${{ secrets.RAZORPAY_KEY_ID }}
+  RAZORPAY_KEY_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
+  NEXT_PUBLIC_RAZORPAY_KEY_ID: ${{ secrets.NEXT_PUBLIC_RAZORPAY_KEY_ID }}
+
 on:
   push:
     branches:
@@ -56,3 +62,4 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           action: "close"
+
