@@ -37,13 +37,6 @@ const KittyDashboard = () => {
     fetchDashboardInfo()
   }, [])
 
-  const statsData = {
-    totalInvestmentValue: 59048,
-    availableForShopping: 26000,
-    monthlyCommitment: 9500,
-    activePlans: { current: 3, total: 4 },
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* <HeaderWithAccount /> */}

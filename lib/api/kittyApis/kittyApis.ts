@@ -1,3 +1,4 @@
+import { admin_url } from "@/lib/apiUrls/urlConstants"
 import axiosInstance from "@/lib/axiosInstances/axiosInstance"
 
 // kitty Enrollment api =====>>
@@ -44,13 +45,35 @@ interface kittyTransectionData {
   kittyEnrolledId: string,
   amount: number,
   transactionId: string,
-  proofImage:string
+  proofImage: string
 }
 
 
 export const kittyTransectionApi = async (payload: kittyTransectionData) => {
   try {
     const response = await axiosInstance.post(`kitty-transaction`, payload)
+    return response
+  } catch (error) {
+    return
+  }
+}
+
+// get kitty users QR transaction api 
+export const getUserQRTransactionApi = async (params?: any) => {
+  try {
+    const response = await axiosInstance.get(`qr-transaction`, {
+      params: params
+    })
+    return response
+  } catch (error) {
+    return
+  }
+}
+
+// fetch user's kitty dashboard wallet info api =======>>
+export const kittyInvestmentDashboardAnalyticsApi = async () => {
+  try {
+    const response = await axiosInstance.get(`${admin_url}/kitty-investment-overview`)
     return response
   } catch (error) {
     return

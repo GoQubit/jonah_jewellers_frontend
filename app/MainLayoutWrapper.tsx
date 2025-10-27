@@ -11,6 +11,7 @@ const excludeHeaderPathRegex = [
   /^\/orders?$/,
   /^\/profile?$/,
   /^\/payment?$/,
+  /^\/kitty-dashboard.*?$/,
   /^\/seller-dashboard.*?$/,
 ]
 const excludeFooterPathRegex = [/^\/admin.*?$/]

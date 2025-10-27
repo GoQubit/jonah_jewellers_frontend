@@ -7,15 +7,41 @@ import CartItems from './cartComponents/CartItems'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/redux/store'
 import EmptyCart from '../ui/emptyCart'
+import useIsAuth from '@/hooks/useIsAuth'
+import { getUserKittyDashboardInfoApi } from '@/lib/api/kittyApis/kittyApis'
+import { getSellerDashboardInfoApi } from '@/lib/api/sellerApis/sellerInvestmentsApis'
 
 const CartPage = () => {
+  const user = useSelector((state: RootState) => state.user)
   const { items } = useSelector((state: RootState) => state.cart)
   const [cartStep, setCartStep] = useState('cartItems');
   const [useWalletCash, setUseWalletCash] = useState(false)
+  const [availableWalletCash, setAvailableWalletCash] = useState(0)
+  const [buyerWallet, setBuyerWallet] = useState(null);
+  const [sellerWallet, setSellerWallet] = useState(null);
   const [promoCode, setPromoCode] = useState("")
+  const isAuth = useIsAuth()
 
-  const walletCash = 25000 // Example wallet cash, replace with actual user wallet cash
+  const fetchBuyerWallet = async () => {
+    const res = await getUserKittyDashboardInfoApi();
+    if (res.status === 200) {
+      setBuyerWallet(res?.data)
+      setAvailableWalletCash(res?.data?.availableForShopping)
+    }
+  }
 
+  const fetchSellerWallet = async () => {
+    const res = await getSellerDashboardInfoApi();
+    if (res.status === 200) {
+      setSellerWallet(res?.data)
+      setAvailableWalletCash(res?.data?.availableToWithdraw)
+    }
+  }
+
+  useEffect(() => {
+    if (isAuth && user.role === 'BUYER') fetchBuyerWallet()
+    if (isAuth && user.role === 'SELLER') fetchSellerWallet()
+  }, [])
 
   // ✅ If no items in cart, show empty cart UI
   if (!items || items.length === 0) {
@@ -41,7 +67,7 @@ const CartPage = () => {
         <ChooseAddress
           walletCashUsed={useWalletCash}
           coupon={promoCode}
-          walletCash={walletCash}
+          walletCash={availableWalletCash}
         />
       }
       {
@@ -57,7 +83,7 @@ const CartPage = () => {
               useWalletCash={useWalletCash}
               promoCode={promoCode}
               setPromoCode={setPromoCode}
-              walletCash={walletCash}
+              walletCash={availableWalletCash}
             />
           </div>
         </div>

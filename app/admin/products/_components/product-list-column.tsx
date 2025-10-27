@@ -153,7 +153,7 @@ export const getProductTableColumns = (getProducts: Function) => {
                 )
             },
             cell: ({ row }: { row: any }) => {
-                let status = (row.original?.stock && row.original?.stock > 1) ? "active" : "out_of_stock"
+                let status = (row.original?.stock && row.original?.stock > 0) ? "active" : "out_of_stock"
                 const statusOption = productStatusOptions.find((option) => option.value === status);
                 return (
                     <div className={"w-32 py-0.5 rounded border text-sm font-medium text-center capitalize"} style={{

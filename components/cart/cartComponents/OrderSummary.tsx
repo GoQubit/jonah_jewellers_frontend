@@ -140,19 +140,22 @@ export function OrderSummary({
           )}
 
           {/* Wallet Checkbox */}
-          <div className="flex items-center space-x-2 py-2 font-nunito">
-            <Checkbox
-              id="wallet-cash"
-              checked={useWalletCash}
-              onCheckedChange={(checked) => setUseWalletCash(checked === true)}
-            />
-            <label
-              htmlFor="wallet-cash"
-              className=" text-sm md:text-base text-gray-700 cursor-pointer"
-            >
-              Use wallet cash (Available: {formatPrice(walletCash)})
-            </label>
-          </div>
+          {
+            isAuth && walletCash > 0 &&
+            <div className="flex items-center space-x-2 py-2 font-nunito">
+              <Checkbox
+                id="wallet-cash"
+                checked={useWalletCash}
+                onCheckedChange={(checked) => setUseWalletCash(checked === true)}
+              />
+              <label
+                htmlFor="wallet-cash"
+                className=" text-sm md:text-base text-gray-700 cursor-pointer"
+              >
+                Use wallet cash (Available: {formatPrice(walletCash)})
+              </label>
+            </div>
+          }
 
           {useWalletCash && (
             <div className="flex items-center justify-between text-sm font-nunito text-green-600">

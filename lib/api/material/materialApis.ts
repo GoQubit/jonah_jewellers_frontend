@@ -3,7 +3,7 @@ import axiosInstance from "@/lib/axiosInstances/axiosInstance"
 // get Material Price api =====>>
 export const getMaterialPriceApi = async () => {
   try {
-    const response = await axiosInstance.get(`/material-prices`)
+    const response = await axiosInstance.get(`material-prices`)
     return response
   } catch (error) {
     return
@@ -17,7 +17,7 @@ type MaterialPricePayload = {
 // create Material Price api =====>>
 export const createMaterialPriceApi = async (payload: MaterialPricePayload) => {
   try {
-    const response = await axiosInstance.post(`/material-prices`, payload)
+    const response = await axiosInstance.post(`material-prices`, payload)
     return response
   } catch (error) {
     return
@@ -27,7 +27,7 @@ export const createMaterialPriceApi = async (payload: MaterialPricePayload) => {
 // update Material Price api =====>>
 export const updateMaterialPriceApi = async (payload: MaterialPricePayload) => {
   try {
-    const response = await axiosInstance.patch(`/material-prices`, payload)
+    const response = await axiosInstance.put(`material-prices/`, payload)
     return response
   } catch (error) {
     return
