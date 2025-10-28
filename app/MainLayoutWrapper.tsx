@@ -8,7 +8,7 @@ import { ToastContainer } from 'react-toastify'
 const excludeHeaderPathRegex = [
   /^\/cart?$/,
   /^\/admin.*?$/,
-  /^\/orders?$/,
+  /^\/orders.*?$/,
   /^\/profile?$/,
   /^\/payment?$/,
   /^\/kitty-dashboard.*?$/,

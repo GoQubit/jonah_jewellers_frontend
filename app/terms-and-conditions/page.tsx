@@ -1,106 +1,209 @@
-import React from 'react'
+"use client";
+import React from "react";
 
-
-const COMPANY_NAME = "Jonah Jewellers";
-const COMPANY_URL = "https://www.jonahjewellers.com";
-const CONTACT_EMAIL = "support@jonahjewellers.com";
-const EFFECTIVE_DATE = "October 28, 2025";
-
-const page = () => {
+const TermsAndConditionsPage = () => {
   return (
-    <main className="min-h-screen bg-[#F9FAFB] p-8">
-      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-sm border p-6">
-        {/* Header */}
-        <header className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-900">
-            Terms and conditions
-          </h1>
-        </header>
-        <section id="terms" className="prose prose-sm max-w-none text-gray-800">
-          {/* <h2 className="text-lg font-semibold">Terms &amp; Conditions</h2> */}
-          <p>
-            Please read these Terms &amp; Conditions ("Terms") carefully before using {COMPANY_NAME}'s
-            website and purchasing products. By using our site and placing orders you agree to these
-            Terms.
-          </p>
+    <div className="wrapper px-6 py-12 text-gray-800">
+      <h1 className="text-3xl font-bold mb-8 text-center text-gray-900">
+        Terms & Conditions
+      </h1>
 
-          <h3 className="mt-4 font-medium">1. Orders &amp; Pricing</h3>
-          <p>
-            All orders are subject to acceptance and availability. We reserve the right to cancel
-            or refuse any order for any reason, including product unavailability, errors in price
-            or product information, or suspected fraud. Prices displayed on the site are in your
-            chosen currency and may include taxes where applicable.
-          </p>
+      <p className="mb-6">
+        Please read these Terms & Conditions ("Terms") carefully before using
+        <strong> Jonah Jewellers’ </strong> website or purchasing any products
+        and services. By using our website, accessing any content, or placing an
+        order, you agree to be bound by these terms.
+      </p>
 
-          <h3 className="mt-4 font-medium">2. Payment</h3>
-          <p>
-            We accept payments through our third-party payment processors. We never store your full
-            card details on our servers; payment information is handled according to the provider's
-            security practices. By placing an order you authorize us to charge your selected
-            payment method for the total amount.
-          </p>
+      {/* Orders & Pricing */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">1. Orders & Pricing</h2>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>All orders are subject to acceptance and availability.</li>
+          <li>
+            We reserve the right to cancel or refuse any order for reasons
+            including (but not limited to): product unavailability, pricing or
+            product detail errors, or suspected fraudulent activity.
+          </li>
+          <li>
+            Prices displayed on the website are in your selected currency and
+            may include applicable taxes.
+          </li>
+          <li>
+            Jonah Jewellers reserves the right to modify prices without prior
+            notice, but changes will not affect confirmed orders.
+          </li>
+        </ul>
+      </section>
 
-          <h3 className="mt-4 font-medium">3. Shipping &amp; Delivery</h3>
-          <p>
-            Shipping times are estimates and may vary. Title and risk of loss pass to you when the
-            carrier picks up the item. For any questions about shipping or to report a lost/damaged
-            shipment, contact our support team.
-          </p>
+      {/* Payment */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">2. Payment</h2>
+        <p className="mb-3">
+          We accept payments via secure, third-party payment processors. We do
+          not store or have access to your full card details. All payment data
+          is handled according to the payment provider’s security and compliance
+          standards.
+        </p>
+        <p>
+          By placing an order, you authorize us to charge your selected payment
+          method for the total payable amount, including product price, taxes,
+          and shipping fees (if applicable).
+        </p>
+      </section>
 
-          <h3 className="mt-4 font-medium">4. Returns &amp; Refunds</h3>
-          <p>
-            Our returns and refund policy is available on the Returns page. Items returned must
-            follow the required condition and timeframes described there. Custom or engraved items
-            may not be eligible for return unless defective.
-          </p>
+      {/* Shipping & Delivery */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">3. Shipping & Delivery</h2>
+        <p className="mb-3">
+          Shipping timelines provided are estimates and may vary depending on
+          location, carrier delays, or external factors. Ownership and risk of
+          loss transfer to you once the order is handed over to the shipping
+          carrier.
+        </p>
+        <p>
+          If your order arrives damaged, delayed, or is lost in transit, please
+          contact our support team promptly at{" "}
+          <a
+            href="mailto:support@jonahjewellers.com"
+            className="text-blue-600 underline"
+          >
+            support@jonahjewellers.com
+          </a>{" "}
+          with your order details.
+        </p>
+      </section>
 
-          <h3 className="mt-4 font-medium">5. Product Descriptions</h3>
-          <p>
-            We try to describe products accurately, but we do not warrant that descriptions,
-            colors, or other content on the site are accurate, complete, reliable, or error-free.
-          </p>
+      {/* Product Descriptions */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">
+          4. Product Descriptions: Jewelry
+        </h2>
+        <p className="mb-3">
+          We make every effort to ensure that product descriptions, colors,
+          weights, and images are accurate. However, due to variations in
+          display settings and manufacturing processes, we do not guarantee that
+          descriptions or colors will always match exactly.
+        </p>
+        <p>
+          Jonah Jewellers reserves the right to correct any errors,
+          inaccuracies, or omissions at any time without prior notice.
+        </p>
+      </section>
 
-          <h3 className="mt-4 font-medium">6. Intellectual Property</h3>
-          <p>
-            All content on the site — text, images, logos, graphics, and product designs — are the
-            property of {COMPANY_NAME} or its licensors. You may not copy, reproduce or distribute
-            our content without prior written permission.
-          </p>
+      {/* Kitty Plans */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">5. Kitty Plans</h2>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>
+            Available Plans: 3-month, 6-month, and 12-month kitty options.
+          </li>
+          <li>
+            Lock-in Period: The kitty amount cannot be withdrawn or used before
+            the completion date of the selected plan.
+          </li>
+          <li>
+            Early Withdrawal: Not permitted under normal circumstances. However,
+            in exceptional or emergency cases, an early withdrawal may be
+            considered at Jonah Jewellers’ discretion, subject to applicable
+            deductions and approval.
+          </li>
+          <li>
+            Plan Completion: On completion, customers may use the total kitty
+            balance for jewelry purchases or other eligible products as per the
+            plan rules.
+          </li>
+        </ul>
+      </section>
 
-          <h3 className="mt-4 font-medium">7. Limitation of Liability</h3>
-          <p>
-            To the maximum extent permitted by law, {COMPANY_NAME} shall not be liable for any
-            indirect, incidental, special or consequential damages arising from the use of the
-            site or the purchase of products. Our total liability for any claim related to the
-            site or your purchase will not exceed the purchase price of the products involved.
-          </p>
+      {/* Gold Investment Plans */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">6. Gold Investment Plans</h2>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Minimum Lock-in Period: 6 months.</li>
+          <li>
+            Early Withdrawal: If withdrawn before 6 months, a 9% deduction from
+            the invested amount will apply.
+          </li>
+          <li>
+            Usage: Investment amounts can be utilized for gold purchases,
+            conversions, or withdrawals post the lock-in period.
+          </li>
+          <li>
+            Security: All gold investment records, transactions, and payments
+            are securely maintained in compliance with applicable financial and
+            privacy standards.
+          </li>
+        </ul>
+      </section>
 
-          <h3 className="mt-4 font-medium">8. Governing Law</h3>
-          <p>
-            These Terms are governed by the laws of the country where {COMPANY_NAME} is registered,
-            without regard to conflict of law provisions. Any dispute will be resolved in the
-            competent courts of that jurisdiction unless otherwise required by local law.
-          </p>
+      {/* Intellectual Property */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">7. Intellectual Property</h2>
+        <p>
+          All content, including logos, product designs, images, text, graphics,
+          videos, and code, is the property of Jonah Jewellers or its content
+          partners. You may not copy, reproduce, distribute, or modify any part
+          of the website’s content without prior written consent from Jonah
+          Jewellers.
+        </p>
+      </section>
 
-          <h3 className="mt-4 font-medium">9. Changes to Terms</h3>
-          <p>
-            We may update these Terms from time to time. Material changes will be posted and/or
-            notified where required. Continued use of the site after changes constitutes acceptance
-            of the updated Terms.
-          </p>
+      {/* Limitation of Liability */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">8. Limitation of Liability</h2>
+        <p>
+          To the fullest extent permitted by law, Jonah Jewellers shall not be
+          liable for any indirect, incidental, consequential, or punitive
+          damages arising from your use of the website, purchase or use of our
+          products, or inability to access the website. Our total liability for
+          any claim shall not exceed the total amount paid for the product(s)
+          giving rise to the claim.
+        </p>
+      </section>
 
-          <h3 className="mt-4 font-medium">10. Contact</h3>
-          <p id="contact">
-            If you have questions about these Terms or the Privacy Policy, please contact us at{" "}
-            <a href={`mailto:${CONTACT_EMAIL}`} className="text-blue-600 hover:underline">
-              {CONTACT_EMAIL}
-            </a>
-            .
-          </p>
-        </section>
-      </div>
-    </main>
-  )
-}
+      {/* Governing Law */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">9. Governing Law</h2>
+        <p>
+          These Terms shall be governed by and interpreted in accordance with
+          the laws of the country where Jonah Jewellers is registered, without
+          regard to conflict of law principles. All disputes shall be subject to
+          the exclusive jurisdiction of the competent courts in that
+          jurisdiction, unless otherwise required by law.
+        </p>
+      </section>
 
-export default page
+      {/* Changes */}
+      <section className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">10. Changes to Terms</h2>
+        <p>
+          We may revise or update these terms periodically. Material changes
+          will be posted on this page and/or notified where required by law.
+          Your continued use of the website after such updates constitutes your
+          acceptance of the revised terms.
+        </p>
+      </section>
+
+      {/* Contact */}
+      <section>
+        <h2 className="text-xl font-semibold mb-3">11. Contact Us</h2>
+        <p>
+          If you have any questions regarding these terms or our privacy policy,
+          please contact us:
+        </p>
+        <p className="mt-2">
+          📧{" "}
+          <a
+            href="mailto:support@jonahjewellers.com"
+            className="text-blue-600 underline"
+          >
+            support@jonahjewellers.com
+          </a>
+        </p>
+      </section>
+    </div>
+  );
+};
+
+export default TermsAndConditionsPage;

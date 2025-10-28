@@ -36,6 +36,16 @@ export const getAllOrdersApi = async (params?: any) => {
   }
 }
 
+// Get All Orders of a User
+export const getOrderDetailsApi = async (orderId:string) => {
+  try {
+    const response = await axiosInstance.get(`${order_url}/${orderId}`)
+    return response
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || error?.message)
+  }
+}
+
 // Get All Orders of a Admin
 export const getAllOrdersAdminApi = async (params?: any) => {
   try {

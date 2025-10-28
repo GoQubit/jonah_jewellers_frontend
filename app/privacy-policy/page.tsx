@@ -1,114 +1,170 @@
-"use client";
+"use client"
 
-import React from "react";
+import React from "react"
 
-const COMPANY_NAME = "Jonah Jewellers";
-const COMPANY_URL = "https://www.jonahjewellers.com";
-const CONTACT_EMAIL = "support@jonahjewellers.com";
-const EFFECTIVE_DATE = "October 28, 2025";
-
-const PrivacyAndTermsPage = () => {
+const PrivacyPolicyPage = () => {
   return (
-    <main className="min-h-screen bg-[#F9FAFB] p-8">
-      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-sm border p-6">
-        {/* Header */}
-        <header className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-900">
-            Privacy Policy
-          </h1>
-        </header>
+    <div className="wrapper bg-white text-gray-800 px-6 py-12 leading-relaxed">
+      <h1 className="text-3xl font-bold text-center mb-8 text-gray-900">
+        Privacy Policy
+      </h1>
 
-        {/* Privacy Policy */}
-        <section id="privacy" className="prose prose-sm max-w-none text-gray-800">
-          {/* <h2 className="text-lg font-semibold">Privacy Policy</h2> */}
-          <p>
-            {COMPANY_NAME} ("we", "us", or "our") is committed to protecting the privacy of
-            visitors and customers who use our website ({COMPANY_URL}) and services. This Privacy
-            Policy explains what information we collect, how we use it, how we protect it, and your
-            rights regarding that information.
-          </p>
+      <p className="mb-6">
+        We at <strong>Jonah Jewellers</strong> ("we," "us," or "our") are dedicated
+        to safeguarding the privacy of users of our website and services. This
+        privacy statement describes the data we gather, how we use and safeguard
+        it, and your rights in relation to that data.
+      </p>
 
-          <h3 className="mt-4 font-medium">1. Information We Collect</h3>
-          <ul>
-            <li>
-              <strong>Information you provide:</strong> account details, name, email, phone number,
-              shipping & billing address, order history, payment method (tokenized by payment
-              processor), and messages you send to us.
-            </li>
-            <li>
-              <strong>Automatically collected information:</strong> device and browser details,
-              IP address, geolocation (coarse), pages visited, search queries, and interaction data
-              (for analytics and site improvement).
-            </li>
-            <li>
-              <strong>Third-party data:</strong> information from payment processors, shipping
-              partners, or marketing platforms if you use or connect those services.
-            </li>
-          </ul>
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">1. Information We Collect</h2>
+        <p className="mb-3 font-semibold">Information you provide:</p>
+        <p className="mb-3">
+          Your name, email address, phone number, shipping and billing address,
+          account information, order history, payment method (as tokenized by
+          payment processors), and any messages or questions you send us are
+          among the personal details we gather from the information you voluntarily
+          give us.
+        </p>
+        <p className="mb-3 font-semibold">Automatically collected information:</p>
+        <p className="mb-3">
+          When you visit our website, we automatically gather information about
+          your device and browser, IP address, coarse geolocation, pages viewed,
+          search queries, and interaction data (for analytics and site optimization).
+        </p>
+        <p className="mb-3 font-semibold">Third-party data:</p>
+        <p>
+          When you engage with payment processors, shipping partners, or marketing
+          platforms via our website, we might get extra information from them.
+        </p>
+      </section>
 
-          <h3 className="mt-4 font-medium">2. How We Use Your Information</h3>
-          <ul>
-            <li>To process orders, billing and shipping.</li>
-            <li>To respond to your inquiries and provide customer support.</li>
-            <li>To improve and personalize our site, product recommendations and marketing.</li>
-            <li>To send transactional and promotional emails (you may opt out of marketing).</li>
-            <li>To detect and prevent fraud, and to comply with legal obligations.</li>
-          </ul>
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">2. How We Use Your Information</h2>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Order processing, billing, and delivery.</li>
+          <li>To answer your questions and offer customer assistance.</li>
+          <li>To enhance and customize your marketing messages and shopping experience.</li>
+          <li>To send promotional and transactional emails (you may opt out anytime).</li>
+          <li>To comply with legal requirements and prevent fraud.</li>
+        </ul>
+      </section>
 
-          <h3 className="mt-4 font-medium">3. Sharing &amp; Disclosure</h3>
-          <p>
-            We may share your information with trusted third parties only as needed to operate the
-            service — for example, payment processors, shipping couriers, analytics providers, and
-            legal authorities when required. We do not sell your personal information to third
-            parties.
-          </p>
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">3. Sharing & Disclosure</h2>
+        <p>
+          We share your information only with trusted third parties, such as payment
+          gateways, shipping couriers, analytics providers, and law enforcement (if required).
+          We never sell your personal information to outside parties.
+        </p>
+      </section>
 
-          <h3 className="mt-4 font-medium">4. Cookies &amp; Tracking</h3>
-          <p>
-            We use cookies and similar tracking technologies for essential site functionality, to
-            remember your preferences, and to analyze site usage. You can control cookies through
-            your browser settings; disabling some cookies may affect site functionality.
-          </p>
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">4. Cookies & Tracking</h2>
+        <p>
+          We use cookies and similar tracking technologies to enable essential site
+          functionality, remember preferences, analyze traffic, and improve user
+          experience. You can manage cookie preferences through your browser settings.
+          Disabling certain cookies may affect site functionality.
+        </p>
+      </section>
 
-          <h3 className="mt-4 font-medium">5. Data Security</h3>
-          <p>
-            We implement reasonable technical and organizational measures to protect your personal
-            information. However, no internet transmission or storage is fully secure — if you
-            suspect a security issue, contact us immediately.
-          </p>
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">5. Data Security</h2>
+        <p>
+          We take appropriate organizational and technical precautions to protect your
+          personal information. However, no method of transmission or storage is
+          completely secure. Please contact us immediately at{" "}
+          <a
+            href="mailto:support@jonahjewellers.com"
+            className="text-blue-600 underline"
+          >
+            support@jonahjewellers.com
+          </a>{" "}
+          if you suspect a data breach or unauthorized access.
+        </p>
+      </section>
 
-          <h3 className="mt-4 font-medium">6. Your Rights</h3>
-          <p>
-            Depending on your location, you may have rights to access, correct, delete, or
-            restrict processing of your personal data, and to object to certain uses. To exercise
-            these rights, contact us at the address below.
-          </p>
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">6. Your Rights</h2>
+        <p>
+          Depending on your jurisdiction, you may have rights to access, update, or
+          delete your personal information, limit processing, or withdraw marketing
+          consent. To exercise these rights, contact us at{" "}
+          <a
+            href="mailto:support@jonahjewellers.com"
+            className="text-blue-600 underline"
+          >
+            support@jonahjewellers.com
+          </a>.
+        </p>
+      </section>
 
-          <h3 className="mt-4 font-medium">7. International Transfers</h3>
-          <p>
-            If you are located outside the country where we operate, your personal information may
-            be transferred to and processed in other countries. We take steps to ensure an adequate
-            level of protection for such transfers.
-          </p>
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">
+          9. Kitty & Gold Investment Information
+        </h2>
+        <p className="mb-3">
+          Jonah Jewellers offers exclusive Kitty and Gold Investment plans for our
+          valued customers.
+        </p>
 
-          <h3 className="mt-4 font-medium">8. Children</h3>
-          <p>
-            Our website is not directed to children under the age of 13 (or applicable age in your
-            region). We do not knowingly collect personal data from children. If you believe we
-            have collected data from a child, contact us and we will take steps to remove it.
-          </p>
+        <h3 className="font-semibold mt-4 mb-2">Kitty Plans:</h3>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Available in 3-month, 6-month, and 12-month durations.</li>
+          <li>
+            The kitty amount cannot be withdrawn before the completion date of the selected plan.
+          </li>
+          <li>
+            Early withdrawal requests before maturity are not permitted unless in exceptional
+            or emergency cases, which will be subject to review and approval by our team.
+          </li>
+        </ul>
 
-          <h3 className="mt-4 font-medium">9. Changes to this Policy</h3>
-          <p>
-            We may update this Privacy Policy from time to time. We will post the updated date at
-            the top of this page; material changes will be notified where required by law.
-          </p>
-        </section>
+        <h3 className="font-semibold mt-4 mb-2">Gold Investment Plans:</h3>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Investors must maintain a minimum lock-in period of 6 months.</li>
+          <li>
+            Withdrawals before 6 months will incur a 9% deduction from the total invested amount.
+          </li>
+          <li>
+            All investment-related data, payment details, and transactions are securely
+            handled in accordance with this Privacy Policy and our financial partners’
+            compliance standards.
+          </li>
+        </ul>
 
+        <p className="mt-3">
+          By participating in these programs, you acknowledge and agree to these terms.
+        </p>
+      </section>
 
-      </div>
-    </main>
-  );
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">10. Changes to this Privacy Policy</h2>
+        <p>
+          We may update this Privacy Policy periodically. The “Effective Date” at the top
+          of this page indicates the latest revision. Material updates will be communicated
+          through our website or via email, where required by law.
+        </p>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold mb-3">11. Contact Us</h2>
+        <p>
+          If you have any questions, concerns, or requests regarding this Privacy Policy
+          or your data, please contact us at:{" "}
+          <br />
+          📧{" "}
+          <a
+            href="mailto:support@jonahjewellers.com"
+            className="text-blue-600 underline"
+          >
+            support@jonahjewellers.com
+          </a>
+        </p>
+      </section>
+    </div>
+  )
 }
 
-export default PrivacyAndTermsPage;
+export default PrivacyPolicyPage
