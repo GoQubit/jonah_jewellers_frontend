@@ -30,29 +30,29 @@ export default function Footer() {
               <h3 className="text-lg font-semibold mb-6">Customer Service</h3>
               <ul className="space-y-3">
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  <Link href="/orders" className="text-gray-300 hover:text-white transition-colors text-sm">
                     Where's My Order?
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  <Link href="/orders" className="text-gray-300 hover:text-white transition-colors text-sm">
                     Track your order
-                  </a>
+                  </Link>
                 </li>
-                <li>
+                {/* <li>
                   <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
                     Fraud Warning Disclaimer
                   </a>
-                </li>
+                </li> */}
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  <Link href="/terms-and-conditions" className="text-gray-300 hover:text-white transition-colors text-sm">
                     Terms of services
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  <Link href="/privacy-policy" className="text-gray-300 hover:text-white transition-colors text-sm">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -62,14 +62,14 @@ export default function Footer() {
               <h3 className="text-lg font-semibold mb-6">Information</h3>
               <ul className="space-y-3">
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  <Link href="/kitty-plan" className="text-gray-300 hover:text-white transition-colors text-sm">
                     Kitty Information
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  <Link href="/invest-in-gold" className="text-gray-300 hover:text-white transition-colors text-sm">
                     Investment Details
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -82,7 +82,7 @@ export default function Footer() {
                   <BiPhone className="w-5 h-5 text-gray-300 mt-1 flex-shrink-0" />
                   <div>
                     <p className="text-gray-300 text-sm">Reach out to us Mon - Sat (10 AM - 7 PM)</p>
-                    <p className="text-white font-semibold">+91 939 100 8801</p>
+                    <p className="text-white font-semibold">+91 766 886 4212</p>
                   </div>
                 </div>
 
@@ -90,7 +90,7 @@ export default function Footer() {
                   <BsWhatsapp className="w-5 h-5 mt-1 flex-shrink-0" />
                   <div>
                     <p className="text-gray-300 text-sm">Reach out to us Mon - Sat (10 AM - 7 PM)</p>
-                    <p className="text-white font-semibold">+91 939 100 8801</p>
+                    <p className="text-white font-semibold">+91 766 886 4212</p>
                   </div>
                 </div>
 
@@ -98,7 +98,7 @@ export default function Footer() {
                   <IoMailOutline className="w-5 h-5 text-gray-300 mt-1 flex-shrink-0" />
                   <div>
                     <p className="text-gray-300 text-sm">Email Us at</p>
-                    <p className="text-white font-semibold">support@jonah.com</p>
+                    <p className="text-white font-semibold">support@jonahjewellers.com</p>
                   </div>
                 </div>
               </div>
@@ -107,7 +107,7 @@ export default function Footer() {
 
           {/* Bottom Section */}
           <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm mb-4 md:mb-0">© 2025 Jonah . All Rights Reserved.</p>
+            <p className="text-gray-400 text-sm mb-4 md:mb-0">© 2025 Jonah Jewellers . All Rights Reserved.</p>
 
             <div className="flex gap-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
