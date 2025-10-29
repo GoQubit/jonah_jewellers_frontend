@@ -44,11 +44,11 @@ const OrderListFilterView = () => {
     useEffect(() => {
         const urlSearchParams = new URLSearchParams(searchParams.toString())
 
-        if (filters.search) {
+        if (filters.search !== null && filters.search !== undefined) {
             urlSearchParams.set("search", filters.search)
         }
 
-        if (filters.status) {
+        if (filters.status !== null && filters.status !== undefined) {
             urlSearchParams.set("status", filters.status)
         }
 

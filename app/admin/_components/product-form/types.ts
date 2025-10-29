@@ -35,3 +35,27 @@ export type SubCategory = {
     archive: boolean,
     photo: string,
 }
+
+type SellerAddress = {
+    "line1": string,
+    "city": string,
+    "state": string,
+    "pinCode": number
+}
+
+export type Seller = {
+    "address": SellerAddress,
+    "mobileNumber": string,
+    "isNewUser": boolean,
+    "isEmailVerified": boolean,
+    "isMobileVerified": boolean,
+    "createdAt": string,
+    "updatedAt": string,
+    "email": string,
+    "firstName": string,
+    "gender": GenderEnum,
+    "isApproved": boolean,
+    "lastName": string,
+    "role": "SELLER",
+    "id": string
+}

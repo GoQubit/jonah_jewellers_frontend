@@ -151,7 +151,7 @@ export const getOrderTableColumns = (getOrders: Function) => {
 
                 return (
                     <SquarePen
-                        className="w-4 h-4 text-gray-500 hover:text-gray-600 cursor-pointer"
+                        className="w-4 h-4 text-gray-500 hover:text-blue-600 cursor-pointer"
                         onClick={() => setOpen(
                             <BaseModal>
                                 <OrderDetailView

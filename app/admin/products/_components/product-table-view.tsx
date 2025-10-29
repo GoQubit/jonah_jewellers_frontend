@@ -75,7 +75,7 @@ const ProductTableView = (props: Props) => {
     return (
         <DataTable
             table={table}
-            totalResults={products?.data?.totalResults || 1}
+            totalResults={products?.data?.totalResults}
             message={"No product found"}
             className={"w-full flex flex-col border-b-4 rounded"}
         />

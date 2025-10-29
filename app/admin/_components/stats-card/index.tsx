@@ -4,8 +4,9 @@ import { Card } from '@/components/ui/Card'
 import { cn } from '@/utils/cn'
 
 export type StatsCardProp = {
+    key: string,
     title: string,
-    value: string,
+    value: string | React.ReactNode,
     icon: React.ElementType,
     textColor: string;
     bgColor: string;

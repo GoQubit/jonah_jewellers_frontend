@@ -69,3 +69,15 @@ export const updateOrderAdminApi = async (order_id: string, payload: any) => {
     throw new Error(error?.response?.data?.message || error?.message)
   }
 }
+
+// Get Orders Analytics of a Admin
+export const getOrdersAnalyticsAdminApi = async (params?: any) => {
+  try {
+    const response = await axiosInstance.get(`${admin_url}/orders/info`, {
+      params: params
+    })
+    return response
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || error?.message)
+  }
+}

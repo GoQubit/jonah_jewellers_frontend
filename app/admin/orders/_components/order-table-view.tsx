@@ -72,7 +72,7 @@ const OrderTableView = (props: Props) => {
     return (
         <DataTable
             table={table}
-            totalResults={orders?.data?.totalResults || 1}
+            totalResults={orders?.data?.totalResults}
             message={"No orders found"}
             className={"w-full flex flex-col border-b-4 rounded"}
         />

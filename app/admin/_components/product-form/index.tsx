@@ -2,14 +2,14 @@
 
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/fields'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { categoryEnum, genderOptions, goldPurityOptions, productCategoryOptions, productFormSchema, ProductFormSchema } from './const';
 import { Empty, EmptyHeader } from '@/components/ui/empty'
-import { Box, Tag } from 'lucide-react'
+import { Box, CheckIcon, ChevronsUpDownIcon, Tag } from 'lucide-react'
 import { getSubCategoriesApi } from '@/lib/api/category/productCategoriesApis'
-import { SubCategory } from './types'
+import { Seller, SubCategory } from './types'
 import { FaSpinner } from 'react-icons/fa'
 import { Input } from '@/components/ui/Input'
 import { Switch } from '@/components/ui/switch'
@@ -19,6 +19,11 @@ import { UploadMediaField } from './upload-media-field'
 import { createProductApi, updateProductApi } from '@/lib/api/products/productsApis'
 import { useRouter } from 'next/navigation'
 import { PrimaryImageField } from './primary-image-field'
+import { getAllUsersApi } from '@/lib/api/users/users.api'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import { debounce } from '@/utils/helpers'
+import Toast from '@/components/Toast/Toast'
 
 type Props = {
   productData?: ProductFormSchema | {},
@@ -44,6 +49,16 @@ const ProductForm = ({
     data: []
   })
 
+  const [openSeller, setOpenSeller] = useState(false)
+  const [searchSeller, setSearchSeller] = useState("")
+  const [sellers, setSellers] = useState<{
+    isLoading: boolean,
+    data: Seller[]
+  }>({
+    isLoading: false,
+    data: []
+  })
+
   const form = useForm<ProductFormSchema>({
     mode: "onChange",
     resolver: zodResolver(productFormSchema),
@@ -63,6 +78,8 @@ const ProductForm = ({
       const response = await getSubCategoriesApi()
       if (response.status === 200) {
         setSubCategories(s => ({ ...s, data: response.data.results }))
+      } else {
+        throw new Error("Failed to fetch subcategories")
       }
     } catch (error) {
       setSubCategories(s => ({ ...s, data: [] }))
@@ -75,24 +92,53 @@ const ProductForm = ({
     getSubCategories()
   }, [])
 
+  const getSellers = async (search: string = searchSeller) => {
+    setSellers({ isLoading: true, data: [] })
+    try {
+      let queryParams: any = {
+        role: "SELLER",
+      }
+      if (search) {
+        queryParams["q"] = search
+      }
+      const response = await getAllUsersApi(queryParams)
+      if (response.status === 200) {
+        setSellers(s => ({ ...s, data: response.data.results }))
+      } else {
+        throw new Error("Failed to fetch sellers")
+      }
+    } catch (error) {
+      setSellers(s => ({ ...s, data: [] }))
+    } finally {
+      setSellers(s => ({ ...s, isLoading: false }))
+    }
+  }
+
+  useEffect(() => {
+    getSellers(searchSeller)
+  }, [])
+
   const { control } = form
 
   const onHandleSubmit = async (formData: ProductFormSchema) => {
     try {
       let response = null
       if (addProduct) {
-        response = await createProductApi(formData)
+        const { seller, ...rest } = formData
+        response = await createProductApi({ ...rest, seller: seller?._id })
         if (response.status === 201) {
+          Toast.success("Product created successfully")
           router.replace("/admin/products")
         } else {
           throw new Error("Product not created!")
         }
       } else {
-        const { _id, createdAt, updatedAt, ...rest } = formData
-        response = await updateProductApi(formData._id!, rest)
+        const { _id, createdAt, updatedAt, seller, ...rest } = formData
+        response = await updateProductApi(formData._id!, { ...rest, seller: seller?._id })
         if (response.status === 200) {
           productData = response.data
           form.reset(response.data)
+          Toast.success("Product updated successfully")
           getProducts && getProducts()
           onClose && onClose()
         } else {
@@ -100,6 +146,7 @@ const ProductForm = ({
         }
       }
     } catch (e: any) {
+      Toast.success(e.message || "Invalid form data")
       form.setError("root", { message: e?.message || "Invalid form data" })
     }
   }
@@ -115,6 +162,7 @@ const ProductForm = ({
       form.register("gold")
       form.unregister("diamond")
       form.unregister("silver")
+      form.setValue("gold.hallmarked", false)
     } else if (values.category === "DIAMOND") {
       form.register("diamond")
       form.unregister("gold")
@@ -123,15 +171,24 @@ const ProductForm = ({
       form.register("silver")
       form.unregister("gold")
       form.unregister("diamond")
+      form.setValue("silver.hallmarked", false)
     }
   }, [values.category])
+
+  const handleSearchSeller = useCallback(
+    debounce((value: string) => {
+      getSellers(value)
+    }, 500),
+    []
+  )
+  console.log("asdfasdf", values)
 
   return (
     <div className="w-full min-w-[500px]">
       <FormProvider {...form}>
         <form
           onSubmit={form.handleSubmit(onHandleSubmit, (errors) => {
-            console.log("❌ Validation failed:", errors);
+            console.log("❌ Validation failed:", errors, values);
           })}
           className="w-full space-y-4"
         >
@@ -195,7 +252,7 @@ const ProductForm = ({
               )}>
 
                 {/* Product Information */}
-                <Empty className="border border-solid p-5 md:p-5 space-y-4">
+                <Empty className="border border-solid p-5 md:p-5 items-start gap-3">
                   <EmptyHeader className="flex flex-row items-center justify-start">
                     <Box className="w-4 h-4" />
                     <span>Product Information</span>
@@ -313,7 +370,7 @@ const ProductForm = ({
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                          <FieldLabel htmlFor="product-form-color" className="text-gray-500">
+                          <FieldLabel htmlFor="product-form-color" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
                             Material Color
                           </FieldLabel>
                           <Input
@@ -355,11 +412,12 @@ const ProductForm = ({
                             onChange={e => field.onChange(parseFloat(e.target.value))}
                             value={field.value?.toString()}
                             min={0}
+                            onWheel={(e) => e.currentTarget.blur()}
                             step="any"
-                            className='h-12'
+                            className='h-12 input-number-spin-none'
                           />
                           {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
+                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
                           )}
                         </Field>
                       )}
@@ -375,7 +433,7 @@ const ProductForm = ({
                         control={form.control}
                         render={({ field, fieldState }) => (
                           <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                            <FieldLabel htmlFor="product-form-netWeight" className="text-gray-500">
+                            <FieldLabel htmlFor="product-form-netWeight" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
                               Net Weight (in grams)
                             </FieldLabel>
                             <Input
@@ -387,8 +445,9 @@ const ProductForm = ({
                               onChange={e => field.onChange(parseFloat(e.target.value))}
                               value={field.value?.toString()}
                               min={0}
+                              onWheel={(e) => e.currentTarget.blur()}
                               step="any"
-                              className='h-12'
+                              className='h-12 input-number-spin-none'
                             />
                             {fieldState.invalid && (
                               <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
@@ -416,8 +475,9 @@ const ProductForm = ({
                               onChange={e => field.onChange(parseFloat(e.target.value))}
                               value={field.value?.toString()}
                               min={0}
+                              onWheel={(e) => e.currentTarget.blur()}
                               step="any"
-                              className='h-12'
+                              className='h-12 input-number-spin-none'
                             />
                             {fieldState.invalid && (
                               <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
@@ -433,7 +493,7 @@ const ProductForm = ({
                         control={form.control}
                         render={({ field, fieldState }) => (
                           <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                            <FieldLabel htmlFor="product-form-stoneWeightInCarat" className="text-gray-500">
+                            <FieldLabel htmlFor="product-form-stoneWeightInCarat" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
                               Stone Weight (in carat)
                             </FieldLabel>
                             <Input
@@ -445,8 +505,9 @@ const ProductForm = ({
                               onChange={e => field.onChange(parseFloat(e.target.value))}
                               value={field.value?.toString()}
                               min={0}
+                              onWheel={(e) => e.currentTarget.blur()}
                               step="any"
-                              className='h-12'
+                              className='h-12 input-number-spin-none'
                             />
                             {fieldState.invalid && (
                               <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
@@ -462,7 +523,7 @@ const ProductForm = ({
                         control={form.control}
                         render={({ field, fieldState }) => (
                           <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                            <FieldLabel htmlFor="product-form-stoneWeightInGrams" className="text-gray-500">
+                            <FieldLabel htmlFor="product-form-stoneWeightInGrams" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
                               Stone Weight (in grams)
                             </FieldLabel>
                             <Input
@@ -474,8 +535,9 @@ const ProductForm = ({
                               onChange={e => field.onChange(parseFloat(e.target.value))}
                               value={field.value?.toString()}
                               min={0}
+                              onWheel={(e) => e.currentTarget.blur()}
                               step="any"
-                              className='h-12'
+                              className='h-12 input-number-spin-none'
                             />
                             {fieldState.invalid && (
                               <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
@@ -641,7 +703,9 @@ const ProductForm = ({
                               onChange={e => field.onChange(parseInt(e.target.value))}
                               value={field.value?.toString()}
                               min={0}
-                              className='h-12'
+                              onWheel={(e) => e.currentTarget.blur()}
+                              step="any"
+                              className='h-12 input-number-spin-none'
                             />
                             {fieldState.invalid && (
                               <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
@@ -707,8 +771,9 @@ const ProductForm = ({
                             onChange={e => field.onChange(parseInt(e.target.value))}
                             value={field.value?.toString()}
                             min={0}
-                            disabled={disableForm}
-                            className='h-12'
+                            onWheel={(e) => e.currentTarget.blur()}
+                            step="any"
+                            className='h-12 input-number-spin-none'
                           />
                           {fieldState.invalid && (
                             <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
@@ -735,8 +800,9 @@ const ProductForm = ({
                               onChange={e => field.onChange(parseFloat(e.target.value))}
                               value={field.value?.toString()}
                               min={0}
+                              onWheel={(e) => e.currentTarget.blur()}
                               step="any"
-                              className='h-12'
+                              className='h-12 input-number-spin-none'
                             />
                             {fieldState.invalid && (
                               <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
@@ -762,12 +828,87 @@ const ProductForm = ({
                             onChange={e => field.onChange(parseFloat(e.target.value))}
                             value={field.value?.toString()}
                             min={0}
+                            onWheel={(e) => e.currentTarget.blur()}
                             step="any"
-                            disabled={disableForm}
-                            className='h-12'
+                            className='h-12 input-number-spin-none'
                           />
                           {fieldState.invalid && (
                             <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+
+                    <Controller
+                      name="seller"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="col-span-2 w-full flex flex-col gap-1">
+                          <FieldLabel htmlFor="product-form-seller" className="text-gray-500">
+                            Seller
+                          </FieldLabel>
+                          <Popover open={openSeller} onOpenChange={setOpenSeller}>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={openSeller}
+                                disabled={disableForm}
+                                className="h-12 hover:bg-transparent justify-between"
+                              >
+                                {field.value
+                                  ? `${field.value?.firstName} ${field.value?.lastName} (${field.value?.email})`
+                                  : "Select or search seller..."}
+                                <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="!w-full p-0 bg-white">
+                              <Command className="rounded-md shadow-md !w-full">
+                                <CommandInput
+                                  placeholder="Search seller..."
+                                  value={searchSeller}
+                                  onValueChange={(search: string) => {
+                                    setSearchSeller(search)
+                                    handleSearchSeller(search)
+                                  }}
+                                  className='focus:outline-none focus:border-0 focus:ring-0 h-12'
+                                />
+                                <CommandList>
+                                  <CommandEmpty>{sellers.isLoading ? "Loading..." : "No seller found."}</CommandEmpty>
+                                  <CommandGroup>
+                                    {sellers.isLoading && (
+                                      <div className="flex items-center justify-center p-4">
+                                        <FaSpinner className='w-5 h-5 animate-spin' />
+                                      </div>
+                                    )}
+                                    {sellers?.data?.map((seller) => (
+                                      <CommandItem
+                                        key={seller.id}
+                                        value={seller.id}
+                                        onSelect={(currentValue) => {
+                                          console.log("selected seller id:", currentValue, seller)
+                                          const { id, ...rest } = seller
+                                          field.onChange({ _id: parseInt(id), ...rest })
+                                          setOpenSeller(false)
+                                        }}
+                                        className='data-[selected=true]:bg-transparent'
+                                      >
+                                        <CheckIcon
+                                          className={cn(
+                                            "mr-2 h-4 w-4",
+                                            field.value?._id?.toString() === seller.id ? "opacity-100" : "opacity-0"
+                                          )}
+                                        />
+                                        {seller.firstName} {seller.lastName} ({seller.email})
+                                      </CommandItem>
+                                    ))}
+                                  </CommandGroup>
+                                </CommandList>
+                              </Command>
+                            </PopoverContent>
+                          </Popover>
+                          {(fieldState.invalid || form.formState.errors.seller?._id) && (
+                            <FieldError className='text-left text-red-500' errors={[fieldState.error, form.formState.errors.seller?._id]} />
                           )}
                         </Field>
                       )}
@@ -782,21 +923,23 @@ const ProductForm = ({
                         }
                         control={form.control}
                         render={({ field, fieldState }) => (
-                          <Field data-invalid={fieldState.invalid} orientation="horizontal" className="col-span-2 border rounded-md px-2 py-3">
-                            <FieldLabel htmlFor="product-form-hallmarked" className='grow'>
-                              Hallmark
-                            </FieldLabel>
-                            <div className="w-fit">
-                              <Switch
-                                id="product-form-hallmarked"
-                                checked={!!field.value}
-                                onCheckedChange={field.onChange}
-                                disabled={disableForm}
-                                className='bg-gray-200'
-                              />
+                          <Field data-invalid={fieldState.invalid} orientation="horizontal" className="col-span-2 w-full flex flex-col gap-1">
+                            <div className="w-full border rounded-md px-2 py-3 flex items-center justify-between">
+                              <FieldLabel htmlFor="product-form-hallmarked" className='grow'>
+                                Hallmark
+                              </FieldLabel>
+                              <div className="w-fit">
+                                <Switch
+                                  id="product-form-hallmarked"
+                                  checked={!!field.value}
+                                  onCheckedChange={field.onChange}
+                                  disabled={disableForm}
+                                  className='data-[state=unchecked]:bg-gray-300 [&>span[data-state=unchecked]]:bg-gray-400 [&>span[data-state=checked]]:bg-gray-400'
+                                />
+                              </div>
                             </div>
                             {fieldState.invalid && (
-                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                              <FieldError className='w-full text-left text-red-500' errors={[fieldState.error]} />
                             )}
                           </Field>
                         )}
@@ -823,7 +966,7 @@ const ProductForm = ({
 
                         const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
                           if (e.key === "Enter") {
-                            e.preventDefault();
+                            e.currentTarget.blur();
                             addTag();
                           }
                         };

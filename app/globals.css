@@ -224,3 +224,10 @@ body::-webkit-scrollbar {
     margin: 0 16px;
   }
 }
+
+/* input number spiner */
+.input-number-spin-none::-webkit-inner-spin-button,
+.input-number-spin-none::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

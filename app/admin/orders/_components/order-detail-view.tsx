@@ -30,12 +30,16 @@ const OrderDetailView = ({ orderId, onClose, getOrders }: Props) => {
     const [trackingLink, setTrackingLink] = useState<string>('')
     const [updateOrder, setUpdateOrder] = useState(initialOrder)
 
+    const isFormDirty = useMemo(() => (
+        order?.data?.orderStatus !== orderStatus ||
+        order?.data?.trackingLink !== trackingLink
+    ), [order?.data?.orderStatus, order?.data?.trackingLink, orderStatus, trackingLink])
+
     const disableForm = useMemo(() => (
         updateOrder.isLoading ||
         order.isLoading ||
-        order?.data?.orderStatus === orderStatus ||
-        order?.data?.trackingLink === trackingLink
-    ), [updateOrder.isLoading, order?.isLoading, order?.data?.orderStatus, order?.data?.trackingLink, orderStatus, trackingLink])
+        !isFormDirty
+    ), [updateOrder.isLoading, order?.isLoading, isFormDirty])
 
     const getOrder = async () => {
         setOrder({ ...initialOrder, isLoading: true })

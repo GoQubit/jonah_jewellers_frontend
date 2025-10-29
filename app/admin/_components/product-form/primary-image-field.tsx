@@ -12,6 +12,7 @@ const isImageFile = (file: File) => file.type.startsWith("image/");
 
 export const PrimaryImageField = () => {
     const {
+        register,
         setValue,
         watch,
         setError,
@@ -81,14 +82,14 @@ export const PrimaryImageField = () => {
             {/* Upload area */}
             {!selectedFile && (
                 <label
-                    htmlFor="media-upload"
+                    htmlFor="product-form-primary-image"
                     className="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-xl p-8 cursor-pointer hover:border-gray-400 transition-colors text-center"
                 >
                     <UploadCloud className="w-8 h-8 text-gray-400 mb-2" />
                     <p className="text-gray-600 font-medium">Upload Thumbnail Image</p>
                     <p className="text-gray-400 text-sm">Click to browse • Max 5MB</p>
                     <input
-                        id="media-upload"
+                        id="product-form-primary-image"
                         type="file"
                         accept="image/*"
                         className="hidden"
@@ -142,10 +143,10 @@ export const PrimaryImageField = () => {
                 </div>
             )}
 
-            {errors?.root && (
+            {errors?.primaryImage && (
                 <FieldError
                     className="text-left text-red-500 mt-2 text-sm"
-                    errors={[errors?.root]}
+                    errors={[errors?.primaryImage]}
                 />
             )}
         </div>

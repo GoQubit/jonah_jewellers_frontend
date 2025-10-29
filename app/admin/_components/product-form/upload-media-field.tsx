@@ -199,10 +199,10 @@ export const UploadMediaField = () => {
                 </div>
             )}
 
-            {errors.root?.media && (
+            {(errors?.images || errors?.videos) && (
                 <FieldError
                     className="text-left text-red-500 mt-2 text-sm"
-                    errors={[errors.root.media]}
+                    errors={[errors?.images, errors?.videos]}
                 />
             )}
         </div>
