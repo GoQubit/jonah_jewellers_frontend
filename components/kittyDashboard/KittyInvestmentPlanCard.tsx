@@ -1,3 +1,4 @@
+"use client"
 import { FiShoppingCart } from "react-icons/fi"
 import { Badge } from "../ui/Badge"
 import { Button } from "../ui/buttons/Button"
@@ -5,6 +6,7 @@ import { Card } from "../ui/Card"
 import { Progress } from "../ui/ProgessBar"
 import { RiWallet3Line } from "react-icons/ri"
 import { InvestmentPlan } from "./InvestmentPlansSection"
+import { useRouter } from "next/navigation"
 
 interface KittyInvestmentPlanCardProps {
   plan: InvestmentPlan
@@ -13,7 +15,12 @@ interface KittyInvestmentPlanCardProps {
 export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) {
   const progressPercentage = (plan.noOfInstallmentsDone / plan.planDuration) * 100
   const formatCurrency = (amount: number) => `₹ ${amount.toLocaleString()}`
+  const router = useRouter()
 
+
+  const payNowHandler = () => {
+    router.push(`/payment?planCategory=kitty&kittyId=${plan.id}&plan=${plan.planDuration}&monthlyAmount=${plan.monthlyInstallment}&duration=${plan.planDuration}&investmentGoal=${plan.title}&planCategory='kitty'`)
+  }
 
   return (
     <Card className=" flex flex-col p-6 space-y-4">
@@ -71,12 +78,16 @@ export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) 
         {plan.status === "COMPLETED" ? (
           <Button size="sm"
             variant="brand-solid"
-            className="flex-1 ">
+            className="flex-1 "
+            onClick={() => router.push('/show/jewellery')}
+          >
             <FiShoppingCart className="h-4 w-4 mr-2" />
             Shop Now
           </Button>
         ) : (
-          <Button size="sm" className="flex-1 bg-[#1967FE] hover:bg-[#115cf3] ">
+          <Button size="sm" className="flex-1 bg-[#1967FE] hover:bg-[#115cf3] "
+            onClick={payNowHandler}
+          >
             <RiWallet3Line className="h-4 w-4 mr-2" />
             Pay Now
           </Button>

@@ -12,12 +12,14 @@ import {
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/buttons/Button"
 import { Input } from "@/components/ui/Input"
+import { updateMaterialPriceApi } from "@/lib/api/material/materialApis"
+import Toast from "@/components/Toast/Toast"
 
 interface PriceUpdateModalProps {
   isOpen: boolean
   onClose: () => void
   materialPrices: any
-  onUpdatePrice : ()=> void
+  onUpdatePrice: () => void
 }
 
 const PriceUpdateModal = ({ isOpen, onClose, materialPrices, onUpdatePrice }: PriceUpdateModalProps) => {
@@ -30,11 +32,19 @@ const PriceUpdateModal = ({ isOpen, onClose, materialPrices, onUpdatePrice }: Pr
     }))
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Handle price update logic here
     console.log("Updated prices:", prices)
-    onUpdatePrice()
-    onClose()
+    try {
+      const res = await updateMaterialPriceApi(prices)
+      if (res.status === 200) {
+        onUpdatePrice()
+        onClose()
+        Toast.success("Material Prices Updated Successfully!")
+      }
+    } catch (error) {
+      console.error("Error:", error)
+    }
   }
 
   return (
@@ -75,7 +85,7 @@ const PriceUpdateModal = ({ isOpen, onClose, materialPrices, onUpdatePrice }: Pr
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="silver-price">Silver Price (per kg)</Label>
+            <Label htmlFor="silver-price">Silver Price (per 10gm)</Label>
             <div className="flex items-center gap-2">
               <Input
                 id="silver-price"

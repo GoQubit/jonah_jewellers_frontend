@@ -9,6 +9,7 @@ export interface Order {
   paymentStatus: string
   orderStatus: string
   couponCode: any
+  trackingLink?: string
   id: string
 }
 

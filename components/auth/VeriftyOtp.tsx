@@ -30,7 +30,6 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
     }
   }
 
-
   const onVerifyOTP = async () => {
     try {
       if (otp.length !== 6) {

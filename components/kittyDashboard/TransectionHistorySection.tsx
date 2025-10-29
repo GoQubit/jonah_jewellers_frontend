@@ -2,6 +2,9 @@
 
 import { AiFillGolden } from "react-icons/ai"
 import { Card } from "../ui/Card"
+import { useEffect, useState } from "react"
+import { getUserQRTransactionApi } from "@/lib/api/kittyApis/kittyApis"
+import { formatDate } from "@/utils/formatDate"
 
 
 interface Transaction {
@@ -13,36 +16,31 @@ interface Transaction {
 }
 
 export function TransectionHistorySection() {
-  const transactions: Transaction[] = [
-    {
-      id: "1",
-      title: "kitty Investment 01",
-      date: "Aug 1, 2025",
-      amount: 10000,
-      type: "investment",
-    },
-    {
-      id: "2",
-      title: "Gold Investment #2",
-      date: "Aug 1, 2025",
-      amount: 10000,
-      type: "investment",
-    },
-    {
-      id: "3",
-      title: "Gold Investment #3",
-      date: "Aug 1, 2025",
-      amount: 10000,
-      type: "investment",
-    },
-  ]
+
+  const [QRTransaction, setQRTransaction] = useState([])
+
+  const fetchTransaction = async () => {
+    try {
+      const res = await getUserQRTransactionApi()
+      if (res.status === 200) {
+        setQRTransaction(res?.data?.results)
+      }
+    } catch (error) {
+      console.error("Error:", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchTransaction()
+  }, [])
+
 
   const formatCurrency = (amount: number) => `₹${amount.toLocaleString()}`
 
   return (
     <Card className="p-6">
       <div className="space-y-4">
-        {transactions.map((transaction) => (
+        {QRTransaction.length > 0 && QRTransaction.map((transaction: any, index: number) => (
           <div
             key={transaction.id}
             className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0"
@@ -52,9 +50,17 @@ export function TransectionHistorySection() {
                 <AiFillGolden className="h-5 w-5 text-brand" />
               </div>
               <div>
-                <h3 className="font-medium text-gray-900">{transaction.title}</h3>
-                <p className="text-sm text-left text-gray-500">{transaction.date}</p>
+                <h3 className="font-medium text-start text-gray-900">Transaction Id</h3>
+                <p className="font-semibold text-brand">{transaction.transactionId}</p>
               </div>
+            </div>
+            <div className="text-right ">
+              <p className="text-sm text-left text-gray-500">
+                {formatDate(transaction.createdAt || '')}
+              </p>
+            </div>
+            <div className="text-right ">
+              <p className="font-semibold text-brand">{transaction.status}</p>
             </div>
             <div className="text-right ">
               <p className="font-semibold text-brand">{formatCurrency(transaction.amount)}</p>

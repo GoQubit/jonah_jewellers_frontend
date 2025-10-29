@@ -5,6 +5,7 @@ import OrderListFilterView from './_components/order-list-filter-view'
 import OrderTableView from './_components/order-table-view'
 
 const OrdersPage = () => {
+
     return (
         <ListPageLayout
             title='Order Management'

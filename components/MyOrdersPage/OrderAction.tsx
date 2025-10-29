@@ -7,6 +7,7 @@ import { Order } from "@/types/orderType"
 import { BiChevronRight } from "react-icons/bi"
 import { cn } from "@/utils/cn"
 import { useState } from "react"
+import { usePathname, useRouter } from "next/navigation"
 
 
 interface OrderActionsProps {
@@ -15,6 +16,8 @@ interface OrderActionsProps {
 
 export function OrderActions({ order }: OrderActionsProps) {
   const [showAddress, setShowAddress] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
 
   return (
     <div className="flex flex-wrap gap-3">
@@ -33,12 +36,19 @@ export function OrderActions({ order }: OrderActionsProps) {
         </button>
 
         <div className="flex gap-3">
-          <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-            <IoEye className="h-4 w-4" />
-            Track Order
-          </Button>
+          {
+            order?.trackingLink &&
+            <Button variant="outline" size="sm" className="gap-2 bg-transparent"
+              onClick={() => router.push(order?.trackingLink || '')}
+            >
+              <IoEye className="h-4 w-4" />
+              Track Order
+            </Button>
+          }
 
-          <Button variant="outline" size="sm" className="gap-2 bg-transparent">
+          <Button variant="outline" size="sm" className="gap-2 bg-transparent"
+            onClick={() => router.push(`${pathname}/invoice/${order.id}`)}
+          >
             <LuDownload className="h-4 w-4" />
             Invoice
           </Button>
