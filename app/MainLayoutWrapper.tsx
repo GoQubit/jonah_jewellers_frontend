@@ -36,10 +36,8 @@ const MainLayoutWrapper = ({ children }: { children: any }) => {
 
       {/* {!shouldHideHeader && <Header />} */}
 
-      <main className="flex-grow">
-        <ToastContainer
-          style={{ zIndex: "9999999" }}
-        />
+      <main className="flex-grow pt-[160px]">
+        <ToastContainer style={{ zIndex: "9999999" }} />
         {children}
       </main>
 

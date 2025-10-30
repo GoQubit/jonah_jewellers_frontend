@@ -106,7 +106,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="w-full relative">
+    <header className="w-full fixed top-0 left-0 z-50 bg-white shadow-md">
       {/* Top section */}
       <div className="w-full bg-white h-[110px] px-4 border-b">
         <div className="wrapper flex items-center h-full justify-between gap-4">

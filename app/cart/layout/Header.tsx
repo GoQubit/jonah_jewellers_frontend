@@ -31,14 +31,14 @@ export function CartHeader() {
             </button>
             :
             <div className="flex items-center gap-4 text-sm text-gray-600">
-              <Link href="/login" className="hover:text-gray-800 transition-colors">
+              <Link href="/login?redirect=cart" className="hover:text-gray-800 transition-colors">
                 Login
               </Link>
-              <span>|</span>
+              {/* <span>|</span>
               <div className="flex items-center gap-1">
                 <IoMdLock className="w-4 h-4" />
                 <span>100% Secure</span>
-              </div>
+              </div> */}
             </div>
         }
       </div>

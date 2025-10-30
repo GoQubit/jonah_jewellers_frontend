@@ -23,7 +23,7 @@ const LoginPage = ({ nextStep }: { nextStep: Function }) => {
 
       <aside className=" w-full md:w-[60%] hidden md:flex ">
         <img
-          src="/images/bannerImgs/login_page_img.png"
+          src="/images/bannerImgs/login_page_img.webp"
           alt="login banner img"
           className="h-auto w-full rounded-lg bg-muted object-cover md:h-[520px]"
         />

@@ -42,7 +42,7 @@ const KittyInvestmentsCards = () => {
             className="!w-full !py-4 text-lg font-medium text-white mt-4 !bg-[#840000]"
             onClick={() => router.push("/kitty-plan")}
           >
-            Explore Kitty Plans
+            See Kitty Plans
           </Button>
         </div>
 

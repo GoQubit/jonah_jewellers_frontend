@@ -8,17 +8,17 @@ import { useRouter } from "next/navigation";
 
 // 🧩 Separate arrays for desktop and mobile banners
 const desktopBanners = [
-  { id: 1, img: "/images/bannerImgs/home_banner_2.png", link: "/invest-in-gold" },
-  { id: 2, img: "/images/bannerImgs/home_banner_1.png", link: "/kitty-plan" },
-  { id: 3, img: "/images/bannerImgs/home_banner_3.png", link: "/shop/jewellery?occasion=wedding" },
-  { id: 4, img: "/images/bannerImgs/home_banner_4.png", link: "/shop/jewellery" },
+  { id: 1, img: "/images/bannerImgs/home_banner_2.webp", link: "/invest-in-gold" },
+  { id: 2, img: "/images/bannerImgs/home_banner_1.webp", link: "/kitty-plan" },
+  { id: 3, img: "/images/bannerImgs/home_banner_3.webp", link: "/shop/jewellery?occasion=wedding" },
+  { id: 4, img: "/images/bannerImgs/home_banner_4.webp", link: "/shop/jewellery" },
 ];
 
 const mobileBanners = [
-  { id: 1, img: "/images/bannerImgs/home_banner_mobile_2.png", link: "/invest-in-gold" },
-  { id: 2, img: "/images/bannerImgs/home_banner_mobile_1.png", link: "/kitty-plan" },
-  { id: 3, img: "/images/bannerImgs/home_banner_mobile_3.png", link: "/shop/jewellery?occasion=wedding" },
-  { id: 4, img: "/images/bannerImgs/home_banner_mobile_4.png", link: "/shop/jewellery" },
+  { id: 1, img: "/images/bannerImgs/home_banner_mobile_2.webp", link: "/invest-in-gold" },
+  { id: 2, img: "/images/bannerImgs/home_banner_mobile_1.webp", link: "/kitty-plan" },
+  { id: 3, img: "/images/bannerImgs/home_banner_mobile_3.webp", link: "/shop/jewellery?occasion=wedding" },
+  { id: 4, img: "/images/bannerImgs/home_banner_mobile_4.webp", link: "/shop/jewellery" },
 ];
 
 export default function HomeBannerSlider() {
