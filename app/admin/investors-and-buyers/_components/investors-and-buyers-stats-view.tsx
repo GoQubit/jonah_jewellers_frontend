@@ -10,6 +10,7 @@ const InvestorsAndBuyersStatsView = ({ analyticsData }: { analyticsData: any }) 
 
     const statsData: StatsCardProp[] = [
         {
+            key: "totalInvestments",
             title: "Total Kitty Members",
             value: analyticsData?.kittyUserCount || 0,
             icon: CalendarRange,
@@ -17,6 +18,7 @@ const InvestorsAndBuyersStatsView = ({ analyticsData }: { analyticsData: any }) 
             bgColor: "bg-green-50",
         },
         {
+            key: "totalGoldInvestors",
             title: "Total Gold Investor",
             value: analyticsData?.investmentUserCount || 0,
             icon: CircleStar,
@@ -24,6 +26,7 @@ const InvestorsAndBuyersStatsView = ({ analyticsData }: { analyticsData: any }) 
             bgColor: "bg-blue-50",
         },
         {
+            key: "pendingVerifications",
             title: "Pending Verification",
             value: analyticsData?.pendingVerifications || 0,
             icon: BadgeCheck,
@@ -35,8 +38,8 @@ const InvestorsAndBuyersStatsView = ({ analyticsData }: { analyticsData: any }) 
 
     return (
         <div className="flex flex-row flex-nowrap items-center gap-5 overflow-x-auto">
-            {statsData.map((stat, index) => (
-                <StatsCard key={index} {...stat} />
+            {statsData.map(({key, ...stat}) => (
+                <StatsCard key={key} {...stat} />
             ))}
         </div>
     )

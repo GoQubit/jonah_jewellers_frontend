@@ -12,6 +12,7 @@ const MaterialPriceStats = ({ materialPrices }: { materialPrices: any }) => {
 
   const statsData: StatsCardProp[] = [
     {
+      key: "gold",
       title: "Gold Price (per 10gm)",
       value: materialPrices?.gold || 0,
       icon: GiGoldBar,
@@ -19,6 +20,7 @@ const MaterialPriceStats = ({ materialPrices }: { materialPrices: any }) => {
       bgColor: "bg-yellow-50",
     },
     {
+      key: "diamond",
       title: "Diamond Price (per carat)",
       value: materialPrices?.diamond || 0,
       icon: IoDiamondOutline,
@@ -26,6 +28,7 @@ const MaterialPriceStats = ({ materialPrices }: { materialPrices: any }) => {
       bgColor: "bg-green-50",
     },
     {
+      key: "silver",
       title: "Silver Price (per 10gm)",
       value: materialPrices?.silver || 0,
       icon: AiTwotoneGold,
@@ -36,8 +39,8 @@ const MaterialPriceStats = ({ materialPrices }: { materialPrices: any }) => {
 
   return (
     <div className="flex flex-row flex-nowrap items-center gap-5 overflow-x-auto">
-      {statsData.map((stat, index) => (
-        <StatsCard key={index} {...stat} />
+      {statsData.map(({key, ...stat}) => (
+        <StatsCard key={key} {...stat} />
       ))}
     </div>
   )
