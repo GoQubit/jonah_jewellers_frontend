@@ -6,6 +6,7 @@ const TransactionStatsView = ({ transactionAnalytics }: { transactionAnalytics: 
 
     const statsData: StatsCardProp[] = [
         {
+            key: "totalRevenue",
             title: "Total Revenue",
             value: transactionAnalytics?.totalRevenue || 0,
             icon: Tickets,
@@ -13,6 +14,7 @@ const TransactionStatsView = ({ transactionAnalytics }: { transactionAnalytics: 
             bgColor: "bg-blue-50",
         },
         {
+            key: "kitty",
             title: "Total Kitty Plans Revenue",
             value: transactionAnalytics?.kitty || 0,
             icon: ShoppingCart,
@@ -20,6 +22,7 @@ const TransactionStatsView = ({ transactionAnalytics }: { transactionAnalytics: 
             bgColor: "bg-yellow-50",
         },
         {
+            key: "goldInvestment",
             title: "Total Gold Investment Revenue",
             value: transactionAnalytics?.goldInvestment || 0,
             icon: CalendarRange,
@@ -30,8 +33,8 @@ const TransactionStatsView = ({ transactionAnalytics }: { transactionAnalytics: 
 
     return (
         <div className="flex flex-row flex-nowrap items-center gap-5 overflow-x-auto">
-            {statsData.map((stat, index) => (
-                <StatsCard key={index} {...stat} />
+            {statsData.map(({key, ...stat}) => (
+                <StatsCard key={key} {...stat} />
             ))}
         </div>
     )

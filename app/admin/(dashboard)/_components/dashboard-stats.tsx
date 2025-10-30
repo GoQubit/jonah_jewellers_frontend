@@ -10,6 +10,7 @@ const DashboarStatsView = ({ analyticsData }: { analyticsData: any }) => {
 
   const statsData: StatsCardProp[] = [
     {
+      key: "totalRevenue",
       title: "Total Revenue",
       value: analyticsData?.orderRevenue || 0,
       icon: Wallet,
@@ -18,6 +19,7 @@ const DashboarStatsView = ({ analyticsData }: { analyticsData: any }) => {
       boxBgColor: "!bg-yellow-500 !text-white"
     },
     {
+      key: "totalOrders",
       title: "Total Orders",
       value: analyticsData?.totalOrders || 0,
       icon: ShoppingCart,
@@ -26,6 +28,7 @@ const DashboarStatsView = ({ analyticsData }: { analyticsData: any }) => {
       boxBgColor: "!bg-green-500 !text-white"
     },
     {
+      key: "totalKittyMembers",
       title: "Total Kitty Members",
       value: analyticsData?.kittyUserCount || 0,
       icon: TbUserShield,
@@ -34,6 +37,7 @@ const DashboarStatsView = ({ analyticsData }: { analyticsData: any }) => {
       boxBgColor: "!bg-blue-500 !text-white"
     },
     {
+      key: "totalInvestors",
       title: "Total Investors",
       value: analyticsData?.investmentUserCount,
       icon: LuUsers,
@@ -45,8 +49,8 @@ const DashboarStatsView = ({ analyticsData }: { analyticsData: any }) => {
 
   return (
     <div className="flex flex-row flex-nowrap items-center gap-5 overflow-x-auto">
-      {statsData.map((stat, index) => (
-        <StatsCard key={index} {...stat} />
+      {statsData.map(({key, ...stat}) => (
+        <StatsCard key={key} {...stat} />
       ))}
     </div>
   )
