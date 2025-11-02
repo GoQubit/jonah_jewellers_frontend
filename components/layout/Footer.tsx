@@ -98,7 +98,7 @@ export default function Footer() {
                   <IoMailOutline className="w-5 h-5 text-gray-300 mt-1 flex-shrink-0" />
                   <div>
                     <p className="text-gray-300 text-sm">Email Us at</p>
-                    <p className="text-white font-semibold">support@jonahjewellers.com</p>
+                    <p className="text-white font-semibold">support@jonahjewels.com</p>
                   </div>
                 </div>
               </div>

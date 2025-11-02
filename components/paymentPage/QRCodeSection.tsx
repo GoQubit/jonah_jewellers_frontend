@@ -14,7 +14,7 @@ interface QRCodeSectionProps {
 export function QRCodeSection({ onPaymentMade }: QRCodeSectionProps) {
   const [copyCode, setCopyCode] = useState(false);
 
-  const paymentId = "jonahjewellers@paytm"
+  const paymentId = "jonahjewels@paytm"
 
   const copyPaymentId = () => {
     navigator.clipboard.writeText(paymentId)

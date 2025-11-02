@@ -109,7 +109,7 @@ export function PaymentSummary({ paymentData }: PaymentSummaryProps) {
           </div>
           <div>
             <div className="font-semibold text-[#2568C0] mb-1">Need Help?</div>
-            <div className="text-sm text-[#2568C0]">support@jonahjewellers.com</div>
+            <div className="text-sm text-[#2568C0]">support@jonahjewels.com</div>
           </div>
         </div>
       </div>

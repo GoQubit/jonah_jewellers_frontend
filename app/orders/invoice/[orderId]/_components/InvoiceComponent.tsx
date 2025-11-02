@@ -177,7 +177,7 @@ export default function InvoiceComponent({ order }: InvoiceComponentProps) {
       <Separator className="mb-6" />
       <div className="text-center text-xs text-muted-foreground">
         <p>Thank you for your business!</p>
-        <p className="mt-2">For any queries, please contact us at support@jonahjewellers.com</p>
+        <p className="mt-2">For any queries, please contact us at support@jonahjewels.com</p>
       </div>
     </div>
   )

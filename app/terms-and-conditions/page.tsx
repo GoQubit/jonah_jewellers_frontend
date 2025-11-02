@@ -65,10 +65,10 @@ const TermsAndConditionsPage = () => {
           If your order arrives damaged, delayed, or is lost in transit, please
           contact our support team promptly at{" "}
           <a
-            href="mailto:support@jonahjewellers.com"
+            href="mailto:support@jonahjewels.com"
             className="text-blue-600 underline"
           >
-            support@jonahjewellers.com
+            support@jonahjewels.com
           </a>{" "}
           with your order details.
         </p>
@@ -195,10 +195,10 @@ const TermsAndConditionsPage = () => {
         <p className="mt-2">
           📧{" "}
           <a
-            href="mailto:support@jonahjewellers.com"
+            href="mailto:support@jonahjewels.com"
             className="text-blue-600 underline"
           >
-            support@jonahjewellers.com
+            support@jonahjewels.com
           </a>
         </p>
       </section>
