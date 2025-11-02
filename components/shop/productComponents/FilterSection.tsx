@@ -35,8 +35,8 @@ const shopForOptions = [
 
 const sortOptions = [
   { value: "", label: "All" },
-  { value: "price-low", label: "Price: Low to High" },
-  { value: "price-high", label: "Price: High to Low" },
+  // { value: "price-low", label: "Price: Low to High" },
+  // { value: "price-high", label: "Price: High to Low" },
   { value: "newest", label: "Newest First" },
   { value: "popular", label: "Most Popular" },
 ]
@@ -58,7 +58,7 @@ export default function FilterSection() {
   }, [])
 
   return (
-    <div className="wrapper bg-white border-b border-gray-200 py-3 md:py-4 px-3 md:px-6 relative z-10 mt-6 ">
+    <div className="wrapper bg-white border-b border-gray-200 py-3 md:py-4 relative z-10 mt-6 ">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         {/* --- FILTER SCROLL SECTION --- */}
         <div className="relative">

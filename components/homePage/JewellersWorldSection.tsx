@@ -8,7 +8,7 @@ const JewellersWorldSection = () => {
   return (
     <div className='wrapper'>
       <SectionHeading
-        title='JONAH Jewellers World'
+        title='JONAH Jewels World'
         Subtitle='A companion for every occasion'
         size='sm'
       />

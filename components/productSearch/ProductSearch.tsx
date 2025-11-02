@@ -13,7 +13,7 @@ const ProductSearch = () => {
   // fetch searched products
   const fetchSearchedProducts = async (searchQuery: string) => {
     try {
-      const res = await getAllProductsApi({ search: searchQuery })
+      const res = await getAllProductsApi({ q: searchQuery })
       if (res.status === 200) {
         setResults(res.data.results)
         setShowDropdown(true)
@@ -43,30 +43,31 @@ const ProductSearch = () => {
         placeholder="Search for Gold Jewellery, Diamond Jewellery & more..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-full h-12  md:h-12 text-sm sm:text-base"
+        className="w-full md:h-12 text-sm sm:text-base"
+        inputClassName="!border !py-2.5 "
       />
 
       {/* Dropdown Results */}
-      {showDropdown && results.length > 0 && (
+      {showDropdown && results?.length > 0 && (
         <div className="absolute left-0 mt-2 w-full bg-white shadow-lg rounded-lg border max-h-80 overflow-y-auto z-50 sm:max-w-full">
-          {results.map((product) => (
+          {results?.map((product) => (
             <Link
-              key={product._id}
-              href={`/shop/product/${product._id}`}
+              key={product?._id}
+              href={`/shop/product/${product?._id}`}
               className="flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-100 cursor-pointer"
               onClick={() => setShowDropdown(false)}
             >
               <Image
-                src={product.images?.[0] || "/placeholder.png"}
-                alt={product.name}
+                src={product?.images?.[0] || "/placeholder.png"}
+                alt={product?.name}
                 width={40}
                 height={30}
                 className="rounded-md object-cover flex-shrink-0"
               />
               <div className="flex flex-col">
-                <span className="text-xs sm:text-sm font-medium truncate">{product.name}</span>
+                <span className="text-xs sm:text-sm font-medium truncate">{product?.name}</span>
                 <span className="text-[10px] sm:text-xs text-brandLight capitalize truncate">
-                  {product.category?.toLowerCase()} Jewellery
+                  {product?.category?.toLowerCase()} Jewellery
                 </span>
               </div>
             </Link>
@@ -76,7 +77,7 @@ const ProductSearch = () => {
 
       {/* No results */}
       {showDropdown && results.length === 0 && (
-        <div className="absolute mt-2 w-full bg-white shadow-lg rounded-lg border p-2 sm:p-3 text-xs sm:text-sm text-gray-500">
+        <div className="absolute mt-2 w-full bg-white shadow-lg rounded-lg border p-2 sm:p-3 text-xs sm:text-sm text-gray-500 text-center ">
           No products found
         </div>
       )}

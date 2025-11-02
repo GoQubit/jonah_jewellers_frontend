@@ -32,7 +32,7 @@ const reviews: JewelryReview[] = [
     name: "Kavya Singh",
     location: "Chennai",
     rating: 5,
-    review: "Love my new mangalsutra from Jonah Jewellers. Perfect for my wedding!",
+    review: "Love my new mangalsutra from Jonah Jewels. Perfect for my wedding!",
     media: {
       type: "video",
       url: "https://www.youtube.com/embed/dQw4w9WgXcQ",

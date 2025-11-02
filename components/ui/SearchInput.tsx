@@ -1,6 +1,7 @@
 // components/SearchInput.tsx
 import React from 'react';
 import { BiSearch } from 'react-icons/bi';
+import { CiSearch } from 'react-icons/ci';
 
 interface SearchInputProps {
   placeholder?: string;
@@ -24,7 +25,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <div className={`flex-1 max-w-2xl relative ${className}`}>
       <div className="relative">
-        <BiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-yellow-600 w-5 h-5" />
+        <CiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-yellow-600 w-5 h-5" />
         <input
           type="text"
           placeholder={placeholder}

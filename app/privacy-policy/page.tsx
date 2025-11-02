@@ -10,7 +10,7 @@ const PrivacyPolicyPage = () => {
       </h1>
 
       <p className="mb-6">
-        We at <strong>Jonah Jewellers</strong> ("we," "us," or "our") are dedicated
+        We at <strong>Jonah Jewels</strong> ("we," "us," or "our") are dedicated
         to safeguarding the privacy of users of our website and services. This
         privacy statement describes the data we gather, how we use and safeguard
         it, and your rights in relation to that data.
@@ -76,10 +76,10 @@ const PrivacyPolicyPage = () => {
           personal information. However, no method of transmission or storage is
           completely secure. Please contact us immediately at{" "}
           <a
-            href="mailto:support@jonahjewellers.com"
+            href="mailto:support@jonahjewels.com"
             className="text-blue-600 underline"
           >
-            support@jonahjewellers.com
+            support@jonahjewels.com
           </a>{" "}
           if you suspect a data breach or unauthorized access.
         </p>
@@ -92,10 +92,10 @@ const PrivacyPolicyPage = () => {
           delete your personal information, limit processing, or withdraw marketing
           consent. To exercise these rights, contact us at{" "}
           <a
-            href="mailto:support@jonahjewellers.com"
+            href="mailto:support@jonahjewels.com"
             className="text-blue-600 underline"
           >
-            support@jonahjewellers.com
+            support@jonahjewels.com
           </a>.
         </p>
       </section>
@@ -105,7 +105,7 @@ const PrivacyPolicyPage = () => {
           9. Kitty & Gold Investment Information
         </h2>
         <p className="mb-3">
-          Jonah Jewellers offers exclusive Kitty and Gold Investment plans for our
+          Jonah Jewels offers exclusive Kitty and Gold Investment plans for our
           valued customers.
         </p>
 
@@ -156,10 +156,10 @@ const PrivacyPolicyPage = () => {
           <br />
           📧{" "}
           <a
-            href="mailto:support@jonahjewellers.com"
+            href="mailto:support@jonahjewels.com"
             className="text-blue-600 underline"
           >
-            support@jonahjewellers.com
+            support@jonahjewels.com
           </a>
         </p>
       </section>

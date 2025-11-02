@@ -10,7 +10,7 @@ import ModalProvider from '@/context/modal-provider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'JONAH | Jewellery E-commerce App',
+  title: 'JONAH JEWELS | Jewellery E-commerce App',
   description: 'Your one-stop shop for everything',
 };
 

@@ -34,7 +34,7 @@ export default function PlanSelection() {
       subtitle: "Best value with maximum benefits",
       duration: "11 months",
       icon: <FaCrown className="text-4xl text-yellow-500" />,
-      discountText: "12th month installment on us – Jonah Jewellers.",
+      discountText: "12th month installment on us – Jonah Jewels.",
       features: [
         "Pay for only 11 months and get 12th month installment completely FREE",
         "Maximum savings",

@@ -8,7 +8,7 @@ const LoginPage = ({ nextStep }: { nextStep: Function }) => {
       <section className="w-full  md:w-[40%] ">
         <div className="space-y-3">
           <h1 className="text-pretty font-serif text-2xl font-medium tracking-tight text-foreground md:text-3xl">
-            Welcome to Jonah Jewellers!
+            Welcome to Jonah Jewels!
           </h1>
           <p className="text-pretty font-nunito font-normal text-base text-brand">Login/Signup to get exclusive Jonah privileges</p>
         </div>

@@ -6,6 +6,7 @@ import JewelleryCollectionSection from '@/components/homePage/JewelleryCollectio
 import KittyInvestmentsCards from '@/components/homePage/KittyInvestmentsCards';
 import TestimonialCarousel from '@/components/homePage/TestimonialCarousel';
 import WeddingChapterSection from '@/components/homePage/WeddingChapterSection';
+import CategoryNavigationBar from '@/components/layout/CategoryNavigationBar';
 import HomeBannerSlider from '@/components/Slider/HomeBannerSlider';
 import Link from 'next/link';
 
@@ -14,24 +15,31 @@ export default function Home() {
 
 
   return (
-    <div className='flex flex-col gap-10 md:gap-20'>
-      <HomeBannerSlider />
+    <div>
+      {/* category navigation bar */}
+      <CategoryNavigationBar />
 
-      <KittyInvestmentsCards />
+      <div className='flex flex-col gap-10 md:gap-20'>
 
-      <JewelleryCollectionSection />
+        <HomeBannerSlider />
 
-      <CategorySection />
+        <KittyInvestmentsCards />
 
-      <JewellersWorldSection />
+        <JewelleryCollectionSection />
 
-      <WeddingChapterSection />
+        <CategorySection />
 
-      <TestimonialCarousel />
+        <JewellersWorldSection />
 
-      <FooterBannerSection />
+        <WeddingChapterSection />
 
-      <JewelleryAssuranceSection />
+        <TestimonialCarousel />
+
+        <FooterBannerSection />
+
+        <JewelleryAssuranceSection />
+
+      </div>
 
     </div>
   );

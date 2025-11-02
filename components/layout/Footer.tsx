@@ -15,11 +15,11 @@ export default function Footer() {
             {/* Logo and Brand Description */}
             <div className="lg:col-span-1">
               {/* Logo */}
-              <Link href={"/"} className='hidden md:flex bg-white rounded-full w-[130px] h-[130px]  justify-center items-center ' >
-                <Image src={"/images/logo1.png"} width={85} height={24} alt='vlcc-logo' />
+              <Link href={"/"} className='hidden md:flex self-start items-start ' >
+                <Image src={"/images/logo2.png"} alt="logo" width={100} height={80} />
               </Link>
               <p className="text-gray-300 text-sm leading-relaxed">
-                Jonah Jewellers is a jewellery brand that deals in certified gold and diamond jewellery. Known for
+                Jonah Jewels is a jewellery brand that deals in certified gold and diamond jewellery. Known for
                 blending elegance with modern design, Jonah offers timeless pieces crafted with authenticity and
                 precision.
               </p>
@@ -107,7 +107,7 @@ export default function Footer() {
 
           {/* Bottom Section */}
           <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm mb-4 md:mb-0">© 2025 Jonah Jewellers . All Rights Reserved.</p>
+            <p className="text-gray-400 text-sm mb-4 md:mb-0">© 2025 Jonah Jewels . All Rights Reserved.</p>
 
             <div className="flex gap-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">

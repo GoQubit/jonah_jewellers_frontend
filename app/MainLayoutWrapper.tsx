@@ -26,17 +26,21 @@ const MainLayoutWrapper = ({ children }: { children: any }) => {
   //   pathname.startsWith(path)
   // );
 
+  const isHeaderExcluded = excludeHeaderPathRegex.find(pattern => pathname.match(pattern))
+
   return (
     <div className="min-h-screen flex flex-col">
 
       {
-        !excludeHeaderPathRegex.find(pattern => pathname.match(pattern)) &&
+        !isHeaderExcluded &&
         <Header />
       }
 
       {/* {!shouldHideHeader && <Header />} */}
 
-      <main className="flex-grow pt-[160px]">
+      <main className="flex-grow "
+        style={{ paddingTop: isHeaderExcluded ? '' : '80px' }}
+      >
         <ToastContainer style={{ zIndex: "9999999" }} />
         {children}
       </main>

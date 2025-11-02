@@ -106,7 +106,7 @@ export default function ChooseAddressPage({ walletCashUsed, coupon, walletCash }
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: razorpayOrder.amount, // already in paise
         currency: "INR",
-        name: "Jonah Jewellers",
+        name: "Jonah Jewels",
         description: `Order #${order?.id}`,
         order_id: razorpayOrder.id,
         handler: async function (response: any) {

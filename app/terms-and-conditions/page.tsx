@@ -10,7 +10,7 @@ const TermsAndConditionsPage = () => {
 
       <p className="mb-6">
         Please read these Terms & Conditions ("Terms") carefully before using
-        <strong> Jonah Jewellers’ </strong> website or purchasing any products
+        <strong> Jonah Jewels&apos; </strong> website or purchasing any products
         and services. By using our website, accessing any content, or placing an
         order, you agree to be bound by these terms.
       </p>
@@ -30,7 +30,7 @@ const TermsAndConditionsPage = () => {
             may include applicable taxes.
           </li>
           <li>
-            Jonah Jewellers reserves the right to modify prices without prior
+          Jonah Jewels reserves the right to modify prices without prior
             notice, but changes will not affect confirmed orders.
           </li>
         </ul>
@@ -86,7 +86,7 @@ const TermsAndConditionsPage = () => {
           descriptions or colors will always match exactly.
         </p>
         <p>
-          Jonah Jewellers reserves the right to correct any errors,
+        Jonah Jewels reserves the right to correct any errors,
           inaccuracies, or omissions at any time without prior notice.
         </p>
       </section>
@@ -105,7 +105,7 @@ const TermsAndConditionsPage = () => {
           <li>
             Early Withdrawal: Not permitted under normal circumstances. However,
             in exceptional or emergency cases, an early withdrawal may be
-            considered at Jonah Jewellers’ discretion, subject to applicable
+            considered at Jonah Jewels&apos; discretion, subject to applicable
             deductions and approval.
           </li>
           <li>
@@ -142,9 +142,9 @@ const TermsAndConditionsPage = () => {
         <h2 className="text-xl font-semibold mb-3">7. Intellectual Property</h2>
         <p>
           All content, including logos, product designs, images, text, graphics,
-          videos, and code, is the property of Jonah Jewellers or its content
+          videos, and code, is the property of Jonah Jewels or its content
           partners. You may not copy, reproduce, distribute, or modify any part
-          of the website’s content without prior written consent from Jonah
+          of the website&apos;s content without prior written consent from Jonah
           Jewellers.
         </p>
       </section>
@@ -153,7 +153,7 @@ const TermsAndConditionsPage = () => {
       <section className="mb-10">
         <h2 className="text-xl font-semibold mb-3">8. Limitation of Liability</h2>
         <p>
-          To the fullest extent permitted by law, Jonah Jewellers shall not be
+          To the fullest extent permitted by law, Jonah Jewels shall not be
           liable for any indirect, incidental, consequential, or punitive
           damages arising from your use of the website, purchase or use of our
           products, or inability to access the website. Our total liability for
@@ -167,7 +167,7 @@ const TermsAndConditionsPage = () => {
         <h2 className="text-xl font-semibold mb-3">9. Governing Law</h2>
         <p>
           These Terms shall be governed by and interpreted in accordance with
-          the laws of the country where Jonah Jewellers is registered, without
+          the laws of the country where Jonah Jewels is registered, without
           regard to conflict of law principles. All disputes shall be subject to
           the exclusive jurisdiction of the competent courts in that
           jurisdiction, unless otherwise required by law.

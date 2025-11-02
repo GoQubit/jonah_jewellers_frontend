@@ -5,7 +5,7 @@ const JewelleryCollectionSection = () => {
   return (
     <div className='wrapper'>
       <SectionHeading
-        title='JONAH Jewellers Collections'
+        title='Jonah Jewels Collections'
         Subtitle='Explore our newly launched collection'
       />
 
