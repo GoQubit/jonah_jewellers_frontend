@@ -2,16 +2,15 @@
 
 import { Button } from "@/components/ui/buttons/Button"
 import GenericDropdown from "@/components/ui/GenericDropdown"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { removeFromCart, updateQuantity } from "@/redux/Features/cartSlice/cartSlice"
+import { ringSizes } from "@/data/ringSizes"
+import { removeFromCart, updateQuantity, updateRingSize } from "@/redux/Features/cartSlice/cartSlice"
 import { useEffect, useState } from "react"
 import { BiTrash } from "react-icons/bi"
 import { useDispatch } from "react-redux"
 
-
 export function CartItem({ item }: any) {
   const [quantity, setQuantity] = useState(item.quantity.toString())
-  const [ringSize, setRingSize] = useState(item.ringSize?.toString() || "5")
+  const [ringSize, setRingSize] = useState(item.ringSize)
   const dispatch = useDispatch()
 
   const formatPrice = (price: number) => {
@@ -25,11 +24,17 @@ export function CartItem({ item }: any) {
       .replace("₹", "₹ ")
   }
 
-  useEffect(() => {
-    console.log("ringSize", ringSize);
-    console.log("quantity", quantity);
-
-  }, [ringSize, quantity])
+  // 🟢 When user changes ring size in dropdown
+  const handleRingSizeChange = (newSize: string) => {
+    setRingSize(newSize)
+    dispatch(
+      updateRingSize({
+        id: item.id,
+        oldRingSize: item.ringSize,
+        newRingSize: Number(newSize),
+      })
+    )
+  }
 
   const increaseQty = () => {
     dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1, ringSize: item.ringSize }))
@@ -61,47 +66,35 @@ export function CartItem({ item }: any) {
         <div className="flex items-start justify-between">
           <div>
             <h3 className="text-sm md:text-lg font-medium text-gray-900 mb-1">{item.name}</h3>
-            <p className="text-xs md:text-sm text-brand mb-3 font-nunito">{item.specifications}</p>
 
             <div className="flex items-center gap-2 mb-4 font-nunito">
-              <span className="text-base md:text-xl font-semibold text-gray-900">{formatPrice(item.price)}</span>
-              {/* <span className=" text-xs md:text-sm text-gray-500 line-through">{formatPrice(item.originalPrice)}</span> */}
+              <span className="text-base md:text-xl font-semibold text-gray-900">
+                {formatPrice(item.price)}
+              </span>
             </div>
 
             <div className="flex flex-col items-start gap-4">
-              {
-              // item.hasRingSize && 
-              (
+              {/* 🟡 Only show if item has ringSize */}
+              {item.ringSize !== undefined && (
                 <div className="flex items-center gap-2">
                   <label className="text-sm font-light font-nunito text-gray-700">
-                    Ring Size
-                    </label>
-                  <GenericDropdown
-                    options={Array.from({ length: 10 }, (_, i) => ({
-                      label: `${i + 5}`,
-                      value: i + 5,
-                    }))}
-                    value={ringSize}
-                    onChange={setRingSize}
-                    className="w-16"
-                    placeholder="5"
-                  />
+                    Ring Size:
+                  </label>
+                  <select
+                    value={ringSize || ""}
+                    onChange={(e) => handleRingSizeChange(e.target.value)}
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-gray-700 outline-none focus:border-brand "
+                  >
+                    <option value="">Select Size</option>
+                    {ringSizes.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               )}
 
-              {/* <div className="flex items-center gap-2">
-                <label className="text-sm font-light font-nunito text-gray-700">Quantity</label>
-                <GenericDropdown
-                  options={Array.from({ length: 10 }, (_, i) => ({
-                    label: `${i + 1}`,
-                    value: i + 1,
-                  }))}
-                  value={quantity}
-                  onChange={setQuantity}
-                  className="w-16"
-                  placeholder="1"
-                />
-              </div> */}
               {/* Quantity Controls */}
               <div className="flex items-center gap-3 mt-3">
                 <button
@@ -121,17 +114,15 @@ export function CartItem({ item }: any) {
                 {/* Remove */}
                 <Button
                   onClick={removeItem}
-                  variant="ghost" size="sm" className="text-gray-400 hover:text-red-500 p-2">
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-400 hover:text-red-500 p-2"
+                >
                   <BiTrash className="w-4 h-4" />
                 </Button>
               </div>
-
             </div>
           </div>
-
-          {/* <Button variant="ghost" size="sm" className="text-gray-400 hover:text-red-500 p-2">
-            <BiTrash className="w-4 h-4" />
-          </Button> */}
         </div>
       </div>
     </div>

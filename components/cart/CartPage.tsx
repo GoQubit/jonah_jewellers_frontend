@@ -21,6 +21,7 @@ const CartPage = () => {
   const [sellerWallet, setSellerWallet] = useState(null);
   const [promoCode, setPromoCode] = useState("")
   const isAuth = useIsAuth()
+  
 
   const fetchBuyerWallet = async () => {
     const res = await getUserKittyDashboardInfoApi();

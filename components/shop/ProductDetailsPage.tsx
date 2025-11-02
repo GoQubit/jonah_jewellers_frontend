@@ -49,7 +49,6 @@ export default function ProductDetailsPage({ productId }: { productId: string })
 
   const fetchProductDetails = async (product_id: string) => {
     const res = await getSingleProductApi(product_id)
-    console.log("Product Details:", res);
     if (res.status === 200) {
       setProductDetails(res.data)
     }
@@ -59,13 +58,14 @@ export default function ProductDetailsPage({ productId }: { productId: string })
   }, [])
 
 
-  const addToCartHandler = () => {
+  const addToCartHandler = (ringSize?: string) => {
     dispatch(
       addToCart({
         id: productDetails._id,
         name: productDetails.name,
         price: productDetails.price,
         image: productDetails.images[0],
+        ringSize: ringSize ? Number(ringSize) : undefined, // 👈 added
       })
     )
     setShowToast(true)
@@ -75,7 +75,7 @@ export default function ProductDetailsPage({ productId }: { productId: string })
   const producCategory = productDetails?.category === "GOLD" ? "gold" : productDetails?.category === "SILVER" ? "silver" : "diamond"
 
   return (
-    <div className="min-h-screen bg-background py-[40px] md:py-[40px] ">
+    <div className="min-h-screen bg-background py-[16px] md:py-[40px] ">
       <AddToCartToast show={showToast} onClose={() => setShowToast(false)} customButtonId="blog_view_product_cart" />
       <main className="wrapper">
         {/* Product Section */}
@@ -91,6 +91,7 @@ export default function ProductDetailsPage({ productId }: { productId: string })
             metalDetails={productDetails?.[producCategory]}
             productCategory={productDetails?.category}
             addToCartHandler={addToCartHandler}
+            hasRingSize={productDetails?.hasRingSize} 
           />
         </div>
 

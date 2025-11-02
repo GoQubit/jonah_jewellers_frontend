@@ -1,8 +1,6 @@
 import { Order } from "@/types/orderType"
 import { Badge } from "../ui/Badge"
 import { useState } from "react"
-import { BiCheck } from "react-icons/bi"
-import { IoCopyOutline } from "react-icons/io5"
 import { TbCopy, TbCopyCheckFilled } from "react-icons/tb"
 import { truncateId } from "@/utils/truncateId"
 
