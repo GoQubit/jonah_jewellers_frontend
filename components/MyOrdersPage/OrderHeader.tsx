@@ -41,7 +41,7 @@ export function OrderHeader({ order }: OrderHeaderProps) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div className="flex items-center gap-3 self-start ">
-        <h3 className="text-lg font-medium">Order: {truncateId(order.id)}</h3>
+        <h3 className="text-sm md:text-lg font-medium">Order: {truncateId(order.id)}</h3>
 
         <Badge className={status?.className}>{status?.label}</Badge>
 
@@ -58,7 +58,7 @@ export function OrderHeader({ order }: OrderHeaderProps) {
       </div>
 
       <div className="flex flex-col md:items-end gap-1">
-        <div className="text-2xl font-medium">₹{order.totalAmount.toLocaleString()}</div>
+        <div className="text-lg md:text-2xl font-medium">₹{order.totalAmount.toLocaleString()}</div>
         <div className="text-sm text-muted-foreground">{order.items.length} Item</div>
       </div>
     </div>

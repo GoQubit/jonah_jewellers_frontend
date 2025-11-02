@@ -11,6 +11,7 @@ import Toast from "../Toast/Toast"
 import AddressModal from "../ui/addressModal"
 import { deleteAddressApi, getAllAddressesApi } from "@/lib/api/profile/addressApi"
 import { createOrderApi, verifyRazorPayOrderApi } from "@/lib/api/order/orderApis"
+import { useRouter } from "next/navigation"
 
 // ✅ Razorpay script loader
 function loadRazorpayScript(): Promise<boolean> {
@@ -38,6 +39,7 @@ export default function ChooseAddressPage({ walletCashUsed, coupon, walletCash }
   const [selectedAddress, setSelectedAddress] = useState<any>(null);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const fetchAddresses = async () => {
     const res = await getAllAddressesApi()
@@ -119,16 +121,18 @@ export default function ChooseAddressPage({ walletCashUsed, coupon, walletCash }
             }
 
             const verifyRes = await verifyRazorPayOrderApi(payload)
-            const verifyJson = await verifyRes.json()
+            console.log("verifyRes", verifyRes);
 
-            if (verifyJson.success) {
+            if (verifyRes.status === 200) {
               Toast.success("Order placed successfully!")
               // navigate to success page if needed
-              // router.push(`/order/success/${order.id}`)
+              router.push(`/orders`)
             } else {
               Toast.error("Payment verification failed!")
             }
           } catch (err) {
+            console.log("Error", err);
+
             Toast.error("Something went wrong while verifying payment.")
           }
         },

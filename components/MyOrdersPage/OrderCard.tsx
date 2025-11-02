@@ -17,7 +17,7 @@ export function OrderCard({ order }: OrderCardProps) {
   const [showAddress, setShowAddress] = useState(false)
 
   return (
-    <Card className="p-6 space-y-4 !gap-2">
+    <Card className="p-4 md:p-6 space-y-4 !gap-2">
       {/* Header */}
       <OrderHeader order={order} />
 

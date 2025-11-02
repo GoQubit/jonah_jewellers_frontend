@@ -48,7 +48,7 @@ export default function ProductTabs({ metalDetails, description, priceBreakup, p
         <div className="w-full md:w-[60%]">
           {activeTab === "details" && (
             <>
-              <div className="border border-b-0 rounded-lg p-6 ">
+              <div className="border border-b-0 rounded-t-2xl p-6 ">
                 <div className=" flex justify-between items-center cursor-pointer"
                   onClick={() => setActiveDetailsTab("metal")}
                 >
@@ -64,7 +64,7 @@ export default function ProductTabs({ metalDetails, description, priceBreakup, p
                   />
                 }
               </div>
-              <div className="border rounded-lg p-6 ">
+              <div className="border rounded-t-2xl p-6 ">
                 <div className=" flex justify-between items-center cursor-pointer"
                   onClick={() => setActiveDetailsTab("description")}
                 >

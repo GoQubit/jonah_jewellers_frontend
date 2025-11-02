@@ -75,7 +75,7 @@ export default function ProductDetailsPage({ productId }: { productId: string })
   const producCategory = productDetails?.category === "GOLD" ? "gold" : productDetails?.category === "SILVER" ? "silver" : "diamond"
 
   return (
-    <div className="min-h-screen bg-background py-[40px] md:py-[80px] ">
+    <div className="min-h-screen bg-background py-[40px] md:py-[40px] ">
       <AddToCartToast show={showToast} onClose={() => setShowToast(false)} customButtonId="blog_view_product_cart" />
       <main className="wrapper">
         {/* Product Section */}

@@ -61,7 +61,7 @@ export default function ProductInfo({ name, price, metalDetails, productCategory
         <div className="mt-6">
           <Button
             onClick={addToCartHandler}
-            variant="brand-solid" className="!w-[200px] text-base md:text-xl font-medium bg-[#e19924] ">
+            variant="brand-solid" className="!w-[200px] text-base md:text-lg font-medium bg-[#e19924] !py-3 ">
             Add To Cart
           </Button>
 

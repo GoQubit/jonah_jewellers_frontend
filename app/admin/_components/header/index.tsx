@@ -12,7 +12,7 @@ const Header = (props: Props) => {
 
             {/* Logo */}
             <Link href={"/admin"} className='flex items-center gap-3' >
-                <Image src={"/images/logo2.png"} alt="logo" width={100} height={80} />
+                {/* <Image src={"/images/logo2.png"} alt="logo" width={100} height={80} /> */}
                 <span className="font-semibold text-lg">Admin Dashboard</span>
             </Link>
 

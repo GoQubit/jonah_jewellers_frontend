@@ -55,7 +55,7 @@ export default function MyOrdersPage() {
   const [totalPages, setTotalPages] = useState(1)
 
   const fetchOrders = async (pageNumber: number) => {
-    const params = { limit: 5, page: pageNumber }
+    const params = { limit: 5, page: pageNumber, sortBy: '-createdAt' }
     const res = await getAllOrdersApi(params)
     if (res.status === 200) {
       setOrdersList(res.data.results)
@@ -78,7 +78,7 @@ export default function MyOrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background p-4 md:p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         <h1 className=" text-2xl ">My Orders</h1>
         {/* Header with Search and Filters */}
