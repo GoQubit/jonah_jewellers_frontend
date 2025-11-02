@@ -24,6 +24,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/LandingPage/WhyGoqubitSection", "app/aboutus/_components/gridData.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/LandingPage/WhyGoqubitSection", "app/aboutus/_components/gridData.js", "app/refund-policy"],
   "exclude": ["node_modules"]
 }
