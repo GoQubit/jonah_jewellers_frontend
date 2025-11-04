@@ -40,9 +40,9 @@ export function ProceedButton({ termsAccepted, investmentGoal, monthlyAmount, se
   return (
     <button
       onClick={handleProceed}
-      className={`w-full py-3 px-6 rounded-lg font-medium transition-colors bg-brand hover:bg-brandDark text-white ${termsAccepted && investmentGoal ? "" : " opacity-50  cursor-not-allowed font-besley"
+      className={`w-full py-3 px-6 rounded-lg font-medium transition-colors bg-brand hover:bg-brandDark text-white ${termsAccepted ? "" : " opacity-50  cursor-not-allowed font-besley"
         }`}
-      disabled={!termsAccepted && !investmentGoal}
+      disabled={!termsAccepted}
     >
       Proceed to Payment Gateway
     </button>

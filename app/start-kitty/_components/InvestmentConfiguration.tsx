@@ -41,10 +41,10 @@ export function InvestmentConfiguration({
           setMonthlyAmount={setMonthlyAmount}
         />
 
-        <PlanDurationSelector
+        {/* <PlanDurationSelector
           selectedPlan={selectedPlan}
           setSelectedPlan={setSelectedPlan}
-        />
+        /> */}
 
         <InvestmentGoalSelector
           investmentGoal={investmentGoal}

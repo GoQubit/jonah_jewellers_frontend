@@ -47,13 +47,8 @@ export function KittySummary({
         </div>
 
         <div className="flex justify-between">
-          <span className="text-gray-600">Total Payable:</span>
-          <span className="font-medium">₹{totalPayable.toLocaleString()}</span>
-        </div>
-
-        <div className="flex justify-between">
           <span className="text-gray-600">Total Value:</span>
-          <span className="font-medium text-green-600 ">₹{totalValue.toLocaleString()}</span>
+          <span className="font-medium ">₹{totalValue.toLocaleString()}</span>
         </div>
 
         {
@@ -63,6 +58,11 @@ export function KittySummary({
             <span className="text-green-600 font-medium">₹{directSavings.toLocaleString()}</span>
           </div>
         }
+
+        <div className="flex justify-between">
+          <span className="text-gray-600">Total Payable:</span>
+          <span className="font-medium">₹{totalPayable.toLocaleString()}</span>
+        </div>
 
       </div>
 

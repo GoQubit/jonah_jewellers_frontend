@@ -23,21 +23,23 @@ export default function PaymentGatewayPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const goldRate = gold?.price // Rate in INR
+  console.log("");
+  
 
   const paymentData = {
     planCategory: searchParams.get("planCategory") || "kitty",
     kittyId: searchParams.get("kittyId") || "",
     plan: searchParams.get("plan") || "12 Months",
     planTitle: "Kitty Investment Plan",
-    monthlyAmount: Number.parseInt(searchParams.get("monthlyAmount") || "5000"),
+    monthlyAmount: Number.parseInt(searchParams.get("monthlyAmount") || "0"),
     investmentAmount: Number.parseInt(searchParams.get("investmentAmount") || "0"),
     gold: searchParams.get("gold") || "0",
     goldRate: goldRate,
-    duration: searchParams.get("duration") || "12 Months",
+    duration: searchParams.get("duration") || "",
     startDate: todayDate(),
-    totalValue: Number.parseInt(searchParams.get("totalValue") || "60000"),
-    savings: Number.parseInt(searchParams.get("savings") || "5000"),
-    amountToPay: Number.parseInt(searchParams.get("amountToPay") || "55000"),
+    totalValue: Number.parseInt(searchParams.get("totalValue") || "0"),
+    savings: Number.parseInt(searchParams.get("savings") || "0"),
+    amountToPay: Number.parseInt(searchParams.get("amountToPay") || "0"),
   }
 
   const handlePaymentMade = async () => {
@@ -110,7 +112,7 @@ export default function PaymentGatewayPage() {
           <Modal
             isOpen={showSuccessModal}
             onClose={() => setShowSuccessModal(false)}
-            isShowCloseBtn = {false}
+            isShowCloseBtn={false}
           >
             <RecievedPaymentPopup
               planCategory={paymentData.planCategory}

@@ -9,9 +9,6 @@ const CartItems = () => {
   const { items } = useSelector((state: RootState) => state.cart)
   const dispatch = useDispatch()
 
-  console.log("items", items);
-
-
   return (
     <div className="bg-white rounded-lg shadow-sm">
       <div className="p-3 md:p-6 border-b border-gray-200">
