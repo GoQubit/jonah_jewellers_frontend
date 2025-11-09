@@ -225,6 +225,10 @@ body::-webkit-scrollbar {
   }
 }
 
+.swiper-pagination-bullet-active {
+  background: #E8A83E !important;
+}
+
 /* input number spiner */
 .input-number-spin-none::-webkit-inner-spin-button,
 .input-number-spin-none::-webkit-outer-spin-button {

@@ -46,7 +46,7 @@ export function StatsCards({ data }: StatsCardsProps) {
   ]
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:mt-8">
       {statsCards.map((card, index) => {
         const Icon = card.icon
         return (

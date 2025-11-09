@@ -1,7 +1,19 @@
+"use client"
 import React from 'react'
 import SectionHeading from '../ui/SectionHeading'
+import { setCategory } from '@/redux/Features/filterSlice/filterSlice';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 const JewelleryCollectionSection = () => {
+  const dispatch = useDispatch()
+  const router = useRouter()
+
+  const handleCategoryClick = (category: string) => {
+    dispatch(setCategory(category));
+    router.push(`/shop/jewellery?category=${category}`);
+  };
+
   return (
     <div className='wrapper'>
       <SectionHeading
@@ -9,7 +21,9 @@ const JewelleryCollectionSection = () => {
         Subtitle='Explore our newly launched collection'
       />
 
-      <div className='grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-6'
+        onClick={() => handleCategoryClick('GOLD')}
+      >
         <div className='relative overflow-hidden rounded-lg group cursor-pointer md:row-span-2 ' >
           <img src="/images/jewelleryPosters/collection_img_1.png"
             alt="Gold Jewellery Collection"
@@ -21,7 +35,9 @@ const JewelleryCollectionSection = () => {
             <p className="text-[#FEDFA2] text-lg md:text-xl font-serif font-light tracking-wide">Jewellery</p>
           </div>
         </div>
-        <div className='relative overflow-hidden rounded-lg group cursor-pointer' >
+        <div className='relative overflow-hidden rounded-lg group cursor-pointer'
+          onClick={() => handleCategoryClick('DIAMOND')}
+        >
           <img src="/images/jewelleryPosters/collection_img_2.png"
             alt="Diamond Jewellery Collection"
             className=" w-full h-[300px] md:w-full md:h-full object-cover transition-transform duration-300 group-hover:scale-105" />
@@ -31,7 +47,9 @@ const JewelleryCollectionSection = () => {
             <p className=" text-base md:text-lg font-serif font-light tracking-wide">Jewellery</p>
           </div>
         </div>
-        <div className='relative overflow-hidden rounded-lg group cursor-pointer' >
+        <div className='relative overflow-hidden rounded-lg group cursor-pointer'
+          onClick={() => handleCategoryClick('SILVER')}
+        >
           <img src="/images/jewelleryPosters/collection_img_3.png"
             alt="Silver Jewellery Collection"
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />

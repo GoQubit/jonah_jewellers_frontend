@@ -23,7 +23,7 @@ export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) 
   }
 
   return (
-    <Card className=" flex flex-col p-6 space-y-4">
+    <Card className=" flex flex-col p-6 !gap-4 space-y-1 md:space-y-2">
       <div className="flex items-start justify-between">
         <div>
           <h3 className="font-medium text-lg text-gray-900 font-nunito">{plan.title}</h3>

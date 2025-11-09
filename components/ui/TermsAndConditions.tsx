@@ -26,9 +26,10 @@ export function TermsAndConditions({ termsAccepted, setTermsAccepted }: TermsAnd
         </label> */}
         <p className="text-gray-600">
           I agree to the{" "}
-          <a href="#" className="text-blue-600 hover:underline">
-            Terms & Conditions and Privacy Policy
-          </a>
+          <a href="/terms-and-conditions" target="_blank" className="text-blue-600 hover:underline">
+            Terms & Conditions
+          </a> and {" "} 
+           <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline" >Privacy Policy</a>
           . I understand the payment schedule, benefits, and cancellation policy.
         </p>
       </div>

@@ -16,6 +16,8 @@ import { Sidebar } from "./Sidebar";
 import { RootState } from "@/redux/store";
 import { getMaterialPriceApi } from "@/lib/api/material/materialApis";
 import { setMaterials } from "@/redux/Features/materialSlice/materialSlice";
+import { Avatar, AvatarFallback } from "../ui/Avatar";
+import { FaHamburger } from "react-icons/fa";
 
 const Header = () => {
   const { items } = useSelector((state: RootState) => state.cart);
@@ -29,6 +31,8 @@ const Header = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
+
+  const nameInitials = user.firstName && user.lastName ? `${user.firstName.charAt(0).toLocaleUpperCase()}${user.lastName.charAt(0).toLocaleUpperCase()}` : "NA"
 
   useEffect(() => {
     (async () => {
@@ -61,7 +65,7 @@ const Header = () => {
           </div>
 
           {/* Right Icons */}
-          <div className="flex items-center gap-2 md:gap-4 flex-shrink-0">
+          <div className="flex items-center gap-4 md:gap-4 flex-shrink-0">
             {/* Today’s Price */}
             <div className="flex text-xs  font-medium font-nunito items-center gap-2 p-1 px-2 rounded-md bg-[#ffefca] text-brand">
               {/* <span className="w-2 h-2 rounded-full bg-red-600"></span> */}
@@ -72,11 +76,21 @@ const Header = () => {
 
             {/* Search icon for mobile */}
             <button
-              className="md:hidden p-2 rounded-full "
+              className="md:hidden rounded-full "
               onClick={() => setShowSearchBar((prev) => !prev)}
             >
-              <AiOutlineSearch className="w-5 h-5 text-grayDark hover:text-brand " />
+              <AiOutlineSearch className="w-6 h-6 text-grayDark hover:text-brand " />
             </button>
+
+            {/* Cart */}
+            <Link href={"/cart"}>
+              <div className="relative">
+                <PiShoppingCartSimple className="w-6 h-6 text-grayDark hover:text-brand" />
+                <span className="absolute -top-2 -right-2 bg-brand text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                  {total_item}
+                </span>
+              </div>
+            </Link>
 
             {/* User */}
             <div
@@ -90,32 +104,13 @@ const Header = () => {
             >
               {
                 isAuth ? (
-                  <Image
-                    src={
-                      user?.gender?.toLowerCase() === "female"
-                        ? "/images/female-avatar.webp"
-                        : "/images/dummy-avatar.jpeg"
-                    }
-                    alt="profile-avatar"
-                    width={25}
-                    height={25}
-                    className="bg-cover rounded-full cursor-pointer"
-                  />
+                  <FaHamburger className="w-5 h-5 text-brand cursor-pointer" />
                 ) : (
-                  <HiOutlineUser className="w-5 h-5 text-grayDark hover:text-brand cursor-pointer" />
+                  <HiOutlineUser className="w-6 h-6 text-grayDark hover:text-brand cursor-pointer" />
                 )
               }
             </div>
 
-            {/* Cart */}
-            <Link href={"/cart"}>
-              <div className="relative">
-                <PiShoppingCartSimple className="w-5 h-5 text-grayDark hover:text-brand" />
-                <span className="absolute -top-2 -right-2 bg-yellow-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
-                  {total_item}
-                </span>
-              </div>
-            </Link>
           </div>
         </div>
       </div>

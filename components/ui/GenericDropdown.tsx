@@ -29,23 +29,28 @@ const GenericDropdown: React.FC<DropdownProps> = ({
   itemClassName = "",
 }) => {
   const [open, setOpen] = useState(false);
-  const [menuPos, setMenuPos] = useState<{ top: number; left: number; width: number } | null>(
-    null
-  );
+  const [menuPos, setMenuPos] = useState<{ top: number; left: number; width: number } | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // 🧩 Close dropdown on outside click
+  // 🧩 Close dropdown on outside click (but skip if inside dropdown)
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setOpen(false);
+      // ✅ Skip if click inside dropdown or portal list
+      const target = event.target as HTMLElement;
+      if (
+        dropdownRef.current &&
+        (dropdownRef.current.contains(target) || target.closest(".dropdown-menu-portal"))
+      ) {
+        return;
       }
+      setOpen(false);
     }
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // 🧩 Recalculate menu position when opened
+  // 🧩 Calculate menu position
   useEffect(() => {
     if (open && dropdownRef.current) {
       const rect = dropdownRef.current.getBoundingClientRect();
@@ -66,8 +71,7 @@ const GenericDropdown: React.FC<DropdownProps> = ({
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className={`flex w-full gap-2 items-center justify-between rounded-md border px-3 py-2 text-sm shadow-sm bg-white
-          hover:border-gray-400 ${triggerClassName}`}
+        className={`flex w-full gap-2 items-center justify-between rounded-md border px-3 py-2 text-sm shadow-sm bg-white hover:border-gray-400 ${triggerClassName}`}
       >
         <span>{selectedLabel}</span>
         <DownArrow isOpen={open} />
@@ -78,8 +82,7 @@ const GenericDropdown: React.FC<DropdownProps> = ({
         menuPos &&
         createPortal(
           <ul
-            className={`absolute z-[9999] rounded-md border bg-white shadow-lg max-h-60 overflow-y-auto scroller
-              ${menuClassName}`}
+            className={`dropdown-menu-portal absolute z-[9999] rounded-md border bg-white shadow-lg max-h-60 overflow-y-auto scroller ${menuClassName}`}
             style={{
               top: menuPos.top,
               left: menuPos.left,
@@ -90,21 +93,22 @@ const GenericDropdown: React.FC<DropdownProps> = ({
             {options.map((opt) => (
               <li
                 key={opt[valueField]}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation(); // ✅ prevent outside click listener
                   if (!opt.disabled) {
                     onChange?.(opt[valueField]);
                     setOpen(false);
                   }
                 }}
-                className={`px-3 py-2 cursor-pointer text-sm 
-                  ${opt.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100"}
-                  ${itemClassName}`}
+                className={`px-3 py-2 cursor-pointer text-sm ${
+                  opt.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100"
+                } ${itemClassName}`}
               >
                 {opt[labelField]}
               </li>
             ))}
           </ul>,
-          document.body // 👈 renders outside any scroll container
+          document.body
         )}
     </div>
   );

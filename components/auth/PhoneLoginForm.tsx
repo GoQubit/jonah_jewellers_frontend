@@ -87,11 +87,11 @@ export default function PhoneLoginForm({ nextStep }: { nextStep: Function }) {
           />
 
           <p className="flex text-sm font-nunito whitespace-nowrap flex-wrap gap-1 text-[#727272]  ">I accept that I have read & understood{"  "}
-            <a href="#" className="text-blue-600 underline underline-offset-2">
+            <a href="/privacy-policy" target="_blank" className="text-blue-600 underline underline-offset-2">
               Privacy Policy
             </a>{" "}
             and{" "}
-            <a href="#" className="text-blue-600 underline underline-offset-2">
+            <a href="/terms-and-conditions" target="_blank" className="text-blue-600 underline underline-offset-2">
               Terms & Conditions.
             </a>
           </p>

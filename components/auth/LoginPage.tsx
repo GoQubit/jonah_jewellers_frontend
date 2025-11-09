@@ -4,8 +4,8 @@ import PhoneLoginForm from './PhoneLoginForm'
 const LoginPage = ({ nextStep }: { nextStep: Function }) => {
 
   return (
-    <div className="flex w-full items-start gap-10 md:gap-20 ">
-      <section className="w-full  md:w-[40%] ">
+    <div className="h-[80vh] flex w-full items-center justify-between gap-10 md:gap-20 ">
+      <section className=" w-full md:w-[40%] ">
         <div className="space-y-3">
           <h1 className="text-pretty font-serif text-2xl font-medium tracking-tight text-foreground md:text-3xl">
             Welcome to Jonah Jewels!

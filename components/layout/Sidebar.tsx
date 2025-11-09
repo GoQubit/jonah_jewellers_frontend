@@ -1,7 +1,5 @@
 "use client"
-
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "../ui/buttons/Button"
 import { Badge } from "../ui/Badge"
@@ -58,7 +56,6 @@ export function Sidebar({ isOpen, onClose }: UserAccountSidebarProps) {
           title: "My Kitty Plan",
           description: "Manage your kitty portfolio",
           onClick: () => {
-            console.log("[v0] Navigating to Kitty Plan")
             router.push("/kitty-dashboard")
             onClose()
           },
@@ -76,7 +73,6 @@ export function Sidebar({ isOpen, onClose }: UserAccountSidebarProps) {
           title: "Jonah Seller Dashboard",
           description: "Manage your Gold Investments",
           onClick: () => {
-            console.log("[v0] Navigating to Dashboard")
             router.push("/seller-dashboard")
             onClose()
           },
@@ -92,7 +88,6 @@ export function Sidebar({ isOpen, onClose }: UserAccountSidebarProps) {
       title: "My Orders",
       description: "View order status & history",
       onClick: () => {
-        console.log("[v0] Navigating to Orders")
         router.push("/orders")
         onClose()
       },
@@ -104,7 +99,6 @@ export function Sidebar({ isOpen, onClose }: UserAccountSidebarProps) {
       title: "Edit My Profile",
       description: "Edit profile & address",
       onClick: () => {
-        console.log("[v0] Navigating to Profile Edit")
         router.push("/profile?profile=edit")
         onClose()
       },
@@ -116,7 +110,8 @@ export function Sidebar({ isOpen, onClose }: UserAccountSidebarProps) {
       title: "Help & Support",
       description: "Get assistance & FAQs",
       onClick: () => {
-        console.log("[v0] Navigating to Support")
+        router.push("/help-and-support")
+        onClose()
       },
     },
   ]
@@ -144,9 +139,9 @@ export function Sidebar({ isOpen, onClose }: UserAccountSidebarProps) {
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
             <h2 className="text-lg font-semibold text-gray-900">My Account</h2>
-            <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 p-0 hover:bg-gray-100">
-              <IoClose size={20} className=" text-black" />
-            </Button>
+            <div onClick={onClose} className=" rounded-lg p-2 cursor-pointer hover:bg-gray-100 text-black ">
+              <IoClose size={20} className=" !text-black" />
+            </div>
           </div>
 
           {/* User Profile Section */}

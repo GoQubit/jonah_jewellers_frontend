@@ -46,10 +46,10 @@ export function InvestmentConfiguration({
           setSelectedPlan={setSelectedPlan}
         /> */}
 
-        <InvestmentGoalSelector
+        {/* <InvestmentGoalSelector
           investmentGoal={investmentGoal}
           setInvestmentGoal={setInvestmentGoal}
-        />
+        /> */}
 
         <TermsAndConditions termsAccepted={termsAccepted} setTermsAccepted={setTermsAccepted} />
         <ProceedButton

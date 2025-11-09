@@ -15,19 +15,14 @@ export function ProceedButton({ termsAccepted, investmentGoal, monthlyAmount, se
   const router = useRouter()
 
   const handleProceed = async () => {
-    if (!termsAccepted) {
-      alert("Please accept the terms and conditions to proceed.")
-      return
-    }
     const duration = selectedPlan === "3-month" ? "3" : selectedPlan === "6-month" ? "6" : "12";
 
     const payload: kittyEnrollmentData = {
-      title: investmentGoal,
+      // title: investmentGoal,
       monthlyInstallment: monthlyAmount,
       planDuration: +duration
     }
     const res = await kittyEnrollmentApi(payload)
-    console.log("res", res);
 
     if (res.status === 201) {
       const kittyId = res.data.id

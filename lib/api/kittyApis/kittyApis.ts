@@ -3,7 +3,7 @@ import axiosInstance from "@/lib/axiosInstances/axiosInstance"
 
 // kitty Enrollment api =====>>
 export interface kittyEnrollmentData {
-  title: string,
+  // title: string,
   monthlyInstallment: number,
   planDuration: number
 }

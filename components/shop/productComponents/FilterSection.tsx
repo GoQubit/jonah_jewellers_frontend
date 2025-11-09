@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useRouter, useSearchParams, usePathname } from "next/navigation"
 import GenericDropdown from "@/components/ui/GenericDropdown"
 import {
   setCategory,
@@ -35,8 +36,6 @@ const shopForOptions = [
 
 const sortOptions = [
   { value: "", label: "All" },
-  // { value: "price-low", label: "Price: Low to High" },
-  // { value: "price-high", label: "Price: High to Low" },
   { value: "newest", label: "Newest First" },
   { value: "popular", label: "Most Popular" },
 ]
@@ -46,28 +45,109 @@ export default function FilterSection() {
   const { category, subCategory, occasion, targetGender, sortBy } =
     useAppSelector((state) => state.filters)
 
-  const [subCategoryData, setSubCategoryData] = useState([])
+  const [subCategoryData, setSubCategoryData] = useState<any[]>([])
 
+  const router = useRouter()
+  const searchParams = useSearchParams() // snapshot (good for read)
+  const pathname = usePathname()
+
+  // -------------------------
+  // Helper: update URL using current window.location (avoid stale snapshot)
+  // -------------------------
+  const updateQueryParams = (key: string, value: string | null) => {
+    // use current URLSearchParams from window, not from useSearchParams which could be stale
+    const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "")
+
+    if (value && value !== "") {
+      params.set(key, value)
+    } else {
+      params.delete(key)
+    }
+
+    const query = params.toString()
+    const newUrl = query ? `${pathname}?${query}` : `${pathname}`
+
+    // replace to avoid creating history entry
+    router.replace(newUrl, { scroll: false })
+  }
+
+  // -------------------------
+  // Fetch subcategories
+  // -------------------------
   useEffect(() => {
-    ; (async () => {
-      const res = await getSubCategoriesApi()
-      if (res.status === 200) {
-        setSubCategoryData(res.data.results)
+    ;(async () => {
+      try {
+        const res = await getSubCategoriesApi()
+        if (res.status === 200) {
+          setSubCategoryData(res.data.results || [])
+        }
+      } catch (err) {
+        console.error("Failed to load subcategories", err)
       }
     })()
   }, [])
+
+  // -------------------------
+  // On mount: read URL params and initialize Redux filters
+  // This ensures links like /shop/jewellery?subCategory=1 will populate filters.
+  // -------------------------
+  useEffect(() => {
+    if (!searchParams) return
+
+    const qCategory = searchParams.get("category") || ""
+    const qSubCategory = searchParams.get("subCategory") || "" // note: ids are strings in the URL
+    const qOccasion = searchParams.get("occasion") || ""
+    const qShopFor = searchParams.get("shopFor") || ""
+    const qSortBy = searchParams.get("sortBy") || ""
+
+    // Only dispatch if differs from current redux state (avoids redundant dispatch)
+    if (qCategory !== (category || "")) dispatch(setCategory(qCategory))
+    if (qSubCategory !== (subCategory || "")) dispatch(setSubCategory(qSubCategory))
+    if (qOccasion !== (occasion || "")) dispatch(setOccasion(qOccasion))
+    if (qShopFor !== (targetGender || "")) dispatch(setShopFor(qShopFor))
+    if (qSortBy !== (sortBy || "")) dispatch(setSortBy(qSortBy))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // run once on mount
+
+  // -------------------------
+  // Keep URL in sync when Redux filter values change
+  // (these effects run when the corresponding redux state changes)
+  // -------------------------
+  useEffect(() => {
+    updateQueryParams("category", category || null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category])
+
+  useEffect(() => {
+    updateQueryParams("subCategory", subCategory || null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subCategory])
+
+  useEffect(() => {
+    updateQueryParams("occasion", occasion || null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [occasion])
+
+  useEffect(() => {
+    updateQueryParams("shopFor", targetGender || null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetGender])
+
+  useEffect(() => {
+    updateQueryParams("sortBy", sortBy || null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortBy])
 
   return (
     <div className="wrapper bg-white border-b border-gray-200 py-3 md:py-4 relative z-10 mt-6 ">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         {/* --- FILTER SCROLL SECTION --- */}
         <div className="relative">
-          {/* ✅ Use inner div for scroll, but keep outer div visible */}
           <div
             className="flex md:flex-wrap md:justify-start gap-3 md:gap-4 overflow-x-auto no-scrollbar scroll-smooth pb-1"
             style={{
               WebkitOverflowScrolling: "touch",
-              overflowY: "visible", // ✅ prevents dropdown cut-off
+              overflowY: "visible",
             }}
           >
             <div className="flex flex-nowrap md:flex-wrap gap-3 md:gap-4 relative z-20">

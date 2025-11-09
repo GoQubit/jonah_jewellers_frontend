@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useState } from "react";
@@ -18,6 +18,7 @@ export const CustomPageHeader = ({ title, onMenuClick }: PageHeaderProps) => {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const isAuth = useIsAuth()
+  const pathname = usePathname()
 
 
   return (
@@ -34,23 +35,23 @@ export const CustomPageHeader = ({ title, onMenuClick }: PageHeaderProps) => {
         </button>
 
         {/* Menu / Sidebar Button */}
-        <button
-          onClick={() => setIsSidebarOpen(true)}
-          className="p-2 rounded-md hover:bg-gray-100 transition"
-        >
-          <FaHamburger className="text-xl text-gray-900" />
-          {/* <RxHamburgerMenu  /> */}
-        </button>
+        {
+          isAuth ?
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2 rounded-md hover:bg-gray-100 transition"
+            >
+              <FaHamburger className="text-xl text-gray-900" />
+            </button>
+            : pathname !== '/login' ?
+              <Link href={'/login'} >
+                Login
+              </Link> : ''
+        }
+
       </div>
 
-      {
-        isAuth ?
-          <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-          :
-          <Link href={'/login'} >
-            Login
-          </Link>
-      }
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </header>
   );
 };
