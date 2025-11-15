@@ -66,3 +66,25 @@ export const deleteProductApi = async (product_id: string) => {
     throw new Error(error?.response?.data?.message || error?.message)
   }
 }
+
+
+// get product tags api =====>>
+export const getProductTagsApi = async (params?: any) => {
+  try {
+
+    const parameters: any = {};
+    // Iterate over all keys in the params object
+    for (const key in params) {
+      if (params[key]) {
+        parameters[key] = params[key];
+      }
+    }
+
+    const response = await axiosInstance.get(`${product_url}/tags`, {
+      params: parameters
+    })
+    return response
+  } catch (error) {
+    return
+  }
+}

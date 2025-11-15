@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
-import { categoryEnum, genderOptions, goldPurityOptions, productCategoryOptions, productFormSchema, ProductFormSchema } from './const';
+import { categoryEnum, diamondClarityGradeOptions, diamondMetalPurityOptions, genderOptions, goldPurityOptions, productCategoryOptions, productFormSchema, ProductFormSchema, silverPurityOptions } from './const';
 import { Empty, EmptyHeader } from '@/components/ui/empty'
 import { Box, CheckIcon, ChevronsUpDownIcon, Tag } from 'lucide-react'
 import { getSubCategoriesApi } from '@/lib/api/category/productCategoriesApis'
@@ -16,7 +16,7 @@ import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/utils/cn'
 import { UploadMediaField } from './upload-media-field'
-import { createProductApi, updateProductApi } from '@/lib/api/products/productsApis'
+import { createProductApi, getProductTagsApi, updateProductApi } from '@/lib/api/products/productsApis'
 import { useRouter } from 'next/navigation'
 import { PrimaryImageField } from './primary-image-field'
 import { getAllUsersApi } from '@/lib/api/users/users.api'
@@ -54,6 +54,16 @@ const ProductForm = ({
   const [sellers, setSellers] = useState<{
     isLoading: boolean,
     data: Seller[]
+  }>({
+    isLoading: false,
+    data: []
+  })
+
+  const [openTag, setOpenTag] = useState(false)
+  const [searchTag, setSearchTag] = useState("")
+  const [tags, setTags] = useState<{
+    isLoading: boolean,
+    data: string[]
   }>({
     isLoading: false,
     data: []
@@ -116,6 +126,31 @@ const ProductForm = ({
 
   useEffect(() => {
     getSellers(searchSeller)
+  }, [])
+
+  const getTags = async (search: string = searchTag) => {
+    setTags({ isLoading: true, data: [] })
+    try {
+      let queryParams: any = {
+      }
+      if (search) {
+        queryParams["q"] = search
+      }
+      const response = await getProductTagsApi(queryParams)
+      if (response.status === 200) {
+        setTags(s => ({ ...s, data: response.data[0].tags }))
+      } else {
+        throw new Error("Failed to fetch tags")
+      }
+    } catch (error) {
+      setTags(s => ({ ...s, data: [] }))
+    } finally {
+      setTags(s => ({ ...s, isLoading: false }))
+    }
+  }
+
+  useEffect(() => {
+    getTags(searchTag)
   }, [])
 
   const { control } = form
@@ -181,7 +216,13 @@ const ProductForm = ({
     }, 500),
     []
   )
-  console.log("asdfasdf", values)
+
+  const handleSearchTag = useCallback(
+    debounce((value: string) => {
+      getTags(value)
+    }, 500),
+    []
+  )
 
   return (
     <div className="w-full min-w-[500px]">
@@ -407,7 +448,7 @@ const ProductForm = ({
                             {...field}
                             type="number"
                             id="product-form-grossWeight"
-                            placeholder="Enter Gross weight. eg: 12.1"
+                            placeholder="Enter Gross weight. eg: 25.5"
                             disabled={disableForm}
                             onChange={e => field.onChange(parseFloat(e.target.value))}
                             value={field.value?.toString()}
@@ -470,37 +511,7 @@ const ProductForm = ({
                               {...field}
                               type="number"
                               id="product-form-diamond-metalWeight"
-                              placeholder="Enter Metal Weight. eg: 22.2"
-                              disabled={disableForm}
-                              onChange={e => field.onChange(parseFloat(e.target.value))}
-                              value={field.value?.toString()}
-                              min={0}
-                              onWheel={(e) => e.currentTarget.blur()}
-                              step="any"
-                              className='h-12 input-number-spin-none'
-                            />
-                            {fieldState.invalid && (
-                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                            )}
-                          </Field>
-                        )}
-                      />
-                    )}
-
-                    {["DIAMOND"].includes(values.category!) && (
-                      <Controller
-                        name="diamond.stoneWeightInCarat"
-                        control={form.control}
-                        render={({ field, fieldState }) => (
-                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                            <FieldLabel htmlFor="product-form-stoneWeightInCarat" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                              Stone Weight (in carat)
-                            </FieldLabel>
-                            <Input
-                              {...field}
-                              type="number"
-                              id="product-form-stoneWeightInCarat"
-                              placeholder="Enter Stone weight. eg: 22"
+                              placeholder="Enter Metal Weight. eg: 15.5"
                               disabled={disableForm}
                               onChange={e => field.onChange(parseFloat(e.target.value))}
                               value={field.value?.toString()}
@@ -530,7 +541,7 @@ const ProductForm = ({
                               {...field}
                               type="number"
                               id="product-form-stoneWeightInGrams"
-                              placeholder="Enter Stone weight. eg: 25.5"
+                              placeholder="Enter Stone weight. eg: 10"
                               disabled={disableForm}
                               onChange={e => field.onChange(parseFloat(e.target.value))}
                               value={field.value?.toString()}
@@ -588,7 +599,7 @@ const ProductForm = ({
                         )}
                       />
                     )}
-
+                    
                     {["SILVER"].includes(values.category!) && (
                       <Controller
                         name="silver.silverPurityGrade"
@@ -598,13 +609,31 @@ const ProductForm = ({
                             <FieldLabel htmlFor="product-form-silver-silverPurityGrade" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
                               Silver Purity
                             </FieldLabel>
-                            <Input
-                              {...field}
-                              id="product-form-silver-silverPurityGrade"
-                              placeholder="Enter Silver Purity Grade"
+                            <Select
+                              name={field.name}
+                              value={field.value?.toString()}
+                              onValueChange={(value) => field.onChange(parseInt(value))}
+                              defaultValue={field.value?.toString()}
                               disabled={disableForm}
-                              className='h-12'
-                            />
+                            >
+                              <SelectTrigger id="product-form-silver-silverPurityGrade" className='flex items-center justify-between !h-12'>
+                                <SelectValue
+                                  placeholder="Select Silver Purity Grade"
+                                  aria-invalid={fieldState.invalid}
+                                />
+                              </SelectTrigger>
+                              <SelectContent className="w-full bg-white">
+                                {silverPurityOptions?.map(option => (
+                                  <SelectItem
+                                    key={option.value}
+                                    value={option.value.toString()}
+                                    className="w-full pl-8"
+                                  >
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                             {fieldState.invalid && (
                               <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
                             )}
@@ -622,13 +651,31 @@ const ProductForm = ({
                             <FieldLabel htmlFor="product-form-diamond-clarityGrade" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
                               Clarity Grade
                             </FieldLabel>
-                            <Input
-                              {...field}
-                              id="product-form-diamond-clarityGrade"
-                              placeholder="Enter Clarity Grade"
+                            <Select
+                              name={field.name}
+                              value={field.value?.toString()}
+                              onValueChange={(value) => field.onChange(parseInt(value))}
+                              defaultValue={field.value?.toString()}
                               disabled={disableForm}
-                              className='h-12'
-                            />
+                            >
+                              <SelectTrigger id="product-form-diamond-clarityGrade" className='flex items-center justify-between !h-12'>
+                                <SelectValue
+                                  placeholder="Select Clarity Grade"
+                                  aria-invalid={fieldState.invalid}
+                                />
+                              </SelectTrigger>
+                              <SelectContent className="w-full bg-white">
+                                {diamondClarityGradeOptions?.map(option => (
+                                  <SelectItem
+                                    key={option.value}
+                                    value={option.value.toString()}
+                                    className="w-full pl-8"
+                                  >
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                             {fieldState.invalid && (
                               <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
                             )}
@@ -677,6 +724,48 @@ const ProductForm = ({
                               disabled={disableForm}
                               className='h-12'
                             />
+                            {fieldState.invalid && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
+
+                    {["DIAMOND"].includes(values.category!) && (
+                      <Controller
+                        name="diamond.metalPurity"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                            <FieldLabel htmlFor="product-form-diamond-metalpurity" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                              Metal Purity
+                            </FieldLabel>
+                            <Select
+                              name={field.name}
+                              value={field.value?.toString()}
+                              onValueChange={(value) => field.onChange(parseInt(value))}
+                              defaultValue={field.value?.toString()}
+                              disabled={disableForm}
+                            >
+                              <SelectTrigger id="product-form-diamond-metalpurity" className='flex items-center justify-between !h-12'>
+                                <SelectValue
+                                  placeholder="Select Metal Purity"
+                                  aria-invalid={fieldState.invalid}
+                                />
+                              </SelectTrigger>
+                              <SelectContent className="w-full bg-white">
+                                {diamondMetalPurityOptions?.map(option => (
+                                  <SelectItem
+                                    key={option.value}
+                                    value={option.value.toString()}
+                                    className="w-full pl-8"
+                                  >
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                             {fieldState.invalid && (
                               <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
                             )}
@@ -840,6 +929,41 @@ const ProductForm = ({
                     />
 
                     <Controller
+                      name={
+                        values.category === "GOLD"
+                          ? "gold.additionalCharges"
+                          : (
+                            values.category === "DIAMOND"
+                              ? "diamond.additionalCharges"
+                              : "silver.additionalCharges"
+                          )
+                      }
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
+                          <FieldLabel htmlFor="product-form-additionalCharges" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                            Additional Charges
+                          </FieldLabel>
+                          <Input
+                            {...field}
+                            type="number"
+                            id="product-form-additionalCharges"
+                            placeholder="Enter Additional Charges"
+                            onChange={e => field.onChange(parseFloat(e.target.value))}
+                            value={field.value?.toString()}
+                            min={0}
+                            onWheel={(e) => e.currentTarget.blur()}
+                            step="any"
+                            className='h-12 input-number-spin-none'
+                          />
+                          {fieldState.invalid && (
+                            <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+
+                    <Controller
                       name="seller"
                       control={form.control}
                       render={({ field, fieldState }) => (
@@ -886,7 +1010,6 @@ const ProductForm = ({
                                         key={seller.id}
                                         value={seller.id}
                                         onSelect={(currentValue) => {
-                                          console.log("selected seller id:", currentValue, seller)
                                           const { id, ...rest } = seller
                                           field.onChange({ _id: parseInt(id), ...rest })
                                           setOpenSeller(false)
@@ -981,25 +1104,64 @@ const ProductForm = ({
                             </FieldLabel>
 
                             <div className="flex flex-col gap-2">
-                              <div className="flex items-center gap-2">
-                                <Input
-                                  id="product-form-tags"
-                                  value={inputValue}
-                                  onChange={(e) => setInputValue(e.target.value.toLowerCase())}
-                                  onKeyDown={handleKeyDown}
-                                  placeholder="Enter tag and press Enter or ✓"
-                                  disabled={disableForm}
-                                  className="h-12 flex-1 capitalize"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={addTag}
-                                  disabled={disableForm}
-                                  className="border border-gray-300 bg-gray-100 hover:bg-gray-200 rounded px-3 py-2"
-                                >
-                                  ✓
-                                </button>
-                              </div>
+
+                              <Popover open={openTag} onOpenChange={setOpenTag}>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={openTag}
+                                    disabled={disableForm}
+                                    className="h-12 hover:bg-transparent justify-between"
+                                  >
+                                    {"Select or search tags..."}
+                                    <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="!w-full p-0 bg-white">
+                                  <Command className="rounded-md shadow-md !w-full">
+                                    <CommandInput
+                                      placeholder="Search tag..."
+                                      value={searchTag}
+                                      onValueChange={(search: string) => {
+                                        setSearchTag(search)
+                                        handleSearchTag(search)
+                                      }}
+                                      className='focus:outline-none focus:border-0 focus:ring-0 h-12'
+                                    />
+                                    <CommandList>
+                                      <CommandEmpty>{tags.isLoading ? "Loading..." : "No tag found."}</CommandEmpty>
+                                      <CommandGroup>
+                                        {tags.isLoading && (
+                                          <div className="flex items-center justify-center p-4">
+                                            <FaSpinner className='w-5 h-5 animate-spin' />
+                                          </div>
+                                        )}
+                                        {tags?.data?.map((tag) => (
+                                          <CommandItem
+                                            key={tag}
+                                            value={tag}
+                                            onSelect={(currentValue) => {
+                                              if (field.value?.includes(tag)) return;
+                                              field.onChange([...(field?.value || []), tag]);
+                                              setOpenTag(false)
+                                            }}
+                                            className='data-[selected=true]:bg-transparent capitalize'
+                                          >
+                                            <CheckIcon
+                                              className={cn(
+                                                "mr-2 h-4 w-4",
+                                                field.value?.includes(tag) ? "opacity-100" : "opacity-0"
+                                              )}
+                                            />
+                                            {tag}
+                                          </CommandItem>
+                                        ))}
+                                      </CommandGroup>
+                                    </CommandList>
+                                  </Command>
+                                </PopoverContent>
+                              </Popover>
 
                               <div className="flex flex-wrap gap-2">
                                 {field?.value?.map((tag: string, i: number) => (
