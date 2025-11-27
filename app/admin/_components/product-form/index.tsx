@@ -929,15 +929,7 @@ const ProductForm = ({
                     />
 
                     <Controller
-                      name={
-                        values.category === "GOLD"
-                          ? "gold.additionalCharges"
-                          : (
-                            values.category === "DIAMOND"
-                              ? "diamond.additionalCharges"
-                              : "silver.additionalCharges"
-                          )
-                      }
+                      name={"additionalCharges"}
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
