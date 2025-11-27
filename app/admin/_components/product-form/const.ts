@@ -11,8 +11,7 @@ const goldSchema = z.object({
     grossWeight: z.number("Please enter the gold gross weight.").min(0),
     netWeight: z.number("Please enter the gold net weight").min(0),
     goldPurity: z.number("Please select the gold purity").min(0),
-    hallmarked: z.boolean("Please specify if the gold item is hallmarked"),
-    additionalCharges: z.number("Please enter the additionalCharges of gold").min(0).optional(),
+    hallmarked: z.boolean("Please specify if the gold item is hallmarked")
 });
 
 const diamondSchema = z.object({
@@ -27,8 +26,7 @@ const diamondSchema = z.object({
         .nonempty({ message: "Please enter the metal used." }),
     metalPurity: z.number("Please select the metal purity").min(0),
     noOfDiamonds: z.number("Please enter the not of diamonds.").min(0),
-    price: z.number("Please enter the price of diamond").min(0),
-    additionalCharges: z.number("Please enter the additionalCharges of diamond").min(0).optional(),
+    price: z.number("Please enter the price of diamond").min(0)
 });
 
 const silverSchema = z.object({
@@ -37,8 +35,7 @@ const silverSchema = z.object({
     grossWeight: z.number("Please enter the silver gross weight.").min(0),
     netWeight: z.number("Please enter the silver net weight").min(0),
     silverPurityGrade: z.string("Please select silver purity").trim().nonempty({ message: "Please select the silver purity" }),
-    hallmarked: z.boolean("Please specify if the silver item is hallmarked"),
-    additionalCharges: z.number("Please enter the additionalCharges of silver").min(0).optional(),
+    hallmarked: z.boolean("Please specify if the silver item is hallmarked")
 });
 
 const baseProductSchema = z.object({
@@ -55,6 +52,7 @@ const baseProductSchema = z.object({
     category: z.enum(categoryEnum, {message: "Please select a product category"}),
     subCategory: z.number("Please select a subcategory"),
     makingCharges: z.number("Please enter making charges.").min(0),
+    additionalCharges: z.number("Please enter the additionalCharges").min(0),
     stock: z.number("Please enter any stock number.").min(0),
     seller: z.object({
         _id: z.number("Seller _id is required.").min(1, "Seller _id must be a positive number."),
