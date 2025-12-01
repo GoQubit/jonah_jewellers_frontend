@@ -24,6 +24,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { debounce } from '@/utils/helpers'
 import Toast from '@/components/Toast/Toast'
+import Checkbox from '@/components/ui/Checkbox'
 
 type Props = {
   productData?: ProductFormSchema | {},
@@ -208,7 +209,16 @@ const ProductForm = ({
       form.unregister("diamond")
       form.setValue("silver.hallmarked", false)
     }
+    form.setValue("isSellerFunded", false)
   }, [values.category])
+
+  useEffect(() => {
+    if (values?.isSellerFunded) {
+      form.register("seller")
+    } else {
+      form.unregister("seller")
+    }
+  }, [values?.isSellerFunded])
 
   const handleSearchSeller = useCallback(
     debounce((value: string) => {
@@ -599,7 +609,7 @@ const ProductForm = ({
                         )}
                       />
                     )}
-                    
+
                     {["SILVER"].includes(values.category!) && (
                       <Controller
                         name="silver.silverPurityGrade"
@@ -956,78 +966,106 @@ const ProductForm = ({
                     />
 
                     <Controller
-                      name="seller"
+                      name="isSellerFunded"
                       control={form.control}
                       render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid} className="col-span-2 w-full flex flex-col gap-1">
-                          <FieldLabel htmlFor="product-form-seller" className="text-gray-500">
-                            Seller
-                          </FieldLabel>
-                          <Popover open={openSeller} onOpenChange={setOpenSeller}>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                role="combobox"
-                                aria-expanded={openSeller}
+                        <Field data-invalid={fieldState.invalid} orientation="horizontal" className="col-span-2 w-full flex flex-col gap-1">
+                          <div className="w-full border rounded-md px-2 py-3 flex items-center justify-start gap-3">
+                            <div className="w-fit">
+                              <Checkbox
+                                id="product-form-isSellerFunded"
                                 disabled={disableForm}
-                                className="h-12 hover:bg-transparent justify-between"
-                              >
-                                {field.value
-                                  ? `${field.value?.firstName} ${field.value?.lastName} (${field.value?.email})`
-                                  : "Select or search seller..."}
-                                <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="!w-full p-0 bg-white">
-                              <Command className="rounded-md shadow-md !w-full">
-                                <CommandInput
-                                  placeholder="Search seller..."
-                                  value={searchSeller}
-                                  onValueChange={(search: string) => {
-                                    setSearchSeller(search)
-                                    handleSearchSeller(search)
-                                  }}
-                                  className='focus:outline-none focus:border-0 focus:ring-0 h-12'
-                                />
-                                <CommandList>
-                                  <CommandEmpty>{sellers.isLoading ? "Loading..." : "No seller found."}</CommandEmpty>
-                                  <CommandGroup>
-                                    {sellers.isLoading && (
-                                      <div className="flex items-center justify-center p-4">
-                                        <FaSpinner className='w-5 h-5 animate-spin' />
-                                      </div>
-                                    )}
-                                    {sellers?.data?.map((seller) => (
-                                      <CommandItem
-                                        key={seller.id}
-                                        value={seller.id}
-                                        onSelect={(currentValue) => {
-                                          const { id, ...rest } = seller
-                                          field.onChange({ _id: parseInt(id), ...rest })
-                                          setOpenSeller(false)
-                                        }}
-                                        className='data-[selected=true]:bg-transparent'
-                                      >
-                                        <CheckIcon
-                                          className={cn(
-                                            "mr-2 h-4 w-4",
-                                            field.value?._id?.toString() === seller.id ? "opacity-100" : "opacity-0"
-                                          )}
-                                        />
-                                        {seller.firstName} {seller.lastName} ({seller.email})
-                                      </CommandItem>
-                                    ))}
-                                  </CommandGroup>
-                                </CommandList>
-                              </Command>
-                            </PopoverContent>
-                          </Popover>
-                          {(fieldState.invalid || form.formState.errors.seller?._id) && (
-                            <FieldError className='text-left text-red-500' errors={[fieldState.error, form.formState.errors.seller?._id]} />
+                                checked={!!field.value}
+                                onCheckedChange={field.onChange}
+                                className='data-[state=unchecked]:bg-gray-300 [&>span[data-state=unchecked]]:bg-gray-400 [&>span[data-state=checked]]:bg-gray-400'
+                              />
+                            </div>
+                            <FieldLabel htmlFor="product-form-isSellerFunded" className='grow'>
+                              Is Seller Funded
+                            </FieldLabel>
+                          </div>
+                          {fieldState.invalid && (
+                            <FieldError className='w-full text-left text-red-500' errors={[fieldState.error]} />
                           )}
                         </Field>
                       )}
                     />
+
+                    {values?.isSellerFunded && (
+                      <Controller
+                        name="seller"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid} className="col-span-2 w-full flex flex-col gap-1">
+                            <FieldLabel htmlFor="product-form-seller" className="text-gray-500">
+                              Seller
+                            </FieldLabel>
+                            <Popover open={openSeller} onOpenChange={setOpenSeller}>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  role="combobox"
+                                  aria-expanded={openSeller}
+                                  disabled={disableForm}
+                                  className="h-12 hover:bg-transparent justify-between"
+                                >
+                                  {field.value
+                                    ? `${field.value?.firstName} ${field.value?.lastName} (${field.value?.email})`
+                                    : "Select or search seller..."}
+                                  <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="!w-full p-0 bg-white">
+                                <Command className="rounded-md shadow-md !w-full">
+                                  <CommandInput
+                                    placeholder="Search seller..."
+                                    value={searchSeller}
+                                    onValueChange={(search: string) => {
+                                      setSearchSeller(search)
+                                      handleSearchSeller(search)
+                                    }}
+                                    className='focus:outline-none focus:border-0 focus:ring-0 h-12'
+                                  />
+                                  <CommandList>
+                                    <CommandEmpty>{sellers.isLoading ? "Loading..." : "No seller found."}</CommandEmpty>
+                                    <CommandGroup>
+                                      {sellers.isLoading && (
+                                        <div className="flex items-center justify-center p-4">
+                                          <FaSpinner className='w-5 h-5 animate-spin' />
+                                        </div>
+                                      )}
+                                      {sellers?.data?.map((seller) => (
+                                        <CommandItem
+                                          key={seller.id}
+                                          value={seller.id}
+                                          onSelect={(currentValue) => {
+                                            const { id, ...rest } = seller
+                                            field.onChange({ _id: parseInt(id), ...rest })
+                                            setOpenSeller(false)
+                                          }}
+                                          className='data-[selected=true]:bg-transparent'
+                                        >
+                                          <CheckIcon
+                                            className={cn(
+                                              "mr-2 h-4 w-4",
+                                              field.value?._id?.toString() === seller.id ? "opacity-100" : "opacity-0"
+                                            )}
+                                          />
+                                          {seller.firstName} {seller.lastName} ({seller.email})
+                                        </CommandItem>
+                                      ))}
+                                    </CommandGroup>
+                                  </CommandList>
+                                </Command>
+                              </PopoverContent>
+                            </Popover>
+                            {(fieldState.invalid || form.formState.errors.seller?._id) && (
+                              <FieldError className='text-left text-red-500' errors={[fieldState.error, form.formState.errors.seller?._id]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    )}
 
                     {["GOLD", "SILVER"].includes(values.category!) && (
                       <Controller

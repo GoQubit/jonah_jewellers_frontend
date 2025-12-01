@@ -54,6 +54,7 @@ const baseProductSchema = z.object({
     makingCharges: z.number("Please enter making charges.").min(0),
     additionalCharges: z.number("Please enter the additionalCharges").min(0),
     stock: z.number("Please enter any stock number.").min(0),
+    isSellerFunded:z.boolean(),
     seller: z.object({
         _id: z.number("Seller _id is required.").min(1, "Seller _id must be a positive number."),
         firstName: z.string("Seller first name is required.").trim(),
