@@ -12,4 +12,5 @@ const AddProductView = (props: Props) => {
     )
 }
 
+
 export default AddProductView
