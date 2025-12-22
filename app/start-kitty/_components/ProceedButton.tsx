@@ -8,10 +8,11 @@ interface ProceedButtonProps {
   termsAccepted: boolean,
   investmentGoal: string,
   monthlyAmount: number,
-  selectedPlan: string
+  selectedPlan: string,
+  totalSavings: number
 }
 
-export function ProceedButton({ termsAccepted, investmentGoal, monthlyAmount, selectedPlan }: ProceedButtonProps) {
+export function ProceedButton({ termsAccepted, investmentGoal, monthlyAmount, selectedPlan, totalSavings }: ProceedButtonProps) {
   const router = useRouter()
 
   const handleProceed = async () => {
@@ -27,7 +28,7 @@ export function ProceedButton({ termsAccepted, investmentGoal, monthlyAmount, se
     if (res.status === 201) {
       const kittyId = res.data.id
       Toast.success("New Kitty Started Successfully!")
-      router.push(`/payment?planCategory=kitty&kittyId=${kittyId}&plan=${selectedPlan}&monthlyAmount=${monthlyAmount}&duration=${duration}&investmentGoal=${investmentGoal}&planCategory='kitty'`)
+      router.push(`/payment?planCategory=kitty&kittyId=${kittyId}&plan=${selectedPlan}&monthlyAmount=${monthlyAmount}&duration=${duration}&investmentGoal=${investmentGoal}&planCategory='kitty'&savings=${totalSavings}`)
     }
 
   }

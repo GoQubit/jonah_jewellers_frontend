@@ -45,6 +45,7 @@ export default function KittyPlanPage() {
             setInvestmentGoal={setInvestmentGoal}
             termsAccepted={termsAccepted}
             setTermsAccepted={setTermsAccepted}
+            totalSavings={totalSavings}
           />
 
           <KittySummary

@@ -48,10 +48,12 @@ export function PaymentSummary({ paymentData }: PaymentSummaryProps) {
                 <span className="text-sm text-[#818181]">Monthly Amount:</span>
                 <span className="font-medium">₹{paymentData.monthlyAmount.toLocaleString()}</span>
               </div>
+
               <div className="flex justify-between" >
-                <span className="text-sm text-[#818181]">Total Value:</span>
-                <span className="font-medium">₹{paymentData.totalValue}</span>
+                <span className="text-sm font-bold">Total Payable:</span>
+                <span className="font-bold">₹{paymentData.totalValue - paymentData.savings}</span>
               </div>
+
               {
                 paymentData.savings > 0 &&
                 <div className="flex justify-between text-[#45B629]" >
@@ -59,9 +61,10 @@ export function PaymentSummary({ paymentData }: PaymentSummaryProps) {
                   <span className="font-medium">₹{paymentData.savings}</span>
                 </div>
               }
+
               <div className="flex justify-between" >
-                <span className="text-sm font-bold">Total Payable:</span>
-                <span className="font-bold">₹{paymentData.totalValue - paymentData.savings}</span>
+                <span className="text-sm text-[#818181]">Total Value:</span>
+                <span className="font-medium">₹{paymentData.totalValue.toLocaleString()}</span>
               </div>
             </div>
 
@@ -93,7 +96,7 @@ export function PaymentSummary({ paymentData }: PaymentSummaryProps) {
                 <span className="font-medium">{paymentData.startDate}</span>
               </div>
             </div>
-            <hr className="border-orange-200 mb-4" /> 
+            <hr className="border-orange-200 mb-4" />
             <div className="flex justify-between items-center">
               <span className="font-semibold text-brand">Amount to Pay:</span>
               <span className="text-xl font-bold text-brand">₹{paymentData.investmentAmount.toLocaleString()}</span>

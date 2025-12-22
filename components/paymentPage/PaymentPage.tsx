@@ -24,7 +24,7 @@ export default function PaymentGatewayPage() {
   const searchParams = useSearchParams()
   const goldRate = gold?.price // Rate in INR
   console.log("");
-  
+
 
   const paymentData = {
     planCategory: searchParams.get("planCategory") || "kitty",
@@ -37,7 +37,7 @@ export default function PaymentGatewayPage() {
     goldRate: goldRate,
     duration: searchParams.get("duration") || "",
     startDate: todayDate(),
-    totalValue: Number.parseInt(searchParams.get("totalValue") || "0"),
+    totalValue: Number.parseInt(searchParams.get("monthlyAmount") || "0") * Number.parseInt(searchParams.get("duration") || '0'),
     savings: Number.parseInt(searchParams.get("savings") || "0"),
     amountToPay: Number.parseInt(searchParams.get("amountToPay") || "0"),
   }

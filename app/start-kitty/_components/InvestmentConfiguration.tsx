@@ -14,6 +14,7 @@ interface InvestmentConfigurationProps {
   setInvestmentGoal: (goal: string) => void
   termsAccepted: boolean
   setTermsAccepted: (accepted: boolean) => void
+  totalSavings: number
 }
 
 export function InvestmentConfiguration({
@@ -24,7 +25,8 @@ export function InvestmentConfiguration({
   investmentGoal,
   setInvestmentGoal,
   termsAccepted,
-  setTermsAccepted
+  setTermsAccepted,
+  totalSavings
 }: InvestmentConfigurationProps) {
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -57,6 +59,7 @@ export function InvestmentConfiguration({
           monthlyAmount={monthlyAmount}
           selectedPlan={selectedPlan}
           investmentGoal={investmentGoal}
+          totalSavings={totalSavings}
         />
       </div>
     </div>
