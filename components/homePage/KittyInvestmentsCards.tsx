@@ -55,7 +55,7 @@ const KittyInvestmentsCards = () => {
               </div>
               <div className="text-center">
                 <h2 className="font-besley font-semibold text-xl md:text-2xl text-brand uppercase">
-                  Gold Investment
+                  Become Jonah Seller
                 </h2>
                 <p className="text-gray-700">For 100% Value!</p>
               </div>
@@ -72,7 +72,7 @@ const KittyInvestmentsCards = () => {
             className="!w-full text-lg font-medium text-white mt-4 !py-4"
             onClick={() => router.push("/invest-in-gold")}
           >
-            Start Gold Investment
+            Jonah Seller
           </Button>
         </div>
       </div>
