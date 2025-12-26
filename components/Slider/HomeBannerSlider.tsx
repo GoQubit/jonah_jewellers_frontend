@@ -3,7 +3,7 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 import { useRouter } from "next/navigation";
 
 // 🧩 Separate arrays for desktop and mobile banners
@@ -32,7 +32,12 @@ export default function HomeBannerSlider() {
           slidesPerView={1}
           loop={true}
           pagination={{ clickable: true, dynamicBullets: true }}
-          modules={[Pagination]}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+            // pauseOnMouseEnter: true,
+          }}
+          modules={[Pagination, Autoplay]}
           className="mySwiper"
         >
           {desktopBanners.map((banner) => (
@@ -58,7 +63,11 @@ export default function HomeBannerSlider() {
           slidesPerView={1}
           loop={true}
           pagination={{ clickable: true, dynamicBullets: true }}
-          modules={[Pagination]}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          modules={[Pagination, Autoplay]}
           className="mySwiper"
         >
           {mobileBanners.map((banner) => (

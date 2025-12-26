@@ -1,7 +1,7 @@
 "use client"
 
 import { Swiper, SwiperSlide } from "swiper/react"
-import { Navigation, Pagination } from "swiper/modules"
+import { Navigation, Pagination,Autoplay } from "swiper/modules"
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
@@ -23,12 +23,17 @@ export default function ProductImageGallery({
       {/* Main Image Swiper */}
       <div className="relative bg-gray-50 rounded-lg overflow-hidden">
         <Swiper
-          modules={[Navigation, Pagination]}
+          modules={[Navigation, Pagination, Autoplay]}
+          loop={true}
           navigation={{
             nextEl: ".swiper-button-next-custom",
             prevEl: ".swiper-button-prev-custom",
           }}
           pagination={{ clickable: true }}
+          autoplay={{
+            delay: 3500,
+            disableOnInteraction: false
+          }}
           onSlideChange={(swiper) => onImageSelect(swiper.activeIndex)}
           initialSlide={selectedImage}
           className="w-full max-h-[400px]"

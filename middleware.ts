@@ -5,7 +5,7 @@ const buildLoginURL = (request: NextRequest): URL => {
   const loginURL = new URL("/login", request.nextUrl.origin);
   const redirectToURL = request.nextUrl.pathname;
 
-  loginURL.searchParams.set('redirectTo', redirectToURL);
+  loginURL.searchParams.set('redirect', redirectToURL);
 
   request.nextUrl.searchParams.forEach((value, key) => {
     loginURL.searchParams.set(key, value);
@@ -43,14 +43,6 @@ export function middleware(req: NextRequest) {
   const isAuthenticated = req.cookies.get('authToken');
   const { pathname } = req.nextUrl
 
-  // If user tries to access protected route without token → redirect to login
-  // if (protectedRoutes.some(route => pathname.startsWith(route))) {
-  //   if (!token) {
-  //     const loginUrl = new URL("/login", req.url)
-  //     loginUrl.searchParams.set("from", pathname) // optional: to redirect back
-  //     return NextResponse.redirect(loginUrl)
-  //   }
-  // }
 
   // Handle protected routes
   if (!isAuthenticated && protectedRoutes.some(route => req.nextUrl.pathname.startsWith(route))) {
