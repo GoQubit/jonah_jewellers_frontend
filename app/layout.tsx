@@ -11,8 +11,16 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'JONAH JEWELS | Jewellery E-commerce App',
-  description: 'Your one-stop shop for everything',
+  description: 'Premium Jewellery Store, your one-stop shop for everything',
+  manifest: "/manifest.json",
+  themeColor: "#E8A83E",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Jonah Jewels",
+  },
 };
+
 
 export default function RootLayout({
   children,

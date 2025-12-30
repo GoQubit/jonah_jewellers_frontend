@@ -1,17 +1,21 @@
-import type { NextConfig } from "next";
+import withPWA from "next-pwa";
 
-const nextConfig: NextConfig = {
-    /* config options here */
-    reactStrictMode: false,
-    images: {
-        unoptimized: false,
-        domains: [
-            "www.dressyzone.com",
-            "www.dressyzone.com",
-            "img.kwcdn.com",
-            "jonahblob.blob.core.windows.net"
-        ]
-    },
+const nextConfig = {
+  reactStrictMode: false,
+
+  images: {
+    unoptimized: false,
+    domains: [
+      "www.dressyzone.com",
+      "img.kwcdn.com",
+      "jonahblob.blob.core.windows.net",
+    ],
+  },
 };
 
-export default nextConfig;
+export default withPWA({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === "development",
+})(nextConfig);
