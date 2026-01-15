@@ -26,7 +26,6 @@ const diamondSchema = z.object({
         .nonempty({ message: "Please enter the metal used." }),
     metalPurity: z.number("Please select the metal purity").min(0),
     noOfDiamonds: z.number("Please enter the not of diamonds.").min(0),
-    price: z.number("Please enter the price of diamond").min(0)
 });
 
 const silverSchema = z.object({
@@ -51,6 +50,7 @@ const baseProductSchema = z.object({
     targetGender: z.enum(genderEnum, {message: "Please select a gender type"}),
     category: z.enum(categoryEnum, {message: "Please select a product category"}),
     subCategory: z.number("Please select a subcategory"),
+    basePrice: z.number("Please enter any base price.").min(0).optional(),
     makingCharges: z.number("Please enter making charges.").min(0),
     additionalCharges: z.number("Please enter the additionalCharges").min(0),
     stock: z.number("Please enter any stock number.").min(0),
@@ -150,10 +150,6 @@ export const diamondMetalPurityOptions: DiamondMetalPurityOptions[] = [
     {
         value: 14,
         label: "14"
-    },
-    {
-        value: 16,
-        label: "16"
     },
     {
         value: 18,

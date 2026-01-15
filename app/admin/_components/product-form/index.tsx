@@ -198,13 +198,16 @@ const ProductForm = ({
       form.register("gold")
       form.unregister("diamond")
       form.unregister("silver")
+      form.unregister("basePrice")
       form.setValue("gold.hallmarked", false)
     } else if (values.category === "DIAMOND") {
       form.register("diamond")
+      form.register("basePrice")
       form.unregister("gold")
       form.unregister("silver")
     } else if (values.category === "SILVER") {
       form.register("silver")
+      form.register("basePrice")
       form.unregister("gold")
       form.unregister("diamond")
       form.setValue("silver.hallmarked", false)
@@ -725,30 +728,6 @@ const ProductForm = ({
                         control={form.control}
                         render={({ field, fieldState }) => (
                           <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                            <FieldLabel htmlFor="product-form-diamond-metalPurity" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                              Metal Purity
-                            </FieldLabel>
-                            <Input
-                              {...field}
-                              id="product-form-diamond-metalPurity"
-                              placeholder="Enter Metal Purity eg: 18K"
-                              disabled={disableForm}
-                              className='h-12'
-                            />
-                            {fieldState.invalid && (
-                              <FieldError className='text-left text-red-500' errors={[fieldState.error]} />
-                            )}
-                          </Field>
-                        )}
-                      />
-                    )}
-
-                    {["DIAMOND"].includes(values.category!) && (
-                      <Controller
-                        name="diamond.metalPurity"
-                        control={form.control}
-                        render={({ field, fieldState }) => (
-                          <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
                             <FieldLabel htmlFor="product-form-diamond-metalpurity" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
                               Metal Purity
                             </FieldLabel>
@@ -882,20 +861,20 @@ const ProductForm = ({
                       )}
                     />
 
-                    {["DIAMOND"].includes(values.category!) && (
+                    {["DIAMOND", "SILVER"].includes(values.category!) && (
                       <Controller
-                        name="diamond.price"
+                        name="basePrice"
                         control={form.control}
                         render={({ field, fieldState }) => (
                           <Field data-invalid={fieldState.invalid} className="col-span-1 gap-1">
-                            <FieldLabel htmlFor="product-form-price" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
-                              Price
+                            <FieldLabel htmlFor="product-form-base-price" className="text-gray-500 after:text-gray-500 after:content-['*'] after:-ml-1">
+                              Base Price
                             </FieldLabel>
                             <Input
                               {...field}
                               type="number"
-                              id="product-form-price"
-                              placeholder="Enter Price"
+                              id="product-form-base-price"
+                              placeholder="Enter Base Price"
                               disabled={disableForm}
                               onChange={e => field.onChange(parseFloat(e.target.value))}
                               value={field.value?.toString()}
