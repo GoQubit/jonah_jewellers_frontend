@@ -209,7 +209,7 @@ const ProductForm = ({
       form.unregister("diamond")
       form.setValue("silver.hallmarked", false)
     }
-    form.setValue("isSellerFunded", false)
+    form.unregister("isSellerFunded")
   }, [values.category])
 
   useEffect(() => {
@@ -217,6 +217,7 @@ const ProductForm = ({
       form.register("seller")
     } else {
       form.unregister("seller")
+      form.unregister("isSellerFunded")
     }
   }, [values?.isSellerFunded])
 
@@ -622,7 +623,7 @@ const ProductForm = ({
                             <Select
                               name={field.name}
                               value={field.value?.toString()}
-                              onValueChange={(value) => field.onChange(parseInt(value))}
+                              onValueChange={(value) => field.onChange(value)}
                               defaultValue={field.value?.toString()}
                               disabled={disableForm}
                             >
@@ -664,7 +665,7 @@ const ProductForm = ({
                             <Select
                               name={field.name}
                               value={field.value?.toString()}
-                              onValueChange={(value) => field.onChange(parseInt(value))}
+                              onValueChange={(value) => field.onChange(value)}
                               defaultValue={field.value?.toString()}
                               disabled={disableForm}
                             >
