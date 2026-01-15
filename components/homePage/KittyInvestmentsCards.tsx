@@ -19,7 +19,8 @@ const KittyInvestmentsCards = () => {
               </div>
               <div className="text-center">
                 <h2 className="font-besley font-semibold text-lg md:text-2xl text-[#840000] uppercase">
-                  Jewellery Kitty Plan
+                  Jewellery Kitty Plan <br />
+                  ( हर महीने बचत, गहनों का सपना पूरा )
                 </h2>
                 <p className="text-gray-700">Monthly Installment Plan</p>
               </div>
@@ -55,8 +56,10 @@ const KittyInvestmentsCards = () => {
               </div>
               <div className="text-center">
                 <h2 className="font-besley font-semibold text-xl md:text-2xl text-brand uppercase">
-                  Become Jonah Seller
+                  Become Jonah Seller <br />
+                  ( मैं भी सुनार )
                 </h2>
+
                 <p className="text-gray-700">For 100% Value!</p>
               </div>
 

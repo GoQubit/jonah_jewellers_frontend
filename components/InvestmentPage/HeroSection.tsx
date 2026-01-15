@@ -14,7 +14,7 @@ export function HeroSection() {
         <h1 className="text-2xl md:text-4xl text-gray-800 mb-4 text-balance font-medium">
           Invest in Gold & Become a
           <br />
-          <span className="text-brand font-besley">JONAH SELLER</span>
+          <span className="text-brand font-besley">JONAH SELLER (मैं भी सुनार)</span>
         </h1>
         <p className="text-base md:text-lg text-[#898989] mb-8 max-w-3xl mx-auto font-nunito font-light  ">
           Start your gold investment journey with just ₹10,000. Enjoy fixed profits, secure investments, and the
