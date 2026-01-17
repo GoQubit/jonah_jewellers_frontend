@@ -14,7 +14,7 @@ interface QRCodeSectionProps {
 export function QRCodeSection({ onPaymentMade }: QRCodeSectionProps) {
   const [copyCode, setCopyCode] = useState(false);
 
-  const paymentId = "jonahjewels@paytm"
+  const paymentId = "9568353421-2@axl"
 
   const copyPaymentId = () => {
     navigator.clipboard.writeText(paymentId)
@@ -33,22 +33,7 @@ export function QRCodeSection({ onPaymentMade }: QRCodeSectionProps) {
 
       <div className="flex justify-center mb-6">
         <div className="relative">
-          <div className="w-48 h-48 bg-blue-600 rounded-lg flex items-center justify-center">
-            <div className="grid grid-cols-3 gap-2 p-4">
-              <div className="w-8 h-8 bg-white rounded"></div>
-              <div className="w-8 h-8 bg-white rounded"></div>
-              <div className="w-8 h-8 bg-white rounded opacity-60"></div>
-              <div className="w-8 h-8 bg-white rounded"></div>
-              <div className="w-8 h-8 bg-white rounded opacity-40"></div>
-              <div className="w-8 h-8 bg-white rounded"></div>
-              <div className="w-8 h-8 bg-white rounded opacity-80"></div>
-              <div className="w-8 h-8 bg-white rounded"></div>
-              <div className="w-8 h-8 bg-white rounded"></div>
-            </div>
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="bg-blue-500 text-white px-3 py-1 rounded text-sm">Tap to scan</span>
-          </div>
+          <img src="/images/jonah_qr.jpeg" alt="" className="w-[150px] h-[150px] md:w-[200px] md:h-[200px]" />
         </div>
       </div>
 
