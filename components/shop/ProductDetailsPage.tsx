@@ -101,6 +101,7 @@ export default function ProductDetailsPage({ productId }: { productId: string })
           metalDetails={productDetails?.[producCategory]}
           description={productDetails?.description}
           priceBreakup={productData.priceBreakup}
+          coverimage= { productDetails.images[0]}
         />
 
         {/* Company Assurance */}

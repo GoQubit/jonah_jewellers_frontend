@@ -11,10 +11,11 @@ interface ProductTabsProps {
   metalDetails: any
   description: string
   priceBreakup: any
-  productCategory: string
+  productCategory: string,
+  coverimage: string
 }
 
-export default function ProductTabs({ metalDetails, description, priceBreakup, productCategory }: ProductTabsProps) {
+export default function ProductTabs({ metalDetails, description, priceBreakup, productCategory, coverimage }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState("details")
   const [activeDetailsTab, setActiveDetailsTab] = useState("metal")
 
@@ -24,7 +25,7 @@ export default function ProductTabs({ metalDetails, description, priceBreakup, p
       <h2 className="text-xl font-medium text-center mb-6">Jewellery Details</h2>
 
       {/* Tab Navigation */}
-      <div className="flex justify-center mb-8">
+      {/* <div className="flex justify-center mb-8">
         <Button
           variant={activeTab === "details" ? "brand-solid" : "brand-outline"}
           onClick={() => setActiveTab("details")}
@@ -40,7 +41,7 @@ export default function ProductTabs({ metalDetails, description, priceBreakup, p
         >
           Price Breakup
         </Button>
-      </div>
+      </div> */}
 
 
       {/* Tab Content */}
@@ -121,7 +122,7 @@ export default function ProductTabs({ metalDetails, description, priceBreakup, p
         </div>
 
         <div className="hidden md:block w-[40%] justify-center">
-          <img src="/images/productsImgs/1.png" alt="Product detail" className="w-[300px] h-[300px] object-cover rounded-lg" />
+          <img src={coverimage || "/images/productsImgs/1.png"} alt="Product detail" className="w-[300px] h-[300px] object-cover rounded-lg" />
         </div>
       </div>
     </div>
