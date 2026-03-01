@@ -45,7 +45,15 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
       if (res.status === 200) {
         Toast.success(res.data.message)
         const token = res.data.tokens.access.token
-        Cookies.set('authToken', token)
+
+        // Persist auth across browser refreshes / window closes
+        // `expires: 365` = keep user logged in for ~1 year (until they logout or token is invalidated server-side)
+        Cookies.set('authToken', token, {
+          expires: 365,
+          sameSite: 'lax',
+          secure: process.env.NODE_ENV === 'production',
+          path: '/'
+        })
         localStorage.setItem("phonenumber", res.data.user.mobileNumber)
         dispatch(setUserProfile(res.data.user))
 

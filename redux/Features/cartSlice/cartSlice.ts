@@ -57,6 +57,23 @@ const cartSlice = createSlice({
         state.total = calculateTotal(state.items);
       }
     },
+    // Update price of a specific cart item (used when refreshing prices from server)
+    updateItemPrice: (
+      state,
+      action: PayloadAction<{ id: string; ringSize?: number; price: number; originalPrice?: number }>
+    ) => {
+      const item = state.items.find(
+        (item) => item.id === action.payload.id && item.ringSize === action.payload.ringSize
+      );
+
+      if (item) {
+        item.price = action.payload.price;
+        if (typeof action.payload.originalPrice === 'number') {
+          item.originalPrice = action.payload.originalPrice;
+        }
+        state.total = calculateTotal(state.items);
+      }
+    },
     updateRingSize: (
       state,
       action: PayloadAction<{ id: string; oldRingSize?: number; newRingSize: number }>
@@ -80,5 +97,12 @@ function calculateTotal(items: CartItem[]): number {
   return items.reduce((total, item) => total + item.price * item.quantity, 0);
 }
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart, updateRingSize } = cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  updateQuantity,
+  clearCart,
+  updateRingSize,
+  updateItemPrice,
+} = cartSlice.actions;
 export default cartSlice.reducer;

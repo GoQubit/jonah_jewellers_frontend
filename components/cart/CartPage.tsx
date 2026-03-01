@@ -4,16 +4,19 @@ import { OrderSummary } from './cartComponents/OrderSummary'
 import ChooseAddress from './ChooseAddress'
 import BackButton from '../ui/BackButton'
 import CartItems from './cartComponents/CartItems'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/redux/store'
 import EmptyCart from '../ui/emptyCart'
 import useIsAuth from '@/hooks/useIsAuth'
 import { getUserKittyDashboardInfoApi } from '@/lib/api/kittyApis/kittyApis'
 import { getSellerDashboardInfoApi } from '@/lib/api/sellerApis/sellerInvestmentsApis'
+import { getSingleProductApi } from '@/lib/api/products/productsApis'
+import { updateItemPrice } from '@/redux/Features/cartSlice/cartSlice'
 
 const CartPage = () => {
   const user = useSelector((state: RootState) => state.user)
   const { items } = useSelector((state: RootState) => state.cart)
+  const dispatch = useDispatch()
   const [cartStep, setCartStep] = useState('cartItems');
   const [useWalletCash, setUseWalletCash] = useState(false)
   const [availableWalletCash, setAvailableWalletCash] = useState(0)
@@ -38,6 +41,44 @@ const CartPage = () => {
       setAvailableWalletCash(res?.data?.availableToWithdraw)
     }
   }
+
+  // Refresh cart item prices using latest product data (handles gold price changes)
+  useEffect(() => {
+    const refreshCartPrices = async () => {
+      if (!items || items.length === 0) return
+
+      await Promise.all(
+        items.map(async (item) => {
+          try {
+            const res = await getSingleProductApi(item.id)
+            if (res?.status === 200 && res.data) {
+              const latestPrice = res.data.price
+              const latestOriginalPrice = res.data.originalPrice ?? item.originalPrice
+
+              // Only update if price actually changed and is a valid number
+              if (typeof latestPrice === "number" && latestPrice !== item.price) {
+                dispatch(
+                  updateItemPrice({
+                    id: item.id,
+                    ringSize: item.ringSize,
+                    price: latestPrice,
+                    originalPrice: latestOriginalPrice,
+                  })
+                )
+              }
+            }
+          } catch (error) {
+            console.error("Failed to refresh price for product", item.id, error)
+          }
+        })
+      )
+    }
+
+    // Run once when CartPage mounts or when cart gains items
+    if (items && items.length > 0) {
+      refreshCartPrices()
+    }
+  }, [items.length, dispatch])
 
   useEffect(() => {
     if (isAuth && user.role === 'BUYER') fetchBuyerWallet()

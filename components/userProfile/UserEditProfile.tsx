@@ -89,7 +89,8 @@ export default function CreateAccountForm() {
       case "firstName":
         return required(value) || onlyLetters(value)
       case "lastName":
-        return required(value) || onlyLetters(value)
+        return "" // optional
+        // return required(value) || onlyLetters(value)
       case "phone":
         return required(value) || isPhoneIN(value)
       case "email":
@@ -98,7 +99,8 @@ export default function CreateAccountForm() {
       case "gender":
         return "" // optional
       case "addressLine":
-        return required(value)
+        return "" // optional
+        // return required(value)
       case "city":
         return required(value) || onlyLetters(value)
       case "state":
@@ -202,7 +204,7 @@ export default function CreateAccountForm() {
 
           <div>
             <label className={labelCls} htmlFor="lastName">
-              Last Name*
+              Last Name (optional)
             </label>
             <input
               id="lastName"
@@ -324,6 +326,10 @@ export default function CreateAccountForm() {
           Address
         </h2>
 
+        {/* Address line is now optional and hidden from the UI.
+            We keep it in the form state/payload for backward compatibility,
+            but do not show or validate it as a required field. */}
+        {/*
         <div>
           <label className={labelCls} htmlFor="addressLine">
             House Number / Building Name/ Area / Colony*
@@ -340,6 +346,7 @@ export default function CreateAccountForm() {
           />
           {touched.addressLine && errors.addressLine && <p className={helpCls}>{errors.addressLine}</p>}
         </div>
+        */}
 
         <div className="grid gap-4 md:grid-cols-2">
           <div>
