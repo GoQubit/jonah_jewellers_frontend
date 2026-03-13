@@ -154,7 +154,7 @@ export default function CreateAccountForm() {
       if (res.status === 200) {
         Toast.success('Account created successfully!')
         dispatch(setUserProfile(res.data.user)) // store user in redux
-        router.push(redirect) // ✅ redirect user to original page
+        router.push(redirect) //  redirect user to original page
       }
     } catch {
       Toast.error('Something went wrong. Please try again.')
