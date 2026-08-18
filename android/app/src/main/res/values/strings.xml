@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Jonah Jewels</string>
+    <string name="title_activity_main">Jonah Jewels</string>
+    <string name="package_name">com.jonahjewels.app</string>
+    <string name="custom_url_scheme">com.jonahjewels.app</string>
+</resources>
