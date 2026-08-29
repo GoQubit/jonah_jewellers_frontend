@@ -5,6 +5,7 @@ import { ReduxProvider } from '@/components/providers/ReduxProvider';
 import './globals.css';
 import MainLayoutWrapper from './MainLayoutWrapper';
 import ModalProvider from '@/context/modal-provider';
+import CapacitorBridge from '@/lib/capacitor/CapacitorBridge';
 
 
 const inter = Inter({ subsets: ['latin'] });
@@ -39,6 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter?.className} `}>
+        <CapacitorBridge />
         <ReduxProvider>
           <ModalProvider>
             <MainLayoutWrapper>
