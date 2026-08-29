@@ -77,12 +77,12 @@ export default function OtpInput({ value, onChange, length = 6, disabled, onComp
     fillFrom(i, pasted)
   }
 
-  // WebOTP API: on Android Chrome/WebView (incl. Capacitor's WebView, which is
-  // Chromium-based), this lets the OS auto-fill the code the instant a
-  // verification SMS arrives, with no user interaction. It only fires for SMS
-  // whose last line matches "@<domain> #<code>", so it silently no-ops if the
-  // backend's SMS template doesn't include that line - typing/pasting still
-  // works either way.
+  // WebOTP API: for people visiting the actual website in the standalone
+  // Chrome-for-Android browser (NOT inside the Capacitor app - Android's
+  // embedded WebView doesn't implement OTPCredential at all), this lets Chrome
+  // auto-fill the code the instant a verification SMS arrives. It only fires
+  // for SMS whose last line matches "@<domain> #<code>", so it silently
+  // no-ops if the backend's SMS template doesn't include that line.
   React.useEffect(() => {
     if (disabled || value.length === length) return
     if (typeof window === "undefined" || !("OTPCredential" in window)) return
@@ -97,6 +97,41 @@ export default function OtpInput({ value, onChange, length = 6, disabled, onComp
       .catch(() => { })
 
     return () => controller.abort()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [disabled])
+
+  // Native Android SMS Retriever: this is what actually auto-fills the code
+  // inside the Capacitor app's WebView, where WebOTP above is unsupported.
+  // Silent, no SMS permission needed - but only fires if the backend's SMS
+  // text starts with "<#>" and ends with this app's signature hash (get it
+  // via CapacitorSmsRetriever.getHashCode() from a real device build; the
+  // hash differs between debug and release signing keys).
+  React.useEffect(() => {
+    if (disabled || value.length === length) return
+
+    let cancelled = false
+    let retriever: typeof import("@shaher/capacitor-sms-retriever").CapacitorSmsRetriever | null = null
+
+    ;(async () => {
+      try {
+        const { Capacitor } = await import("@capacitor/core")
+        if (cancelled || Capacitor.getPlatform() !== "android") return
+
+        const { CapacitorSmsRetriever } = await import("@shaher/capacitor-sms-retriever")
+        retriever = CapacitorSmsRetriever
+        const result = await CapacitorSmsRetriever.startListening()
+        if (cancelled) return
+        const digits = (result?.body || "").replace(/\D/g, "").slice(0, length)
+        if (digits) fillFrom(0, digits)
+      } catch {
+        /* not on Android, plugin unavailable, or no matching SMS - typing/pasting still works */
+      }
+    })()
+
+    return () => {
+      cancelled = true
+      retriever?.stopListening().catch(() => { })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disabled])
 
