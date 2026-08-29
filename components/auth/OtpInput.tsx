@@ -110,7 +110,11 @@ export default function OtpInput({ value, onChange, length = 6, disabled, onComp
           inputMode="numeric"
           pattern="[0-9]*"
           autoComplete={i === 0 ? "one-time-code" : "off"}
-          maxLength={1}
+          // Not maxLength={1}: the OS keyboard's SMS-suggestion chip commits
+          // the whole code into whichever box is focused, and a native
+          // maxLength on that box would truncate it to one char *before* our
+          // onChange ever sees it. We cap it in JS instead (see handleChange).
+          maxLength={length}
           value={char}
           onChange={(e) => handleChange(e, i)}
           onKeyDown={(e) => handleKeyDown(e, i)}
