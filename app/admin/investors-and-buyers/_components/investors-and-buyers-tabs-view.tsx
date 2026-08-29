@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Wallet, Sparkles, Banknote } from "lucide-react"
+import { Sparkles, Banknote, Coins } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/utils/cn"
 import { usePathname } from "next/navigation"
@@ -18,6 +18,12 @@ const tabLinks = [
         value: "kitty-members",
         icon: Banknote,
         link: "/admin/investors-and-buyers/kitty-members",
+    },
+    {
+        name: "Gold Withdrawals",
+        value: "gold-withdrawals",
+        icon: Coins,
+        link: "/admin/investors-and-buyers/gold-withdrawals",
     }
 ]
 
