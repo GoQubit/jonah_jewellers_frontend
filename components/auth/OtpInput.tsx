@@ -7,17 +7,35 @@ type OTPInputProps = {
   onChange: (val: string) => void
   length?: number
   disabled?: boolean
+  onComplete?: (val: string) => void
 }
 
-export default function OtpInput({ value, onChange, length = 6, disabled }: OTPInputProps) {
+export default function OtpInput({ value, onChange, length = 6, disabled, onComplete }: OTPInputProps) {
   const inputsRef: any = React.useRef<Array<HTMLInputElement | null>>([])
 
   const values = Array.from({ length }, (_, i) => value[i] ?? "")
 
+  function fillFrom(index: number, digits: string) {
+    const next = value.split("")
+    for (let offset = 0; offset < digits.length && index + offset < length; offset++) {
+      next[index + offset] = digits[offset]
+    }
+    const filled = next.join("").slice(0, length)
+    onChange(filled)
+    const lastIndex = Math.min(index + digits.length, length) - 1
+    inputsRef.current[lastIndex]?.focus()
+    if (filled.length === length && !/\D/.test(filled)) {
+      inputsRef.current[lastIndex]?.blur()
+      onComplete?.(filled)
+    }
+  }
+
   function setChar(index: number, char: string) {
     const next = value.split("")
     next[index] = char
-    onChange(next.join("").slice(0, length))
+    const joined = next.join("").slice(0, length)
+    onChange(joined)
+    return joined
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>, i: number) {
@@ -26,10 +44,20 @@ export default function OtpInput({ value, onChange, length = 6, disabled }: OTPI
       setChar(i, "")
       return
     }
-    setChar(i, raw[0])
-    if (raw && i < length - 1) {
+    // Browser/keyboard autofill (e.g. iOS "from Messages" suggestion) can drop
+    // the whole code into whichever single box is focused instead of firing a
+    // paste event - distribute it across the remaining boxes like a paste.
+    if (raw.length > 1) {
+      fillFrom(i, raw)
+      return
+    }
+    const joined = setChar(i, raw[0])
+    if (i < length - 1) {
       inputsRef.current[i + 1]?.focus()
       inputsRef.current[i + 1]?.select()
+    } else if (joined.length === length && !/\D/.test(joined)) {
+      inputsRef.current[i]?.blur()
+      onComplete?.(joined)
     }
   }
 
@@ -42,14 +70,35 @@ export default function OtpInput({ value, onChange, length = 6, disabled }: OTPI
     if (e.key === "ArrowRight" && i < length - 1) inputsRef.current[i + 1]?.focus()
   }
 
-  function handlePaste(e: React.ClipboardEvent<HTMLInputElement>) {
+  function handlePaste(e: React.ClipboardEvent<HTMLInputElement>, i: number) {
     e.preventDefault()
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, length)
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "")
     if (!pasted) return
-    onChange(pasted.padEnd(length, ""))
-    const lastIndex = Math.min(pasted.length, length) - 1
-    inputsRef.current[lastIndex]?.focus()
+    fillFrom(i, pasted)
   }
+
+  // WebOTP API: on Android Chrome/WebView (incl. Capacitor's WebView, which is
+  // Chromium-based), this lets the OS auto-fill the code the instant a
+  // verification SMS arrives, with no user interaction. It only fires for SMS
+  // whose last line matches "@<domain> #<code>", so it silently no-ops if the
+  // backend's SMS template doesn't include that line - typing/pasting still
+  // works either way.
+  React.useEffect(() => {
+    if (disabled || value.length === length) return
+    if (typeof window === "undefined" || !("OTPCredential" in window)) return
+
+    const controller = new AbortController()
+    ;(navigator as any).credentials
+      .get({ otp: { transport: ["sms"] }, signal: controller.signal })
+      .then((otp: any) => {
+        const digits = (otp?.code || "").replace(/\D/g, "").slice(0, length)
+        if (digits) fillFrom(0, digits)
+      })
+      .catch(() => { })
+
+    return () => controller.abort()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [disabled])
 
   return (
     <div className="flex items-center gap-4">
@@ -57,13 +106,15 @@ export default function OtpInput({ value, onChange, length = 6, disabled }: OTPI
         <input
           key={i}
           ref={(el: any) => (inputsRef.current[i] = el)}
+          type="text"
           inputMode="numeric"
           pattern="[0-9]*"
+          autoComplete={i === 0 ? "one-time-code" : "off"}
           maxLength={1}
           value={char}
           onChange={(e) => handleChange(e, i)}
           onKeyDown={(e) => handleKeyDown(e, i)}
-          onPaste={handlePaste}
+          onPaste={(e) => handlePaste(e, i)}
           disabled={disabled}
           className="h-12 w-12 rounded-md border focus:border-brand border-input bg-background text-center font-nunito text-lg font-normal text-foreground outline-none transition disabled:cursor-not-allowed disabled:opacity-50"
           aria-label={`Digit ${i + 1}`}

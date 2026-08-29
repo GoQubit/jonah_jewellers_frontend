@@ -30,16 +30,17 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
     }
   }
 
-  const onVerifyOTP = async () => {
+  const onVerifyOTP = async (otpOverride?: string) => {
+    const code = otpOverride ?? otp
     try {
-      if (otp.length !== 6) {
+      if (code.length !== 6) {
         Toast.error(`Invalid code`)
         return
       }
       setVerifying(true)
       const payload = {
         mobileNumber: storedPhonenumber,
-        otp: otp
+        otp: code
       }
       const res = await verifyOtpApi(payload)
       if (res.status === 200) {
@@ -108,7 +109,7 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
         </div>
 
         <div className='flex flex-col gap-2'>
-          <OtpInput value={otp} onChange={setOtp} />
+          <OtpInput value={otp} onChange={setOtp} onComplete={(code) => onVerifyOTP(code)} />
           <button
             type="button"
             onClick={onResend}
@@ -123,9 +124,9 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
         <div className="w-full flex items-center justify-between">
           <Button
             variant='brand-solid'
-            onClick={onVerifyOTP}
+            onClick={() => onVerifyOTP()}
             disabled={otp.length !== 6 || verifying}
-            className="!w-[350px] mx-auto"
+            className="w-full max-w-[350px] mx-auto"
           >
             {verifying ? "Verifying..." : "Verify OTP"}
           </Button>

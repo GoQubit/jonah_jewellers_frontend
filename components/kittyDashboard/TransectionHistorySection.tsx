@@ -48,28 +48,24 @@ export function TransectionHistorySection() {
         {kittyTransactions.length > 0 && kittyTransactions.map((transaction: any) => (
           <div
             key={transaction.id}
-            className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0"
+            className="flex flex-col gap-2 py-3 border-b border-gray-100 last:border-b-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
           >
-            <div className="flex items-center space-x-4">
-              <div className="p-2 bg-amber-100 rounded-full">
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="p-2 bg-amber-100 rounded-full shrink-0">
                 <AiFillGolden className="h-5 w-5 text-brand" />
               </div>
-              <div>
-                <h3 className="font-medium text-start text-gray-900">Installment #{transaction.installmentNumber}</h3>
-                <p className="font-semibold text-brand">{transaction.razorpayPaymentId || "Pending"}</p>
+              <div className="min-w-0">
+                <h3 className="font-medium text-start text-gray-900 truncate">Installment #{transaction.installmentNumber}</h3>
+                <p className="font-semibold text-brand truncate">{transaction.razorpayPaymentId || "Pending"}</p>
               </div>
             </div>
-            <div className="text-right ">
+            <div className="flex items-center justify-between pl-11 sm:pl-0 sm:justify-end sm:gap-6">
               <p className="text-sm text-left text-gray-500">
                 {formatDate(transaction.createdAt || '')}
               </p>
-            </div>
-            <div className="text-right ">
               <p className={cn("font-semibold", statusStyles[transaction.status] || "text-brand")}>
                 {transaction.status}
               </p>
-            </div>
-            <div className="text-right ">
               <p className="font-semibold text-brand">{formatCurrency(transaction.amount)}</p>
             </div>
           </div>
