@@ -6,38 +6,42 @@ import { formatDate } from "@/utils/formatDate";
 export const transactionTableColumns = [
     {
         id: "transactionId",
-        accessorKey: "transactionId",
+        accessorKey: "razorpayOrderId",
         header: () => {
             return (
                 <DataTableColumnHeader title={"Transaction ID"} />
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original.transactionId) {
+            const transactionId = row.original.razorpayOrderId || row.original.id;
+            if (!transactionId) {
                 return <span>-</span>;
             }
             return (
-                <span className={" uppercase "}>
-                    {row.original.transactionId}
+                <span className={"uppercase"}>
+                    {transactionId}
                 </span>
             )
         }
     },
     {
-        id: "firstName",
-        accessorKey: "firstName",
+        id: "user",
+        accessorKey: "userId",
         header: () => {
             return (
-                <DataTableColumnHeader title={"Customer name"} />
+                <DataTableColumnHeader title={"User"} />
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original?.userId?.firstName) {
+            // The transaction record only carries the raw userId (not a
+            // populated name), so show the id alongside their role.
+            if (row.original.userId === undefined || row.original.userId === null) {
                 return <span>-</span>;
             }
             return (
                 <span className={""}>
-                    {row.original.userId.firstName} {row.original.userId.lastName}
+                    #{row.original.userId}
+                    {row.original.userType ? ` (${row.original.userType === "BUYER" ? "Buyer" : "Seller"})` : ""}
                 </span>
             )
         }
@@ -89,13 +93,12 @@ export const transactionTableColumns = [
             )
         },
         cell: ({ row }: { row: any }) => {
-            if (!row.original.transactionId) {
+            if (!row.original.razorpayOrderId) {
                 return <span>-</span>;
             }
             return (
                 <span className={""}>
-                    {/* {row.original.modeOfPayment} */}
-                    UPI Scanner
+                    Razorpay
                 </span>
             )
         }

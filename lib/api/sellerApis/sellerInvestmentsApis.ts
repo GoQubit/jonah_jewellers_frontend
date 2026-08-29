@@ -1,10 +1,10 @@
 import axiosInstance from "@/lib/axiosInstances/axiosInstance"
 
-// kitty Enrollment api =====>>
+// Seller: create an investment (creates a Razorpay order too) =====>>
+// Response: { ...Investment, keyId, razorpayOrder }
 export interface InvestmentData {
   amount: number,
-  transactionId: string,
-  proofImage:string
+  title?: string,
 }
 
 export const createSellerInvestmentApi = async (payload: InvestmentData) => {

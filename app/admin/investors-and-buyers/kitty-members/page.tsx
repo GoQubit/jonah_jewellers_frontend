@@ -1,13 +1,9 @@
 import React from 'react'
-import KittyUserTableView from '../_components/kitty-user-table-view'
+import KittyMembersTableView from './_components/kitty-members-table-view'
 
-type Props = {}
-
-const KittyMembersPage = (props: Props) => {
+const KittyMembersPage = () => {
   return (
-    <div className="mt-5">
-      <KittyUserTableView />
-    </div>
+    <KittyMembersTableView />
   )
 }
 

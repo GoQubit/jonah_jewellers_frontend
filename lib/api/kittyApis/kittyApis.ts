@@ -2,8 +2,10 @@ import { admin_url } from "@/lib/apiUrls/urlConstants"
 import axiosInstance from "@/lib/axiosInstances/axiosInstance"
 
 // kitty Enrollment api =====>>
+// Enrolling also creates the mandatory first installment + a Razorpay order
+// for it in the same call. Response: { kitty, firstPayment, keyId, razorpayOrder }
 export interface kittyEnrollmentData {
-  // title: string,
+  description?: string,
   monthlyInstallment: number,
   planDuration: number
 }
@@ -40,14 +42,13 @@ export const getUserKittyDashboardInfoApi = async (params?: any) => {
   }
 }
 
-// kitty Transection Api ======>>
-interface kittyTransectionData {
-  kittyEnrolledId: string,
+// kitty Transaction Api (subsequent installments, 2nd onwards) ======>>
+// Creates the installment + a Razorpay order for it.
+// Response: { ...KittyTransaction, keyId, razorpayOrder }
+export interface kittyTransectionData {
+  kittyEnrolledId: string | number,
   amount: number,
-  transactionId: string,
-  proofImage: string
 }
-
 
 export const kittyTransectionApi = async (payload: kittyTransectionData) => {
   try {
@@ -58,10 +59,10 @@ export const kittyTransectionApi = async (payload: kittyTransectionData) => {
   }
 }
 
-// get kitty users QR transaction api 
-export const getUserQRTransactionApi = async (params?: any) => {
+// get all kitty transactions (payment history) for the logged-in buyer
+export const getKittyTransactionsApi = async (params?: any) => {
   try {
-    const response = await axiosInstance.get(`qr-transaction`, {
+    const response = await axiosInstance.get(`kitty-transaction`, {
       params: params
     })
     return response

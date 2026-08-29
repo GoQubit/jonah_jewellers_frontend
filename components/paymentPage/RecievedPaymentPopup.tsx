@@ -16,8 +16,8 @@ const RecievedPaymentPopup = ({ planCategory }: { planCategory: string }) => {
       </h2>
 
       <p className="text-gray-600 mb-6 font-nunito font-normal">
-        Thanks for your payment! We’re verifying the details, and your plan
-        will be activated soon.
+        Thanks for your payment! It’s been verified automatically and your
+        plan is now active.
       </p>
 
       <div className="w-full flex gap-3">

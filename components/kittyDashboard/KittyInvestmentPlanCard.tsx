@@ -7,6 +7,7 @@ import { Progress } from "../ui/ProgessBar"
 import { RiWallet3Line } from "react-icons/ri"
 import { InvestmentPlan } from "./InvestmentPlansSection"
 import { useRouter } from "next/navigation"
+import { formatDate } from "@/utils/formatDate"
 
 interface KittyInvestmentPlanCardProps {
   plan: InvestmentPlan
@@ -14,12 +15,13 @@ interface KittyInvestmentPlanCardProps {
 
 export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) {
   const progressPercentage = (plan.noOfInstallmentsDone / plan.planDuration) * 100
+  const allInstallmentsDone = plan.noOfInstallmentsDone >= plan.planDuration
   const formatCurrency = (amount: number) => `₹ ${amount.toLocaleString()}`
   const router = useRouter()
 
 
   const payNowHandler = () => {
-    router.push(`/payment?planCategory=kitty&kittyId=${plan.id}&plan=${plan.planDuration}&monthlyAmount=${plan.monthlyInstallment}&duration=${plan.planDuration}&investmentGoal=${plan.title}&planCategory='kitty'`)
+    router.push(`/payment?planCategory=kitty&kittyId=${plan.id}&plan=${plan.planDuration}&monthlyAmount=${plan.monthlyInstallment}&duration=${plan.planDuration}&investmentGoal=${plan.title}`)
   }
 
   return (
@@ -64,7 +66,7 @@ export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) 
         }
         <div className="flex justify-between items-center">
           <p className="text-gray-600">Next Payment</p>
-          <p className="font-semibold"> 1-10-2025 </p>
+          <p className="font-semibold">{formatDate(plan.nextDueDate)} </p>
         </div>
         {plan.totalAmountToBePaid && (
           <div className="flex justify-between items-center border-t pt-2 mt-2 font-semibold text-base">
@@ -84,6 +86,10 @@ export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) 
             <FiShoppingCart className="h-4 w-4 mr-2" />
             Shop Now
           </Button>
+        ) : allInstallmentsDone ? (
+          <p className="flex-1 text-center text-sm text-green-600 font-medium py-2">
+            All installments paid
+          </p>
         ) : (
           <Button size="sm" className="flex-1 bg-[#1967FE] hover:bg-[#115cf3] "
             onClick={payNowHandler}

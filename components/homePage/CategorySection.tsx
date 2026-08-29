@@ -46,16 +46,27 @@ const CategorySection = () => {
         size='md'
       />
 
-      <div className='flex gap-[30px] justify-between overflow-x-auto '>
+      <div className='flex gap-[30px] justify-start md:justify-between overflow-x-auto '>
         {
-          subCategories.length > 0 && subCategories.map((subCategory: any, index: number) => (
+          subCategories.length > 0 && subCategories.map((subCategory: any) => (
             <div
               onClick={() => navigateSubCategory(subCategory.name, subCategory.id)}
-              key={index} className='flex flex-col gap-4 justify-center cursor-pointer '>
-              <img src={subCategory.photo}
-                alt="earrings img"
-                className='min-w-[120px] min-h-[120px] md:min-w-[190px] md:min-h-[190px] rounded-full overflow-hidden object-cover '
-              />
+              key={subCategory.id} className='flex flex-col gap-4 justify-center items-center cursor-pointer shrink-0 '>
+              {/* Fixed w/h (not min-w/min-h) + overflow-hidden on the wrapper so a
+                  broken/missing image (or its alt text) is always clipped to the
+                  circle instead of spilling out over the rest of the row. If the
+                  photo fails to load we just hide the broken-image icon and leave
+                  the grey circle as a graceful placeholder. */}
+              <div className='w-[120px] h-[120px] md:w-[190px] md:h-[190px] rounded-full overflow-hidden bg-gray-100 shrink-0 '>
+                <img
+                  src={subCategory.photo}
+                  alt={`${subCategory.name} category`}
+                  className='w-full h-full rounded-full object-cover '
+                  onError={(e) => {
+                    e.currentTarget.style.visibility = 'hidden'
+                  }}
+                />
+              </div>
               <span className='text-center font-medium text-lg md:text-[22px] font-besley '>{subCategory.name}</span>
             </div>
           ))

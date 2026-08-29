@@ -8,19 +8,13 @@ import { usePathname } from "next/navigation"
 
 const tabLinks = [
     {
-        name: "Pending Verifications",
-        value: "pending-verifications",
-        icon: Wallet,
-        link: "/admin/investors-and-buyers",
-    },
-    {
-        name: "Gold Investors",
+        name: "Sellers(Gold Investors)",
         value: "gold-investors",
         icon: Sparkles,
         link: "/admin/investors-and-buyers/gold-investors",
     },
     {
-        name: "Kitty Members",
+        name: "Buyers(Kitty & Gold)",
         value: "kitty-members",
         icon: Banknote,
         link: "/admin/investors-and-buyers/kitty-members",

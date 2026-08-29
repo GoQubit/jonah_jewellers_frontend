@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local'
 import { Inter } from 'next/font/google';
 import { ReduxProvider } from '@/components/providers/ReduxProvider';
@@ -21,6 +21,15 @@ export const metadata: Metadata = {
   },
 };
 
+// viewportFit: 'cover' lets the WebView draw edge-to-edge (behind the phone's
+// status bar / notch) while exposing env(safe-area-inset-*) so our fixed
+// header and page content can pad themselves clear of it instead of being
+// hidden underneath it.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
 
 export default function RootLayout({
   children,

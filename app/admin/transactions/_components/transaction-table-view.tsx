@@ -2,9 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import DataTable, { useDataTable } from '@/components/data-table'
-import { transactionListData } from '../const'
 import { transactionTableColumns } from './transaction-list-column'
-import { getQRTransectionApi } from '@/lib/api/transection/qrTransectionApi'
+import { getTransactionsApi } from '@/lib/api/transection/transactionApi'
 import { useSearchParams } from 'next/navigation'
 
 type initialTransection = { isLoading: boolean, data: null | any, error: null | string }
@@ -15,51 +14,53 @@ type Props = {}
 
 const TransactionTableView = (props: Props) => {
     const searchParams = useSearchParams()
-    const [QRTransectionData, setQRTransectionData] = useState(initialTransection)
+    const [transactionData, setTransactionData] = useState(initialTransection)
 
-    const fetchQRTransections = async () => {
-        setQRTransectionData({ ...initialTransection, isLoading: true })
+    const fetchTransactions = async () => {
+        setTransactionData({ ...initialTransection, isLoading: true })
 
         try {
             const queryParams = {
-                status: "SUCCESS",
+                status: searchParams.get("transactionStatus") || undefined,
                 limit: 20,
                 page: searchParams.get("page") || "1",
                 q: searchParams.get("search") || "",
                 startDate: searchParams.get("startDate") ? new Date(searchParams.get("startDate")!) : undefined,
                 endDate: searchParams.get("endDate") ? new Date(searchParams.get("endDate")!) : undefined,
+                sortBy: "-createdAt",
             }
 
-            const response = await getQRTransectionApi(queryParams)
+            const response = await getTransactionsApi(queryParams)
             if (response.status === 200) {
-                setQRTransectionData(s => ({ ...s, data: response.data, error: null }))
+                setTransactionData(s => ({ ...s, data: response.data, error: null }))
             } else {
-                throw new Error(response?.data?.message || response?.data?.error || "Products doesn't exists!")
+                throw new Error(response?.data?.message || response?.data?.error || "Couldn't load transactions!")
             }
         } catch (e: any) {
-            setQRTransectionData(s => ({ ...s, error: e?.message || "Something went wrong!", data: null }))
+            setTransactionData(s => ({ ...s, error: e?.message || "Something went wrong!", data: null }))
         } finally {
-            setQRTransectionData(s => ({ ...s, isLoading: false }))
+            setTransactionData(s => ({ ...s, isLoading: false }))
         }
     }
 
     useEffect(() => {
-        fetchQRTransections()
+        fetchTransactions()
     }, [searchParams])
 
 
     const { table } = useDataTable({
-        data: QRTransectionData?.data?.results || [],
+        data: transactionData?.data?.results || [],
         columns: transactionTableColumns,
-        pageCount: 5,
+        pageCount: transactionData?.data?.totalPages || 1,
         state: {
-            pagination: { pageIndex: 0, pageSize: 10 },
+            pagination: { pageIndex: 0, pageSize: 20 },
         },
     })
 
     return (
         <DataTable
             table={table}
+            totalResults={transactionData?.data?.totalResults}
             message={"No transaction found"}
             className={"w-full flex flex-col border-b-4 rounded"}
         />

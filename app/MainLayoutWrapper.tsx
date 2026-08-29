@@ -40,8 +40,19 @@ const MainLayoutWrapper = ({ children }: { children: any }) => {
 
       {/* {!shouldHideHeader && <Header />} */}
 
+      {/* The header (when shown) is position:fixed and pads itself with
+          env(safe-area-inset-top) internally, so it grows taller on phones
+          with a status bar/notch. Add that same inset to the content's
+          top offset so nothing gets tucked underneath it - on excluded-header
+          pages this still reserves just the safe-area so THEIR own header
+          (CustomPageHeader / CartHeader etc.) isn't hidden under the status
+          bar either. */}
       <main className="flex-grow "
-        style={{ paddingTop: isHeaderExcluded ? '' : '80px' }}
+        style={{
+          paddingTop: isHeaderExcluded
+            ? 'env(safe-area-inset-top)'
+            : 'calc(80px + env(safe-area-inset-top))'
+        }}
       >
         <ToastContainer style={{ zIndex: "9999999" }} />
         {children}

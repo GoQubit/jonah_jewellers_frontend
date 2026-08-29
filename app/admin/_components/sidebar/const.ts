@@ -1,7 +1,15 @@
-import { CirclePlus, CreditCard, MessageCircleQuestionMark, PackageSearch, ShoppingCart, Users } from "lucide-react"
+import { CirclePlus, CreditCard, LayoutDashboard, MessageCircleQuestionMark, PackageSearch, ShoppingCart, Users } from "lucide-react"
 
 
 export const menuItems = [
+    {
+        icon: LayoutDashboard,
+        label: "Dashboard",
+        link: "/admin",
+        // Exact match only - otherwise this would stay highlighted (and this
+        // tab would incorrectly match) on every other /admin/* page too.
+        regex: /^\/admin\/?$/,
+    },
     {
         icon: ShoppingCart,
         label: "Order Management",

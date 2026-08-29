@@ -6,6 +6,7 @@ import { KittyInvestmentPlanCard } from "./KittyInvestmentPlanCard"
 import { TransectionHistorySection } from "./TransectionHistorySection"
 import { useEffect, useState } from "react"
 import { getUserkittiesApi } from "@/lib/api/kittyApis/kittyApis"
+import { Pagination } from "../ui/Pagination"
 
 
 export interface InvestmentPlan {
@@ -18,6 +19,7 @@ export interface InvestmentPlan {
   bonus?: number | string
   noOfInstallmentsDone: number
   planDuration: number
+  nextDueDate: string
   status: "ACTIVE" | "COMPLETED"
 }
 
@@ -26,20 +28,25 @@ interface InvestmentPlansSectionProps {
   setActiveTab: (tab: string) => void
 }
 
+const PLANS_PAGE_SIZE = 6
+
 export function InvestmentPlansSection({ activeTab, setActiveTab }: InvestmentPlansSectionProps) {
   const [kittyList, setKittyList] = useState<InvestmentPlan[]>([])
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
-  const fetchKitty = async () => {
-    const res = await getUserkittiesApi()
-    console.log("res", res);
-    if (res.status === 200) {
+  const fetchKitty = async (pageNumber: number) => {
+    const params = { limit: PLANS_PAGE_SIZE, page: pageNumber, sortBy: "-createdAt" }
+    const res = await getUserkittiesApi(params)
+    if (res?.status === 200) {
       setKittyList(res.data.results)
+      setTotalPages(res.data.totalPages || 1)
     }
   }
   // fetch User Kitty List
   useEffect(() => {
-    fetchKitty()
-  }, [])
+    fetchKitty(page)
+  }, [page])
 
 
   return (
@@ -66,6 +73,11 @@ export function InvestmentPlansSection({ activeTab, setActiveTab }: InvestmentPl
               </div>
             }
           </div>
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={(p) => setPage(p)}
+          />
         </TabsContent>
 
         <TabsContent value="transactions" className="space-y-4">

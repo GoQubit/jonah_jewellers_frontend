@@ -4,9 +4,11 @@ import Link from "next/link";
 import { AiOutlineSearch } from "react-icons/ai";
 import { AiFillGold } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
+import { IoArrowBackOutline } from "react-icons/io5";
 import { PiShoppingCartSimple } from "react-icons/pi";
 import { HiOutlineUser } from "react-icons/hi2";
 import { useEffect, useState } from "react";
+import useIsNativePlatform from "@/hooks/useIsNativePlatform";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
@@ -31,6 +33,12 @@ const Header = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const isNativeApp = useIsNativePlatform();
+  const [canGoBack, setCanGoBack] = useState(false);
+
+  useEffect(() => {
+    setCanGoBack(window.history.length > 1);
+  }, []);
 
   const nameInitials = user.firstName && user.lastName ? `${user.firstName.charAt(0).toLocaleUpperCase()}${user.lastName.charAt(0).toLocaleUpperCase()}` : "NA"
 
@@ -50,14 +58,32 @@ const Header = () => {
   }
 
   return (
-    <header className="w-full fixed top-0 left-0 z-50 bg-white shadow-md">
+    <header
+      className="w-full fixed top-0 left-0 z-50 bg-white shadow-md"
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+    >
       {/* Top section */}
       <div className="w-full bg-white h-[80px] px-0 md:px-4 border-b">
         <div className="wrapper flex items-center h-full justify-between gap-4">
-          {/* Logo - always visible */}
-          <Link href={"/"}>
-            <Image src={"/images/logo2.png"} alt="logo" width={100} height={80} />
-          </Link>
+          <div className="flex items-center gap-2">
+            {/* Back button - only inside the native app (Android/iOS shell),
+                matching the back-button expectation of a mobile app. Hidden
+                when there's nothing to go back to. */}
+            {isNativeApp && canGoBack && (
+              <button
+                onClick={() => router.back()}
+                aria-label="Go back"
+                className="p-2 -ml-2 rounded-full hover:bg-gray-100 text-grayDark hover:text-brand shrink-0"
+              >
+                <IoArrowBackOutline className="w-6 h-6" />
+              </button>
+            )}
+
+            {/* Logo - always visible */}
+            <Link href={"/"}>
+              <Image src={"/images/logo2.png"} alt="logo" width={100} height={80} />
+            </Link>
+          </div>
 
           {/* Desktop Search */}
           <div className="hidden md:flex flex-1 mx-4 items-center justify-center">
@@ -118,7 +144,10 @@ const Header = () => {
 
       {/* Floating Searchbar for Mobile */}
       {showSearchBar && (
-        <div className="absolute top-[80px] left-0 w-full bg-[#ffffffb0] shadow-md drop-shadow-xl z-50 p-3 pr-0 md:hidden flex items-center">
+        <div
+          className="absolute left-0 w-full bg-[#ffffffb0] shadow-md drop-shadow-xl z-50 p-3 pr-0 md:hidden flex items-center"
+          style={{ top: "calc(80px + env(safe-area-inset-top))" }}
+        >
           <ProductSearch />
           <button
             className="md:hidden p-2 rounded-full hover:bg-gray-100 text-grayDark hover:text-brand  "
