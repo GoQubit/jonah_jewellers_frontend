@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  Offline fallback shell for the Capacitor Android app.
+
+  This file is NOT the app. In remote/hybrid mode, capacitor.config.ts
+  points the WebView at https://www.jonahjewels.com and the real Next.js
+  site loads there. The Capacitor CLI still requires `webDir` to contain
+  an index.html on disk (it copies this folder into the native project),
+  so this page only appears briefly, or if the device has no network
+  connection when the app is opened.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0" />
+    <title>Jonah Jewels</title>
+    <style>
+      html, body {
+        margin: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        font-family: -apple-system, Roboto, Helvetica, Arial, sans-serif;
+        color: #333333;
+        text-align: center;
+      }
+      .wrap { padding: 24px; }
+      button {
+        margin-top: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #111111;
+        color: #ffffff;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p>Jonah Jewels needs an internet connection to load.</p>
+      <button onclick="window.location.reload()">Retry</button>
+    </div>
+  </body>
+</html>

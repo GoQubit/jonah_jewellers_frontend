@@ -1,0 +1,32 @@
+{
+	"appId": "com.jonahjewels.app",
+	"appName": "Jonah Jewels",
+	"webDir": "public",
+	"server": {
+		"url": "https://www.jonahjewels.com",
+		"cleartext": false,
+		"androidScheme": "https",
+		"allowNavigation": [
+			"jonahjewels.com",
+			"*.jonahjewels.com",
+			"checkout.razorpay.com",
+			"api.razorpay.com",
+			"*.razorpay.com",
+			"jonahblob.blob.core.windows.net"
+		]
+	},
+	"android": {
+		"allowMixedContent": false,
+		"webContentsDebuggingEnabled": false
+	},
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 1200,
+			"backgroundColor": "#FFFFFF",
+			"androidScaleType": "CENTER_CROP",
+			"showSpinner": false,
+			"splashFullScreen": true,
+			"splashImmersive": true
+		}
+	}
+}
