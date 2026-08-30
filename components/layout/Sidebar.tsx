@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "../ui/buttons/Button"
 import { Badge } from "../ui/Badge"
 import { RiLogoutBoxLine, RiWallet3Line } from "react-icons/ri";
-import { AiFillGolden } from "react-icons/ai";
+import { AiFillGolden, AiFillGold } from "react-icons/ai";
 import { FiPackage } from "react-icons/fi";
 import { HiOutlineUser } from "react-icons/hi2";
 import { MdContactSupport } from "react-icons/md";
@@ -57,6 +57,17 @@ export function Sidebar({ isOpen, onClose }: UserAccountSidebarProps) {
           description: "Manage your kitty portfolio",
           onClick: () => {
             router.push("/kitty-dashboard")
+            onClose()
+          },
+        },
+        {
+          id: "gold-wallet",
+          icon: <AiFillGold className="w-5 h-5" />,
+          iconStyle: " bg-[#FEF2DA] text-[#B8860B]",
+          title: "My Gold Wallet",
+          description: "Gold purchases, wallet & withdrawals",
+          onClick: () => {
+            router.push("/gold-wallet")
             onClose()
           },
         },

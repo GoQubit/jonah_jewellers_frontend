@@ -24,14 +24,16 @@ const RecievedPaymentPopup = ({ planCategory }: { planCategory: string }) => {
         <Button
           variant='brand-outline'
           className=" w-[50%] !py-3 font-nunito "
-          onClick={() => router.push(planCategory === 'kitty' ?
-            '/kitty-dashboard' :
-            '/seller-dashboard')}
+          onClick={() => router.push(
+            planCategory === 'kitty' ? '/kitty-dashboard' :
+            planCategory === 'gold' ? '/gold-wallet' :
+            '/seller-dashboard'
+          )}
         >
           {
-            planCategory === 'kitty' ?
-              'View Kitty Dashboard' :
-              'View Seller Dashboard'
+            planCategory === 'kitty' ? 'View Kitty Dashboard' :
+            planCategory === 'gold' ? 'View Gold Wallet' :
+            'View Seller Dashboard'
           }
         </Button>
         <Button

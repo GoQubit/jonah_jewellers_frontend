@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { GiDiamondRing } from "react-icons/gi";
+import { AiFillGold } from "react-icons/ai";
 import { Button } from "../ui/buttons/Button";
 import { useRouter } from "next/navigation";
 
@@ -9,7 +10,7 @@ const KittyInvestmentsCards = () => {
 
   return (
     <div className="wrapper overflow-x-visible ">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full max-w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full max-w-full">
         {/* Kitty Plan Card */}
         <div>
           <div className="investment-card bg-[#F2E2E2]">
@@ -44,6 +45,36 @@ const KittyInvestmentsCards = () => {
             onClick={() => router.push("/kitty-plan")}
           >
             See Kitty Plans
+          </Button>
+        </div>
+
+        {/* Buy Pure Gold Card */}
+        <div>
+          <div className="investment-card bg-[#FDECEC]">
+            <div className="flex flex-col gap-4">
+              <div className="icon-circle bg-[#B8860B]">
+                <AiFillGold size={60} />
+              </div>
+              <div className="text-center">
+                <h2 className="font-besley font-semibold text-xl md:text-2xl text-[#B8860B] uppercase">
+                  Buy Pure Gold
+                </h2>
+                <p className="text-gray-700">Store it. Redeem it anytime.</p>
+              </div>
+
+              <div className="text-center w-[85%] mx-auto text-gray-500 text-sm md:text-lg">
+                Buy pure gold anytime and keep it safe in your wallet — redeem
+                it for jewellery at our store whenever you're ready.
+              </div>
+            </div>
+
+          </div>
+          <Button
+            variant="brand-solid"
+            className="!w-full text-lg font-medium text-white mt-4 !py-4 !bg-[#B8860B] hover:!bg-[#a07609]"
+            onClick={() => router.push("/buy-gold")}
+          >
+            Buy Gold Now
           </Button>
         </div>
 
