@@ -1,14 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import localFont from 'next/font/local'
-import { Inter } from 'next/font/google';
 import { ReduxProvider } from '@/components/providers/ReduxProvider';
 import './globals.css';
 import MainLayoutWrapper from './MainLayoutWrapper';
 import ModalProvider from '@/context/modal-provider';
 import CapacitorBridge from '@/lib/capacitor/CapacitorBridge';
 
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'JONAH JEWELS | Jewellery E-commerce App',
@@ -39,7 +35,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter?.className} `}>
+      <body style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         <CapacitorBridge />
         <ReduxProvider>
           <ModalProvider>

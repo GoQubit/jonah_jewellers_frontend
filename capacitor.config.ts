@@ -55,8 +55,18 @@ const config: CapacitorConfig = {
   },
 
   plugins: {
+    // launchShowDuration is 0 here on purpose: on Android 12+, this plugin
+    // doesn't draw its own custom splash view - it just prolongs the native
+    // OS Splash Screen API's icon-in-a-circle display for this long, which
+    // is exactly the cropped-logo behavior we didn't want (see
+    // SplashActivity.java). The actual branded splash - the full, unclipped
+    // logo, for the same 1200ms - is now handled natively by SplashActivity
+    // (android/app/src/main/java/com/jonahjewels/app/SplashActivity.java),
+    // which runs before MainActivity ever starts. Keep this plugin's
+    // duration at 0 so MainActivity doesn't show a second, redundant splash
+    // on top of that.
     SplashScreen: {
-      launchShowDuration: 1200,
+      launchShowDuration: 0,
       backgroundColor: '#FFFFFF',
       androidScaleType: 'CENTER_CROP',
       showSpinner: false,

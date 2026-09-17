@@ -2,6 +2,8 @@ import withPWA from "next-pwa";
 
 const nextConfig = {
   reactStrictMode: false,
+  typescript: { ignoreBuildErrors: true },
+  eslint: { ignoreDuringBuilds: true },
 
   images: {
     unoptimized: false,

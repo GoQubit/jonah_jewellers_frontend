@@ -47,7 +47,7 @@ const GoldWithdrawalsTableView = () => {
     columns: columns,
     pageCount: withdrawalsData?.data?.totalPages || 1,
     state: {
-      pagination: { pageIndex: 0, pageSize: 10 },
+      pagination: { pageIndex: 0, pageSize: 20 },
     },
   })
 

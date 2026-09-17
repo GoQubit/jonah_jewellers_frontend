@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      This file did not previously exist even though styles.xml's base
+      AppTheme references @color/colorPrimary, @color/colorPrimaryDark and
+      @color/colorAccent - that would fail to resolve at build time. Adding
+      reasonable values here (matching the web app's brand color, see
+      tailwind.config's `brand`) alongside the new splash text colors below.
+    -->
+    <color name="colorPrimary">#E8A83E</color>
+    <color name="colorPrimaryDark">#B9822B</color>
+    <color name="colorAccent">#E8A83E</color>
+
+    <!-- Splash screen text colors, sampled from public/images/logo2.png -->
+    <color name="splash_gold">#E8A83E</color>
+    <color name="splash_silver">#9C9C9C</color>
+</resources>
