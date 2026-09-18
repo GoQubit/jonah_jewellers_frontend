@@ -1,44 +1,51 @@
 package com.jonahjewels.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 
 /**
  * Real launcher Activity, shown before MainActivity.
  *
- * Android 12+'s system Splash Screen API (Theme.SplashScreen, which our
- * launch theme extends) is mandatory for the very first Activity of a cold
- * start, but it can only render a background color plus an icon inside a
- * fixed circular mask - never a full custom image. That's why the logo kept
- * appearing cropped inside a white circle no matter which drawable the
- * theme pointed at.
+ * Deliberately a plain Activity, not AppCompatActivity: androidx.core.
+ * splashscreen's setKeepOnScreenCondition() calls findViewById() internally,
+ * which on an AppCompatActivity goes through AppCompatDelegate and throws
+ * IllegalStateException unless the theme extends Theme.AppCompat. Our
+ * launch theme (AppTheme.NoActionBarLaunch) extends Theme.SplashScreen, not
+ * AppCompat, so this MUST stay a plain Activity.
  *
- * This Activity lets that unavoidable OS splash dismiss essentially
- * instantly (setKeepOnScreenCondition(() -> false) below), then shows our
- * own plain layout (activity_splash.xml) with the full, unclipped logo via
- * a normal ImageView - which has no such OS-imposed masking - for
- * SPLASH_DURATION_MS, matching the previous launchShowDuration the
- * @capacitor/splash-screen plugin used to control. It then hands off to
- * MainActivity, which now starts directly into the app theme (see
- * AndroidManifest.xml) so it doesn't re-trigger a second native splash.
+ * There are technically two layers here, but only one is ever visible:
+ *  1. Android 12+'s mandatory system Splash Screen API (Theme.SplashScreen)
+ *     - required for the very first activity of a cold start, cannot be
+ *     skipped outright. Its icon (windowSplashScreenAnimatedIcon in
+ *     styles.xml) is a fully transparent placeholder and its background is
+ *     white, matching this activity's own background, so this frame is
+ *     indistinguishable from blank white - the person never perceives it as
+ *     a separate screen. Dismissed immediately (setKeepOnScreenCondition
+ *     (() -> false)) since there's nothing to wait for.
+ *  2. activity_splash.xml - our own layout showing the real app logo
+ *     (drawable-nodpi/splash_logo.png, cropped from the same
+ *     public/images/logo2.png used in the web header), held for
+ *     SPLASH_DURATION_MS, then MainActivity starts.
+ *
+ * If you ever see two visually distinct splash screens again, it means
+ * windowSplashScreenAnimatedIcon or the theme/activity background colors
+ * have drifted out of sync - keep them matched.
  */
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends Activity {
 
   // Keep this in sync with capacitor.config.ts's SplashScreen.launchShowDuration
-  // (now set to 0 there, since this Activity is what actually controls the
-  // visible splash duration - see the comment in capacitor.config.ts).
+  // (set to 0 there, since this Activity is what actually controls the
+  // visible splash duration).
   private static final long SPLASH_DURATION_MS = 1200;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    // Must be called before super.onCreate() / setContentView(), and before
-    // anything else touches the window - this is what lets the mandatory
-    // OS icon-and-color splash dismiss as soon as the framework allows,
-    // instead of lingering for its own default duration.
+    // Must be called before super.onCreate(), before anything else touches
+    // the window.
     SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
     splashScreen.setKeepOnScreenCondition(() -> false);
 

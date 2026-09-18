@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Plain-text splash screen shown by SplashActivity, full-screen and never
-  cropped (see SplashActivity.java / AppTheme.NoActionBarLaunch for why this
-  replaced the earlier full-logo image). Two lines: "JONAH" in the brand
-  gold and "JEWELS" in silver, in the same Besley serif used on the web.
+  Single splash screen shown by SplashActivity, showing the real app logo
+  (the same file used in the web header - public/images/logo2.png, cropped
+  to its visible bounds and copied to drawable-nodpi/splash_logo.png). The
+  mandatory OS splash (Theme.AppTheme.NoActionBarLaunch) that precedes this
+  is made transparent - see styles.xml - so this is the only screen the
+  person actually perceives.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -12,25 +14,12 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:text="JONAH"
-        android:textColor="@color/splash_gold"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.15"
-        android:fontFamily="@font/besley" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="JEWELS"
-        android:textColor="@color/splash_silver"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.15"
-        android:fontFamily="@font/besley" />
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/splash_logo"
+        android:contentDescription="@string/app_name" />
 
 </LinearLayout>

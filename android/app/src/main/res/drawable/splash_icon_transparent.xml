@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fully transparent placeholder for windowSplashScreenAnimatedIcon. Android
+  12+ always renders SOME icon for the mandatory system splash of the first
+  activity - it cannot be skipped outright - but it can be made invisible.
+  Pointing it at nothing (@android:color/transparent doesn't work here,
+  this must be a real drawable) and keeping the splash background white
+  means that first, unavoidable OS frame is indistinguishable from blank
+  white, so SplashActivity's own full-logo screen (activity_splash.xml)
+  reads as the only splash the person sees.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/transparent" />
+</shape>
