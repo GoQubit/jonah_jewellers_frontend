@@ -24,7 +24,7 @@ export default function ProductGrid() {
       setIsLoadingProducts(true)
       const res = await getAllProductsApi(params)
       console.log('res', res)
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setProducts(res.data.results || [])
       }
     } catch (error) {

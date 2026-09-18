@@ -24,7 +24,7 @@ const DashboardPage = (props: Props) => {
   const fetchMaterialPrice = async () => {
     const res = await getMaterialPriceApi()
     console.log("res", res);
-    if (res.status === 200) {
+    if (res?.status === 200) {
       const data = res.data.results;
       // Convert array to object format
       const formattedPrices = {
@@ -39,7 +39,7 @@ const DashboardPage = (props: Props) => {
   const fetchAnalytics = async () => {
     try {
       const res = await getDashboardAnalyticsApi()
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setAnalyticsData(res.data)
       }
     } catch (error) {

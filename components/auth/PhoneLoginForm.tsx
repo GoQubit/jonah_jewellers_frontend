@@ -38,7 +38,7 @@ export default function PhoneLoginForm({ nextStep }: { nextStep: Function }) {
     try {
       setSending(true)
       const res = await sendOtpApi({ mobileNumber: form.phone })
-      if (res.status === 200) {
+      if (res?.status === 200) {
         localStorage.setItem("phonenumber", form.phone);
         Toast.success(res.data.message)
         nextStep()

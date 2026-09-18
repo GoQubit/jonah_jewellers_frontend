@@ -33,7 +33,7 @@ const ProductTableView = (props: Props) => {
                 archive: searchParams.get("archive") ? searchParams.get("archive") === "true" : false
             }
             const response = await getAllProductsApi(queryParams)
-            if (response.status === 200) {
+            if (response?.status === 200) {
                 setProducts(s => ({ ...s, data: response.data, error: null}))
             } else {
                 throw new Error(response?.data?.message || response?.data?.error || "Products doesn't exists!")

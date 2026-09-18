@@ -47,11 +47,11 @@ export const getGoldWithdrawalsTableColumns = (onActionComplete: () => void) => 
       if (!row.original.status) return <span>-</span>;
 
       const color =
-        row.original.status === "SUCCESS"
+        row.original?.status === "SUCCESS"
           ? "#14863D"
-          : row.original.status === "PENDING_ADMIN"
+          : row.original?.status === "PENDING_ADMIN"
             ? "#E8A83E"
-            : row.original.status === "PENDING_USER"
+            : row.original?.status === "PENDING_USER"
               ? "#2568C0"
               : "#FF0000";
 

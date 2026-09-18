@@ -24,7 +24,7 @@ const KittyMembersTableView = () => {
       }
 
       const response = await getBuyerUserListApi(queryParams)
-      if (response.status === 200) {
+      if (response?.status === 200) {
         setMembersData(s => ({ ...s, data: response.data, error: null }))
       } else {
         throw new Error(response?.data?.message || response?.data?.error || "Couldn't load kitty members!")

@@ -29,7 +29,7 @@ const PendingVerificationTableView = () => {
       }
 
       const response = await getQRTransectionApi(queryParams)
-      if (response.status === 200) {
+      if (response?.status === 200) {
         setQRTransectionData(s => ({ ...s, data: response.data, error: null }))
       } else {
         throw new Error(response?.data?.message || response?.data?.error || "Products doesn't exists!")

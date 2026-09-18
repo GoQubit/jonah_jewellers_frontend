@@ -31,10 +31,10 @@ export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) 
           <h3 className="font-medium text-lg text-gray-900 font-nunito">{plan.title}</h3>
         </div>
         <Badge
-          variant={plan.status === "COMPLETED" ? "default" : "secondary"}
-          className={plan.status === "COMPLETED" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}
+          variant={plan?.status === "COMPLETED" ? "default" : "secondary"}
+          className={plan?.status === "COMPLETED" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}
         >
-          {plan.status === "COMPLETED" ? "Completed" : "Active"}
+          {plan?.status === "COMPLETED" ? "Completed" : "Active"}
         </Badge>
       </div>
 
@@ -77,7 +77,7 @@ export function KittyInvestmentPlanCard({ plan }: KittyInvestmentPlanCardProps) 
       </div>
 
       <div className="flex gap-2 pt-2 w-full self-center ">
-        {plan.status === "COMPLETED" ? (
+        {plan?.status === "COMPLETED" ? (
           <Button size="sm"
             variant="brand-solid"
             className="flex-1 "

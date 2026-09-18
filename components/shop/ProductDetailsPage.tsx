@@ -49,7 +49,7 @@ export default function ProductDetailsPage({ productId }: { productId: string })
 
   const fetchProductDetails = async (product_id: string) => {
     const res = await getSingleProductApi(product_id)
-    if (res.status === 200) {
+    if (res?.status === 200) {
       setProductDetails(res.data)
     }
   }

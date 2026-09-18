@@ -118,7 +118,7 @@ export const getPendingVerificationTableColumns = (onActionComplete: () => void)
         return <span>-</span>;
       }
 
-      const color = row.original.status === 'SUCCESS' ? '#14863D' : row.original.status === 'PENDING' ? '#E8A83E' : '#FF0000'
+      const color = row.original?.status === 'SUCCESS' ? '#14863D' : row.original?.status === 'PENDING' ? '#E8A83E' : '#FF0000'
       return (
         <span
           className={`flex items-center justify-center gap-1.5 border rounded-md`}

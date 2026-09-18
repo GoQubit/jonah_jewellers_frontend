@@ -54,7 +54,7 @@ export const PrimaryImageField = () => {
             payload.append("file", selectedFile)
             const res = await fileUploaderApi(payload)
 
-            if (res.status === 200) {
+            if (res?.status === 200) {
                 setValue("primaryImage", res.data.url, { shouldValidate: true });
             }
 

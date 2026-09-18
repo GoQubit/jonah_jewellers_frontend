@@ -23,7 +23,7 @@ const EditProductView = ({ productId, onClose, getProducts }: Props) => {
     setProduct({ ...initialProducts, isLoading: true })
     try {
       const response = await getSingleProductApi(productId)
-      if (response.status === 200) {
+      if (response?.status === 200) {
         setProduct(s => ({ ...s, data: response.data, error: null }))
       } else {
         throw new Error(response?.data?.message || response?.data?.error || "Product doesn't exists!")

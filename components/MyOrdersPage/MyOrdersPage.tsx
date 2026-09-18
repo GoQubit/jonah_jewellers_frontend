@@ -57,7 +57,7 @@ export default function MyOrdersPage() {
   const fetchOrders = async (pageNumber: number) => {
     const params = { limit: 5, page: pageNumber, sortBy: '-createdAt' }
     const res = await getAllOrdersApi(params)
-    if (res.status === 200) {
+    if (res?.status === 200) {
       setOrdersList(res.data.results)
       setTotalPages(res.data.totalPages)
     }

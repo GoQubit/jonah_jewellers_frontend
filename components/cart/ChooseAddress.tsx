@@ -43,7 +43,7 @@ export default function ChooseAddressPage({ walletCashUsed, coupon, walletCash }
 
   const fetchAddresses = async () => {
     const res = await getAllAddressesApi()
-    if (res.status === 200) {
+    if (res?.status === 200) {
       setAllAddresses(res.data)
       setSelectedAddress(res.data[0])
     }
@@ -55,7 +55,7 @@ export default function ChooseAddressPage({ walletCashUsed, coupon, walletCash }
 
   const handleDeleteAddress = async (id: string) => {
     const res = await deleteAddressApi(id)
-    if (res.status === 204) {
+    if (res?.status === 204) {
       fetchAddresses()
       Toast.success("Address deleted successfully!")
     }
@@ -86,7 +86,7 @@ export default function ChooseAddressPage({ walletCashUsed, coupon, walletCash }
       }
 
       const res = await createOrderApi(payload)
-      if (res.status !== 201 || !res.data?.razorpayOrder) {
+      if (res?.status !== 201 || !res.data?.razorpayOrder) {
         Toast.error("Failed to create order. Try again.")
         setLoading(false)
         return
@@ -123,7 +123,7 @@ export default function ChooseAddressPage({ walletCashUsed, coupon, walletCash }
             const verifyRes = await verifyRazorPayOrderApi(payload)
             console.log("verifyRes", verifyRes);
 
-            if (verifyRes.status === 200) {
+            if (verifyRes?.status === 200) {
               Toast.success("Order placed successfully!")
               // navigate to success page if needed
               router.push(`/orders`)

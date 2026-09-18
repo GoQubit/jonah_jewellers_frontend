@@ -63,7 +63,7 @@ export function GoldWithdrawalRequestTab({
     fetchWithdrawals(page)
   }, [refreshKey, page])
 
-  const pendingUserConfirmations = withdrawalsList.filter((w) => w.status === "PENDING_USER")
+  const pendingUserConfirmations = withdrawalsList.filter((w) => w?.status === "PENDING_USER")
 
   const handleConfirmReceived = async (id: string) => {
     setConfirmingId(id)
@@ -173,7 +173,7 @@ export function GoldWithdrawalRequestTab({
             {withdrawalsList?.map((withdrawal) => (
               <div key={withdrawal.id} className="flex items-center justify-between py-2 bg-gray-50">
                 <div className="flex items-center gap-3">
-                  {withdrawal.status === "SUCCESS" ? (
+                  {withdrawal?.status === "SUCCESS" ? (
                     <FaCircleCheck className="w-8 h-8 text-green-500" />
                   ) : (
                     <FiAlertCircle className="w-8 h-8 text-brand" />

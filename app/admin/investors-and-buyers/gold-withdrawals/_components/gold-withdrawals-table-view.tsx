@@ -24,7 +24,7 @@ const GoldWithdrawalsTableView = () => {
       }
 
       const response = await getGoldWithdrawalsAdminApi(queryParams)
-      if (response.status === 200) {
+      if (response?.status === 200) {
         setWithdrawalsData(s => ({ ...s, data: response.data, error: null }))
       } else {
         throw new Error(response?.data?.message || response?.data?.error || "Couldn't load withdrawal requests!")

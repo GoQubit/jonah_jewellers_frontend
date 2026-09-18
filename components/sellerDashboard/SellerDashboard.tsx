@@ -19,7 +19,7 @@ export default function SellerDashboard() {
     (async () => {
       const res = await getSellerDashboardInfoApi()
       console.log("res", res);
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setSellerWalletInfo(res.data)
       }
     })()

@@ -31,7 +31,7 @@ const TransactionTableView = (props: Props) => {
             }
 
             const response = await getTransactionsApi(queryParams)
-            if (response.status === 200) {
+            if (response?.status === 200) {
                 setTransactionData(s => ({ ...s, data: response.data, error: null }))
             } else {
                 throw new Error(response?.data?.message || response?.data?.error || "Couldn't load transactions!")

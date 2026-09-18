@@ -20,7 +20,7 @@ const CategorySection = () => {
       const params = { limit: 100 }
       const res = await getSubCategoriesApi(params)
       console.log("res", res);
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setSubCategories(res?.data?.results)
       }
     } catch (error) {

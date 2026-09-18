@@ -78,7 +78,7 @@ export default function FilterSection() {
     ;(async () => {
       try {
         const res = await getSubCategoriesApi()
-        if (res.status === 200) {
+        if (res?.status === 200) {
           setSubCategoryData(res.data.results || [])
         }
       } catch (err) {

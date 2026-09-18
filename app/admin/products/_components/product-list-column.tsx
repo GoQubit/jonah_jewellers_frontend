@@ -193,7 +193,7 @@ export const getProductTableColumns = (getProducts: Function) => {
                     try {
                         setDeleteLoading(true);
                         const response = await deleteProductApi(row.original._id);
-                        if (response.status === 204) {
+                        if (response?.status === 204) {
                             router.replace(pathname || "/admin/products");
                             Toast.success("Product deleted successfully");
                         } else {

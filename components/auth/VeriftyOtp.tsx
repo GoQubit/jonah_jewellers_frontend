@@ -24,7 +24,7 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
   const onResend = async () => {
     if (countdown > 0) return
     const res = await sendOtpApi({ mobileNumber: storedPhonenumber })
-    if (res.status === 200) {
+    if (res?.status === 200) {
       Toast.success(`OTP resent`)
       startTimer()
     }
@@ -43,7 +43,7 @@ const VerifyOTP = ({ nextStep, backStep }: { nextStep: Function, backStep: Funct
         otp: code
       }
       const res = await verifyOtpApi(payload)
-      if (res.status === 200) {
+      if (res?.status === 200) {
         Toast.success(res.data.message)
         const token = res.data.tokens.access.token
 

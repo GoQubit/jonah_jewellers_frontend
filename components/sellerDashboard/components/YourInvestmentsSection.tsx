@@ -25,7 +25,7 @@ export function YourInvestmentsTab() {
     try {
       setLoading(true)
       const res = await getSellerInvestmentsApi()
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setInvestments(res.data?.results)
       }
     } catch (error) {

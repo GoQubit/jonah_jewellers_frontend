@@ -83,9 +83,9 @@ export function GoldInvestmentsTab({ refreshKey }: { refreshKey: number }) {
                 <div className="text-center">
                   <Badge
                     variant={
-                      investment.status === "SUCCESS"
+                      investment?.status === "SUCCESS"
                         ? "success"
-                        : investment.status === "PENDING"
+                        : investment?.status === "PENDING"
                           ? "pending"
                           : "failed"
                     }

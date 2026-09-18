@@ -14,7 +14,7 @@ const ProductSearch = () => {
   const fetchSearchedProducts = async (searchQuery: string) => {
     try {
       const res = await getAllProductsApi({ q: searchQuery })
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setResults(res.data.results)
         setShowDropdown(true)
       }

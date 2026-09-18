@@ -113,7 +113,7 @@ export default function AddressModal({ initialData, onClose, onSave }: Props) {
     try {
       const res = await createNewAddressApi(form)
       console.log("res", res)
-      if (res.status === 200) {
+      if (res?.status === 200) {
         onSave()
         Toast.success("Address saved successfully!")
         onClose()

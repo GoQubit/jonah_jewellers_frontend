@@ -24,7 +24,7 @@ export function WithdrawalRequestTab({ onWithdrawalRequest, availableToWithdraw 
     (async () => {
       const res = await getWithdrawalsListApi()
       console.log("withdrawalsList", res.data);
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setWithdrawalsList(res?.data?.results)
       }
     })()
@@ -86,7 +86,7 @@ export function WithdrawalRequestTab({ onWithdrawalRequest, availableToWithdraw 
               <div key={index} className="flex items-center justify-between py-2 bg-gray-50">
                 <div className="flex items-center gap-3">
                   {
-                    withdrawal.status === 'PENDING' ?
+                    withdrawal?.status === 'PENDING' ?
                       <FiAlertCircle className="w-8 h-8 text-brand" />
                       :
                       <FaCircleCheck className="w-8 h-8 text-green-500" />
@@ -96,9 +96,9 @@ export function WithdrawalRequestTab({ onWithdrawalRequest, availableToWithdraw 
                     <p className="text-sm text-gray-500">{formatDate(withdrawal.createdAt)}</p>
                   </div>
                 </div>
-                <Badge variant={withdrawal.status === "SUCCESS"
+                <Badge variant={withdrawal?.status === "SUCCESS"
                   ? "success" : "pending"}>
-                  {withdrawal.status === 'PENDING' ?
+                  {withdrawal?.status === 'PENDING' ?
                     "Pending" : "Approved"
                   }
                 </Badge>

@@ -28,7 +28,7 @@ const CartPage = () => {
 
   const fetchBuyerWallet = async () => {
     const res = await getUserKittyDashboardInfoApi();
-    if (res.status === 200) {
+    if (res?.status === 200) {
       setBuyerWallet(res?.data)
       setAvailableWalletCash(res?.data?.availableForShopping)
     }
@@ -36,7 +36,7 @@ const CartPage = () => {
 
   const fetchSellerWallet = async () => {
     const res = await getSellerDashboardInfoApi();
-    if (res.status === 200) {
+    if (res?.status === 200) {
       setSellerWallet(res?.data)
       setAvailableWalletCash(res?.data?.availableToWithdraw)
     }

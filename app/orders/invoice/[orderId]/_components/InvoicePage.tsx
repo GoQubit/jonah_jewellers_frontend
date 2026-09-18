@@ -14,7 +14,7 @@ export default function InvoicePage({ orderId }: { orderId: string }) {
   useEffect(() => {
     (async () => {
       const res = await getOrderDetailsApi(orderId)
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setOrderDetails(res?.data)
       }
     })()

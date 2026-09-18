@@ -48,7 +48,7 @@ const OrderListFilterView = () => {
             urlSearchParams.set("search", filters.search)
         }
 
-        if (filters.status !== null && filters.status !== undefined) {
+        if (filters?.status !== null && filters?.status !== undefined) {
             urlSearchParams.set("status", filters.status)
         }
 
@@ -95,8 +95,8 @@ const OrderListFilterView = () => {
                 >
                     <span className="whitespace-nowrap">
                         <span>Status: </span>
-                        <span style={{ color: orderStatusOptions.find((orderStatus) => filters.status === orderStatus.value)?.dark_color || "" }}>
-                            {orderStatusOptions.find((orderStatus) => filters.status === orderStatus.value)?.label || "All"}
+                        <span style={{ color: orderStatusOptions.find((orderStatus) => filters?.status === orderStatus.value)?.dark_color || "" }}>
+                            {orderStatusOptions.find((orderStatus) => filters?.status === orderStatus.value)?.label || "All"}
                         </span>
                     </span>
                     <ChevronDownIcon className="w-6 h-6" />
@@ -109,11 +109,11 @@ const OrderListFilterView = () => {
                             key={orderStatus.value}
                             className={cn(
                                 "py-1.5 text-lg focus:bg-transparent focus:outline-none cursor-pointer",
-                                filters.status === orderStatus.value && "border-l-4"
+                                filters?.status === orderStatus.value && "border-l-4"
                             )}
                             style={{
                                 color: orderStatus.dark_color,
-                                borderColor: filters.status === orderStatus.value ? orderStatus.dark_color : ""
+                                borderColor: filters?.status === orderStatus.value ? orderStatus.dark_color : ""
                             }}
                             onClick={() => setFilters(s => ({ ...s, status: orderStatus.value }))}
                         >

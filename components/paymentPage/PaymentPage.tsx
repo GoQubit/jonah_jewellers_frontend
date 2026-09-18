@@ -75,7 +75,7 @@ export default function PaymentGatewayPage() {
             razorpaySignature: response.razorpay_signature,
           })
 
-          if (verifyRes && verifyRes.status === 200 && verifyRes.data?.success) {
+          if (verifyRes && verifyRes?.status === 200 && verifyRes.data?.success) {
             setShowSuccessModal(true)
           } else {
             Toast.error(
@@ -153,7 +153,7 @@ export default function PaymentGatewayPage() {
 
       if (
         !createRes ||
-        (createRes.status !== 200 && createRes.status !== 201) ||
+        (createRes?.status !== 200 && createRes?.status !== 201) ||
         !createRes.data?.razorpayOrder
       ) {
         Toast.error(

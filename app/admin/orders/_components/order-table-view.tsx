@@ -30,7 +30,7 @@ const OrderTableView = (props: Props) => {
                 endDate: searchParams.get("endDate") ? new Date(searchParams.get("endDate")!) : undefined,
             }
             const response = await getAllOrdersAdminApi(queryParams)
-            if (response.status === 201) {
+            if (response?.status === 201) {
                 setOrders(s => ({ ...s, data: response.data, error: null }))
             } else {
                 throw new Error(response?.data?.message || response?.data?.error || "Orders doesn't exists!")

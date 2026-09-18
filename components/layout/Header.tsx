@@ -44,9 +44,16 @@ const Header = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await getMaterialPriceApi();
-      if (res.status === 200) {
-        dispatch(setMaterials(res.data.results));
+      try {
+        const res = await getMaterialPriceApi();
+        if (res?.status === 200 && res?.data?.results) {
+          dispatch(setMaterials(res.data.results));
+        }
+        // else: backend didn't return a price right now (down/cold-starting/
+        // timed out) - just keep whatever price is already in the store
+        // (or the slice's own default) instead of crashing the header.
+      } catch (error) {
+        console.error("[Header] failed to load material prices:", error);
       }
     })();
   }, [dispatch]);
@@ -97,7 +104,7 @@ const Header = () => {
               {/* <span className="w-2 h-2 rounded-full bg-red-600"></span> */}
               <AiFillGold className="text-brand w-4 h-4 " />
               <span className="hidden sm:block">Today&apos;s Price:</span>
-              <span>₹ {gold?.price}/10gm</span>
+              <span>₹ {gold?.price ?? "--"}/10gm</span>
             </div>
 
             {/* Search icon for mobile */}

@@ -87,7 +87,7 @@ const ProductForm = ({
     setSubCategories({ isLoading: true, data: [] })
     try {
       const response = await getSubCategoriesApi()
-      if (response.status === 200) {
+      if (response?.status === 200) {
         setSubCategories(s => ({ ...s, data: response.data.results }))
       } else {
         throw new Error("Failed to fetch subcategories")
@@ -113,7 +113,7 @@ const ProductForm = ({
         queryParams["q"] = search
       }
       const response = await getAllUsersApi(queryParams)
-      if (response.status === 200) {
+      if (response?.status === 200) {
         setSellers(s => ({ ...s, data: response.data.results }))
       } else {
         throw new Error("Failed to fetch sellers")
@@ -138,7 +138,7 @@ const ProductForm = ({
         queryParams["q"] = search
       }
       const response = await getProductTagsApi(queryParams)
-      if (response.status === 200) {
+      if (response?.status === 200) {
         setTags(s => ({ ...s, data: response.data[0].tags }))
       } else {
         throw new Error("Failed to fetch tags")
@@ -162,7 +162,7 @@ const ProductForm = ({
       if (addProduct) {
         const { seller, ...rest } = formData
         response = await createProductApi({ ...rest, seller: seller?._id })
-        if (response.status === 201) {
+        if (response?.status === 201) {
           Toast.success("Product created successfully")
           router.replace("/admin/products")
         } else {
@@ -171,7 +171,7 @@ const ProductForm = ({
       } else {
         const { _id, createdAt, updatedAt, seller, ...rest } = formData
         response = await updateProductApi(formData._id!, { ...rest, seller: seller?._id })
-        if (response.status === 200) {
+        if (response?.status === 200) {
           productData = response.data
           form.reset(response.data)
           Toast.success("Product updated successfully")

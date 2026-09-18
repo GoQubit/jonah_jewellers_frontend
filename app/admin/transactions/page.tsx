@@ -12,7 +12,7 @@ const TransactionsPage = () => {
     const fetchAnalytics = async () => {
         try {
             const res = await getTransactionAnalyticsApi()
-            if (res.status === 200) {
+            if (res?.status === 200) {
                 setTransactionAnalytics(res.data)
             }
         } catch (error) {

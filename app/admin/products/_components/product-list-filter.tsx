@@ -101,8 +101,8 @@ const ProductListFilterView = () => {
         >
           <span className='whitespace-nowrap'>
             <span>Status: </span>
-            <span style={{ color: productStatusOptions.find((status) => filters.status === status.value)?.dark_color || "" }}>
-              {productStatusOptions.find((status) => filters.status === status.value)?.label || "All"}
+            <span style={{ color: productStatusOptions.find((status) => filters?.status === status.value)?.dark_color || "" }}>
+              {productStatusOptions.find((status) => filters?.status === status.value)?.label || "All"}
             </span>
           </span>
           <ChevronDownIcon className="w-6 h-6" />
@@ -115,11 +115,11 @@ const ProductListFilterView = () => {
               key={status.value}
               className={cn(
                 "py-1.5 text-lg focus:bg-transparent focus:outline-none cursor-pointer",
-                filters.status === status.value && "border-l-4"
+                filters?.status === status.value && "border-l-4"
               )}
               style={{
                 color: status.dark_color,
-                borderColor: filters.status === status.value ? status.dark_color : ""
+                borderColor: filters?.status === status.value ? status.dark_color : ""
               }}
               onClick={() => setFilters(s => ({ ...s, status: status.value }))}
             >

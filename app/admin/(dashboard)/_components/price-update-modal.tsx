@@ -37,7 +37,7 @@ const PriceUpdateModal = ({ isOpen, onClose, materialPrices, onUpdatePrice }: Pr
     console.log("Updated prices:", prices)
     try {
       const res = await updateMaterialPriceApi(prices)
-      if (res.status === 200) {
+      if (res?.status === 200) {
         onUpdatePrice()
         onClose()
         Toast.success("Material Prices Updated Successfully!")

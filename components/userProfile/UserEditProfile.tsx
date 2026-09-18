@@ -151,7 +151,7 @@ export default function CreateAccountForm() {
       const payload = buildPayload(form)
       const res = await registerUserApi(payload)
 
-      if (res.status === 200) {
+      if (res?.status === 200) {
         Toast.success('Account created successfully!')
         dispatch(setUserProfile(res.data.user)) // store user in redux
         router.push(redirect) //  redirect user to original page

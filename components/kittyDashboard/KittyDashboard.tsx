@@ -28,7 +28,7 @@ const KittyDashboard = () => {
   const fetchDashboardInfo = async () => {
     const res = await getUserKittyDashboardInfoApi()
     console.log("kitty dashboard Info Res:", res);
-    if (res.status === 200) {
+    if (res?.status === 200) {
       setKittyDashboardInfoData(res.data)
     }
   }

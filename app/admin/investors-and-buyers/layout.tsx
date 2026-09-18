@@ -16,7 +16,7 @@ const InvestorsAndBuyersLayout = ({ children }: Props) => {
     const fetchAnalytics = async () => {
         try {
             const res = await kittyInvestmentDashboardAnalyticsApi()
-            if (res.status === 200) {
+            if (res?.status === 200) {
                 setAnalyticsData(res.data)
             }
         } catch (error) {

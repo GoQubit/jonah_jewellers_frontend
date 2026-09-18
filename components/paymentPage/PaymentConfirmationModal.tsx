@@ -39,7 +39,7 @@ export function PaymentConfirmationModal({ amount, onConfirm, onCancel }: Paymen
       payload.append("file", file.file)
       const res = await fileUploaderApi(payload)
 
-      if (res.status === 200) {
+      if (res?.status === 200) {
         await onConfirm(transactionId.trim(), res.data.url)
         Toast.success("Payment confirmed successfully!")
       } else {

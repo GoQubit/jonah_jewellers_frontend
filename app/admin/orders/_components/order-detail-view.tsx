@@ -45,7 +45,7 @@ const OrderDetailView = ({ orderId, onClose, getOrders }: Props) => {
         setOrder({ ...initialOrder, isLoading: true })
         try {
             const response = await getSingleOrdersAdminApi(orderId)
-            if (response.status === 200) {
+            if (response?.status === 200) {
                 setOrder(s => ({ ...s, data: response.data, error: null }))
                 setOrderStatus(response?.data?.orderStatus || "")
                 setTrackingLink(response?.data?.trackingLink || "")
@@ -64,7 +64,7 @@ const OrderDetailView = ({ orderId, onClose, getOrders }: Props) => {
         try {
             const payload = { orderStatus, trackingLink }
             const response = await updateOrderAdminApi(orderId, payload)
-            if (response.status === 200) {
+            if (response?.status === 200) {
                 setUpdateOrder(s => ({ ...s, data: response.data, error: null }))
                 Toast.success("Order updated successfully")
                 getOrders && getOrders()

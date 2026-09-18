@@ -34,7 +34,7 @@ export function WithdrawalModal({ isOpen, onClose, availableToWithdraw }: Withdr
         reason: reason
       }
       const res = await createWithdrawalsApi(payload)
-      if (res.status === 201) {
+      if (res?.status === 201) {
         Toast.success("Withdrawal request successfully created!")
         setAmount("")
         setReason("")

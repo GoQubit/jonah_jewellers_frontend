@@ -26,7 +26,7 @@ const KittyUserTableView = (props: Props) => {
       };
 
       const response = await getKittyUserListApi(queryParams);
-      if (response && response.status === 200) {
+      if (response && response?.status === 200) {
         setState((s) => ({ ...s, data: response.data, error: null }));
       } else {
         throw new Error(response?.data?.message || response?.data?.error || "Users not found!");

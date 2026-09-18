@@ -20,7 +20,7 @@ const MyJewelleryTab = () => {
           limit: 100,
         }
         const res = await getAllProductsApi(params)
-        if (res.status === 200) {
+        if (res?.status === 200) {
           setProductsData(res?.data?.results || [])
         }
       } catch (error) {

@@ -24,7 +24,7 @@ const GoldInvestorsTableView = () => {
       }
 
       const response = await getSellerUserListApi(queryParams)
-      if (response.status === 200) {
+      if (response?.status === 200) {
         setInvestorsData(s => ({ ...s, data: response.data, error: null }))
       } else {
         throw new Error(response?.data?.message || response?.data?.error || "Couldn't load gold investors!")
