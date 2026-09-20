@@ -102,10 +102,10 @@ const PrivacyPolicyPage = () => {
 
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-3">
-          9. Kitty & Gold Investment Information
+          9. Kitty & Gold Savings Plan Information
         </h2>
         <p className="mb-3">
-          Jonah Jewels offers exclusive Kitty and Gold Investment plans for our
+          Jonah Jewels offers exclusive Kitty and Gold Savings plans for our
           valued customers.
         </p>
 
@@ -121,15 +121,15 @@ const PrivacyPolicyPage = () => {
           </li>
         </ul>
 
-        <h3 className="font-semibold mt-4 mb-2">Gold Investment Plans:</h3>
+        <h3 className="font-semibold mt-4 mb-2">Gold Savings Plans:</h3>
         <ul className="list-disc pl-6 space-y-2">
-          <li>Investors must maintain a minimum lock-in period of 6 months.</li>
+          <li>Customers must maintain a minimum saving period of 6 months.</li>
           <li>
-            Withdrawals before 6 months will incur a 9% deduction from the total invested amount.
+            Withdrawals before 6 months will incur a 9% processing charge on the total saved amount.
           </li>
           <li>
-            All investment-related data, payment details, and transactions are securely
-            handled in accordance with this Privacy Policy and our financial partners’
+            All savings-related data, payment details, and transactions are securely
+            handled in accordance with this Privacy Policy and our payment partners’
             compliance standards.
           </li>
         </ul>
