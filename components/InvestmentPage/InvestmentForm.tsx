@@ -27,7 +27,9 @@ export function InvestmentForm() {
   const [modalMessage, setModalMessage] = useState("");
 
 
-  const GOLD_RATE_PER_GRAM = materials?.gold?.price || 100000;
+  // materials.gold.price is the rate per 10 grams (as shown site-wide, e.g. "Today's Price: ₹135000/10gm")
+  const GOLD_RATE_PER_10_GRAM = materials?.gold?.price || 100000;
+  const GOLD_RATE_PER_GRAM = GOLD_RATE_PER_10_GRAM / 10;
   const quickAmounts = [10000, 20000, 25000, 50000];
 
   // Calculate gold quantity

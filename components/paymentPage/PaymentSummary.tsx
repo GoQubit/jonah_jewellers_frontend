@@ -85,7 +85,7 @@ export function PaymentSummary({ paymentData }: PaymentSummaryProps) {
               </div>
               <div className="flex justify-between" >
                 <span className="text-sm text-[#818181]">Current Gold Rate:</span>
-                <span className="font-medium">{paymentData.goldRate}</span>
+                <span className="font-medium">₹{paymentData.goldRate}/10gm</span>
               </div>
               <div className="flex justify-between" >
                 <span className="text-sm text-[#818181]"> Gold Gram:</span>

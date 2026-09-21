@@ -24,7 +24,9 @@ export function BuyGoldForm() {
   const [amountError, setAmountError] = useState("")
   const [modalOpen, setModalOpen] = useState(false)
 
-  const GOLD_RATE_PER_GRAM = materials?.gold?.price || 100000
+  // materials.gold.price is the rate per 10 grams (as shown site-wide, e.g. "Today's Price: ₹135000/10gm")
+  const GOLD_RATE_PER_10_GRAM = materials?.gold?.price || 100000
+  const GOLD_RATE_PER_GRAM = GOLD_RATE_PER_10_GRAM / 10
   const quickAmounts = [1000, 5000, 10000, 25000]
 
   useEffect(() => {
@@ -89,7 +91,7 @@ export function BuyGoldForm() {
             You'll get: <span className="text-brand">{goldQuantity.toFixed(3)} Gram</span>
           </p>
           <p className="text-xs text-gray-500 mt-1">
-            Based on today's rate of ₹{GOLD_RATE_PER_GRAM.toLocaleString()}/gram
+            Based on today's rate of ₹{GOLD_RATE_PER_10_GRAM.toLocaleString()}/10gram
           </p>
         </div>
 
