@@ -143,6 +143,9 @@ export default function ChooseAddressPage({ walletCashUsed, coupon, walletCash }
         },
         notes: razorpayOrder.notes || {},
         theme: { color: "#F37254" },
+        // Show UPI apps (GPay, PhonePe, Paytm, CRED, BHIM) inside the Android app WebView.
+        // Ignored by Razorpay in normal mobile/desktop browsers.
+        webview_intent: true,
       }
 
       const rzp = new (window as any).Razorpay(options)
