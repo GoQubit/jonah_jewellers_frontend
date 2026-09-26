@@ -51,14 +51,14 @@ export function PaymentSummary({ paymentData }: PaymentSummaryProps) {
 
               <div className="flex justify-between" >
                 <span className="text-sm font-bold">Total Payable:</span>
-                <span className="font-bold">₹{paymentData.totalValue - paymentData.savings}</span>
+                <span className="font-bold">₹{(paymentData.totalValue - paymentData.savings).toLocaleString()}</span>
               </div>
 
               {
                 paymentData.savings > 0 &&
                 <div className="flex justify-between text-[#45B629]" >
                   <span className="text-sm ">Your Savings on this plan:</span>
-                  <span className="font-medium">₹{paymentData.savings}</span>
+                  <span className="font-medium">₹{paymentData.savings.toLocaleString()}</span>
                 </div>
               }
 

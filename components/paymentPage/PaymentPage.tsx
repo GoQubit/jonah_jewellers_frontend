@@ -38,7 +38,13 @@ export default function PaymentGatewayPage() {
     duration: searchParams.get("duration") || "",
     startDate: todayDate(),
     totalValue: Number.parseInt(searchParams.get("monthlyAmount") || "0") * Number.parseInt(searchParams.get("duration") || '0'),
-    savings: Number.parseInt(searchParams.get("savings") || "0"),
+    // 12-month kitty = 11+1 plan: user pays 11 months, admin pays the 12th,
+    // so the saving is one monthly installment.
+    savings: searchParams.get("savings")
+      ? Number.parseInt(searchParams.get("savings") || "0")
+      : Number.parseInt(searchParams.get("duration") || "0") === 12
+        ? Number.parseInt(searchParams.get("monthlyAmount") || "0")
+        : 0,
     amountToPay: Number.parseInt(searchParams.get("amountToPay") || "0"),
   }
 
